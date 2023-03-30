@@ -99,16 +99,12 @@ void loadGame(GameState* game)
 		game->enemies[i]->w = 64;
 		game->enemies[i]->h = 64;
 		game->enemies[i]->dx = 2;
-		game->enemies[i]->LL = game->enemies[i]->x - 50;
-		game->enemies[i]->LR = game->enemies[i]->x + 50;
+		game->enemies[i]->flipChar = 1;
+
 	}
 	game->enemies[49]->x = 550;
-	game->enemies[49]->LL = game->enemies[49]->x - 50;
-	game->enemies[49]->LR = game->enemies[49]->x + 50;
 
 	game->enemies[0]->x = 450;
-	game->enemies[0]->LL = game->enemies[0]->x - 50;
-	game->enemies[0]->LR = game->enemies[0]->x + 50;
 
 	//Load position of enemies
 
@@ -393,18 +389,25 @@ void processGameAni(GameState* game)
 			if (game->time % 127 == 0)
 			{
 				game->enemies[i]->dx *= -1;
+				game->enemies[i]->flipChar = 0;
 			}
 			else if (game->time % 251 == 0)
 			{
 				game->enemies[i]->dx *= -1;
+				game->enemies[i]->flipChar = 1;
+
 			}
 			else if (fabs(game->player.x - game->enemies[i]->x) < 300 && game->player.x < game->enemies[i]->x) //Left
 			{
 				game->enemies[i]->dx = -4;
+				game->enemies[i]->flipChar = 0;
+
 			}
 			else if (fabs(game->player.x - game->enemies[i]->x) < 300 && game->player.x > game->enemies[i]->x) //Right
 			{
 				game->enemies[i]->dx = 4;
+				game->enemies[i]->flipChar = 1;
+
 			}
 		}
 	}
@@ -475,7 +478,7 @@ void doRenderer(SDL_Renderer* renderer, GameState* game)
 		if (game->enemies[i] != NULL)
 		{
 		SDL_Rect rectE = { game->scrollX + game->enemies[i]->x, game->enemies[i]->y, game->enemies[i]->w, game->enemies[i]->h };
-		SDL_RenderCopy(renderer, game->IMGenemies, NULL, &rectE);
+		SDL_RenderCopyEx(renderer, game->IMGenemies, NULL, &rectE, 0 ,NULL, game->enemies[i]->flipChar);
 		}
 	}
 	//Draw player

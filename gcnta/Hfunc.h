@@ -26,7 +26,7 @@ typedef struct
 typedef struct
 {
 	float  x, y, w, h;
-	float dx, LL, LR;
+	float dx;
 	short animFrame, flipChar, onBrick, shootBullet;
 } Enemy;
 
