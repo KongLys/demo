@@ -15,7 +15,7 @@ void loadGame(GameState* game)
 	SDL_FreeSurface(surface);
 
 	//Load character
-	surface = IMG_Load("robotr.png");
+	surface = IMG_Load("waiting.png");
 	if (surface == NULL)
 	{
 		printf("robot.jpg! \n\n");
@@ -25,7 +25,7 @@ void loadGame(GameState* game)
 	game->playerFrames[0] = SDL_CreateTextureFromSurface(game->renderer, surface);
 	SDL_FreeSurface(surface);
 
-	surface = IMG_Load("robot2r.png");
+	surface = IMG_Load("walk.png");
 	if (surface == NULL)
 	{
 		printf("robot2.jpg! \n\n");
@@ -33,6 +33,16 @@ void loadGame(GameState* game)
 		exit(1);
 	}
 	game->playerFrames[1] = SDL_CreateTextureFromSurface(game->renderer, surface);
+	SDL_FreeSurface(surface);
+
+	surface = IMG_Load("cut.png");
+	if (surface == NULL)
+	{
+		printf("robot2.jpg! \n\n");
+		SDL_Quit();
+		exit(1);
+	}
+	game->playerFrames[2] = SDL_CreateTextureFromSurface(game->renderer, surface);
 	SDL_FreeSurface(surface);
 
 	//Load background
@@ -78,7 +88,10 @@ void loadGame(GameState* game)
 	game->player.flipChar = 0;
 	game->player.onBrick = 0;
 	game->player.shootBullet = 0;
-
+	game->player.stopMove = 1;
+	game->player.currentCut = 0;
+	game->player.currentWait = 0;
+	game->player.currentWalk = 0;
 
 
 	//Load info GameState
@@ -206,6 +219,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 		{
 			addBullet(game);
 		}
+		game->player.currentCut = 1;
 	}
 	else
 	{
@@ -220,6 +234,12 @@ int processEvent(SDL_Window* windown, GameState* game)
 		}
 		game->player.flipChar = 1;
 		game->player.stopMove = 0;
+		game->player.animFrame = 1;
+		if (game->time % 6 == 0)
+		{
+			game->player.currentWalk++;
+			game->player.currentWalk %= 13;
+		}
 	}
 	else if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT])
 	{
@@ -230,6 +250,12 @@ int processEvent(SDL_Window* windown, GameState* game)
 		}
 		game->player.flipChar = 0;
 		game->player.stopMove = 0;
+		game->player.animFrame = 1;
+		if (game->time % 6 == 0)
+		{
+			game->player.currentWalk++;
+			game->player.currentWalk %= 13;
+		}
 	}
 	else
 	{
@@ -239,6 +265,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 			game->player.dx = 0;
 		}
 		game->player.stopMove = 1;
+		game->player.animFrame = 0;
 	}
 	return done;
 }
@@ -336,20 +363,22 @@ void processGameAni(GameState* game)
 {
 	game->time++;
 
-	if (game->time % 5 == 0 && game->player.onBrick && !game->player.stopMove)
+	if (game->time % 5 == 0 && game->player.onBrick && game->player.stopMove)
 	{
-		if (game->player.animFrame == 0)
-		{
-			game->player.animFrame = 1;
-		}
-		else
-		{
-			game->player.animFrame = 0;
-		}
+			game->player.currentWait++;
+			game->player.currentWait %= 11;
 	}
 	if (!game->player.onBrick)
 	{
 		game->player.animFrame = 0;
+	}
+	if (game->player.currentCut != 0)
+	{
+		if (game->time % 5 == 0)
+		{
+			game->player.currentCut++;
+			game->player.currentCut %= 18;
+		}
 	}
 	//Speed
 	game->player.x += game->player.dx;
@@ -483,8 +512,23 @@ void doRenderer(SDL_Renderer* renderer, GameState* game)
 	}
 	//Draw player
 	SDL_Rect rect_p = { game->scrollX + game->player.x, game->player.y, game->player.w, game->player.h };
-	SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], NULL, &rect_p, 0, NULL, game->player.flipChar);
+	if (game->player.animFrame == 2)
+	{
+		SDL_Rect scrRect_p = { 43 * game->player.currentCut, 0, 43, 37 };
+		SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
+	}
+	else if (game->player.animFrame == 1)
+	{
+		SDL_Rect scrRect_p = { 22 * game->player.currentWalk, 0 , 22, 33 };
+		SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
+	}
+	else
+	{
+		SDL_Rect scrRect_p = { 24 * game->player.currentWait, 0, 24, 32 };
+		SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
+	}
 
+	
 	//Draw bullet
 	
 	for (int i = 0; i < MAX_BULLETS; i++)

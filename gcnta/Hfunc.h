@@ -21,6 +21,7 @@ typedef struct
 	float  x, y, w, h;
 	float dx, dy;
 	short animFrame, flipChar, onBrick, stopMove, shootBullet;
+	short currentWait, currentWalk, currentCut;
 } Player;
 
 typedef struct
@@ -67,7 +68,7 @@ typedef struct
 
 	//Image
 	SDL_Texture* IMGbrick;
-	SDL_Texture* playerFrames[2];
+	SDL_Texture* playerFrames[3];
 	SDL_Texture* backGr;
 	SDL_Texture* IMGenemies;
 	SDL_Texture* IMGbullet;
