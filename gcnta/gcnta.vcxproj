@@ -130,11 +130,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bullet.c" />
+    <ClCompile Include="collision.c" />
     <ClCompile Include="Func.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="screen_status.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Hfunc.h" />
+    <ClInclude Include="Func.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,7 +14,10 @@
 
 #define GRAVITY 0.45
 
-#define PI 3.14
+#define GAME_NEW 0
+#define GAME_PLAY 1
+#define GAME_OVER 2
+
 
 typedef struct
 {
@@ -22,6 +25,7 @@ typedef struct
 	float dx, dy;
 	short animFrame, flipChar, onBrick, stopMove, shootBullet;
 	short currentWait, currentWalk, currentCut;
+	short lives;
 } Player;
 
 typedef struct
@@ -29,6 +33,7 @@ typedef struct
 	float  x, y, w, h;
 	float dx;
 	short animFrame, flipChar, onBrick, shootBullet;
+	short lives;
 } Enemy;
 
 typedef struct
@@ -61,7 +66,7 @@ typedef struct
 
 
 	//Renderer
-	SDL_Renderer *renderer;
+	SDL_Renderer *renderer1;
 
 	//Time
 	int time;
@@ -72,7 +77,13 @@ typedef struct
 	SDL_Texture* backGr;
 	SDL_Texture* IMGenemies;
 	SDL_Texture* IMGbullet;
+	SDL_Texture* label;
+	int label_w, label_h;
 
+
+	//Status
+	short status;
+	
 	//Fonts
 	TTF_Font* font;
 } GameState;
@@ -80,11 +91,18 @@ typedef struct
 void loadGame(GameState* game);
 int processEvent(SDL_Window* windown, GameState* game);
 void addBullet(GameState* game);
-int checkBulletsWithBrick(GameState* game, int j);
-int checkBulletsWithEnemies(GameState* game, int j);
-int checkBullets();
+short checkBulletsWithBrick(GameState* game, int j);
+short checkBulletsWithEnemies(GameState* game, int j);
+short checkBullets(GameState* game, int j);
 void removeBullet(GameState* game, int i);
 void removeEnemies(GameState* game, int i);
 void processGameAni(GameState* game);
 void collisionDetect(GameState* game);
+short collision_with_ennemies(GameState* game);
 void doRenderer(SDL_Renderer* renderer, GameState* game);
+
+
+//screen status
+void init_status_lives(GameState* game);
+void draw_status_lives(GameState* game);
+void shutdown_status_lives(GameState* game);

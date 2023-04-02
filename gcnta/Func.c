@@ -1,4 +1,4 @@
-#include "Hfunc.h"
+#include "Func.h"
 
 void loadGame(GameState* game)
 {
@@ -11,7 +11,7 @@ void loadGame(GameState* game)
 		SDL_Quit();
 		exit(1);
 	}
-	game->IMGbrick = SDL_CreateTextureFromSurface(game->renderer, surface);
+	game->IMGbrick = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
 
 	//Load character
@@ -22,7 +22,7 @@ void loadGame(GameState* game)
 		SDL_Quit();
 		exit(1);
 	}
-	game->playerFrames[0] = SDL_CreateTextureFromSurface(game->renderer, surface);
+	game->playerFrames[0] = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
 
 	surface = IMG_Load("walk.png");
@@ -32,7 +32,7 @@ void loadGame(GameState* game)
 		SDL_Quit();
 		exit(1);
 	}
-	game->playerFrames[1] = SDL_CreateTextureFromSurface(game->renderer, surface);
+	game->playerFrames[1] = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
 
 	surface = IMG_Load("cut.png");
@@ -42,7 +42,7 @@ void loadGame(GameState* game)
 		SDL_Quit();
 		exit(1);
 	}
-	game->playerFrames[2] = SDL_CreateTextureFromSurface(game->renderer, surface);
+	game->playerFrames[2] = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
 
 	//Load background
@@ -53,7 +53,7 @@ void loadGame(GameState* game)
 		SDL_Quit();
 		exit(1);
 	}
-	game->backGr = SDL_CreateTextureFromSurface(game->renderer, surface);
+	game->backGr = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
 
 	//Load enemies
@@ -64,7 +64,7 @@ void loadGame(GameState* game)
 		SDL_Quit();
 		exit(1);
 	}
-	game->IMGenemies = SDL_CreateTextureFromSurface(game->renderer, surface);
+	game->IMGenemies = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
 
 	surface = IMG_Load("ballr.png");
@@ -74,8 +74,16 @@ void loadGame(GameState* game)
 		SDL_Quit();
 		exit(1);
 	}
-	game->IMGbullet = SDL_CreateTextureFromSurface(game->renderer, surface);
+	game->IMGbullet = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
+	//load fonts
+	game->font = TTF_OpenFont("victor-pixel.ttf", 48);
+	if (!game->font)
+	{
+		printf("Cannot find font file! \n\n");
+		SDL_Quit();
+		exit(1);
+	}
 
 	//Load info player
 	game->player.x = 50;
@@ -84,6 +92,7 @@ void loadGame(GameState* game)
 	game->player.h = 64;
 	game->player.dx = 0;
 	game->player.dy = 0;
+	game->player.lives = 3;
 	game->player.animFrame = 0;
 	game->player.flipChar = 0;
 	game->player.onBrick = 0;
@@ -97,6 +106,11 @@ void loadGame(GameState* game)
 	//Load info GameState
 	game->scrollX = 0;
 	game->time = 0;
+	game->label = NULL;
+	game->status = GAME_NEW;
+
+	//Load screen
+	init_status_lives(game);
 
 	for (int i = 0; i < MAX_BULLETS; i++)
 	{
@@ -113,6 +127,7 @@ void loadGame(GameState* game)
 		game->enemies[i]->h = 64;
 		game->enemies[i]->dx = 2;
 		game->enemies[i]->flipChar = 1;
+		game->enemies[i]->lives = 2;
 
 	}
 	game->enemies[49]->x = 550;
@@ -270,88 +285,6 @@ int processEvent(SDL_Window* windown, GameState* game)
 	return done;
 }
 
-void addBullet(GameState* game)
-{
-	int found = -1;
-	for (int i = 0; i < MAX_BULLETS; i++)
-	{
-		if (game->bullets[i] == NULL)
-		{
-			found = i;
-			break;
-		}
-	}
-	//printf("found %d \n", found);
-	//fflush(stdout);
-	if (found >= 0)
-	{
-		game->bullets[found] = (Bullet*)malloc(sizeof(Bullet));
-		game->bullets[found]->y = game->player.y + game->player.h/2;
-		if (game->player.flipChar == 0)
-		{
-			game->bullets[found]->dx = 20;
-			game->bullets[found]->x = game->player.x + game->player.w;
-		}
-		else
-		{
-			game->bullets[found]->dx = -20;
-			game->bullets[found]->x = game->player.x;
-		}
-	}
-}
-
-int checkBulletsWithBrick(GameState* game, int j)
-{
-	for (int i = 0; i < NUM_PBRICK; i++)
-	{
-		if (game->bullets[j]->x < -game->bullets[j]->x - game->player.x - game->scrollX|| game->bullets[j]->x > game->player.x - game->scrollX + 650)
-		{
-			return 1;
-		}
-		if (game->bullets[j]->x + 8 > game->bricks[i].x && game->bullets[j]->x < game->bricks[i].x + game->bricks[i].w && game->bullets[j]->y + 8 > game->bricks[i].y && game->bullets[j]->y < game->bricks[i].y + game->bricks[i].h)
-		{
-			return 1;
-		}
-	}
-	return 0;
-}
-
-int checkBulletsWithEnemies(GameState* game, int j)
-{
-	for (int i = 0; i < NUM_ENEMIES; i++)
-	{
-		if (game->enemies[i] != NULL)
-		{
-			if (game->bullets[j]->x + 8 >= game->enemies[i]->x && game->bullets[j]->x <= game->enemies[i]->x + game->enemies[i]->w && game->bullets[j]->y + 8 >= game->enemies[i]->y && game->bullets[j]->y <= game->enemies[i]->y + game->enemies[i]->h)
-			{
-				removeEnemies(game, i);
-				return 1;
-			}
-		}
-	}
-	return 0;
-}
-
-int checkBullets(GameState* game, int j)
-{
-	if (checkBulletsWithBrick(game, j) == 1 || checkBulletsWithEnemies(game ,j) == 1)
-	{
-		return 1;
-	}
-	return 0;
-}
-
-void removeBullet(GameState* game, int i)
-{
-	if (game->bullets[i])
-	{
-		free(game->bullets[i]);
-		game->bullets[i] = NULL;
-	}
-}
-
-
-
 void removeEnemies(GameState* game, int i)
 {
 	free(game->enemies[i]);
@@ -363,41 +296,95 @@ void processGameAni(GameState* game)
 {
 	game->time++;
 
+	//Wait animation
 	if (game->time % 5 == 0 && game->player.onBrick && game->player.stopMove)
 	{
-			game->player.currentWait++;
-			game->player.currentWait %= 11;
+		game->player.currentWait++;
+		game->player.currentWait %= 11;
 	}
+
+	//set waiting
 	if (!game->player.onBrick)
 	{
 		game->player.animFrame = 0;
 	}
-	if (game->player.currentCut != 0)
+
+	if (game->time > 120)
 	{
-		if (game->time % 5 == 0)
+		shutdown_status_lives(game);
+		game->status = GAME_PLAY;
+	}
+
+	if (game->status == GAME_PLAY)
+	{
+		//Cut animation
+		//if (game->player.currentCut != 0)
+		//{
+		//	if (game->time % 5 == 0)
+		//	{
+		//		game->player.currentCut++;
+		//		game->player.currentCut %= 18;
+		//	}
+		//}
+
+		//Process bullet
+		for (int i = 0; i < MAX_BULLETS; i++)
 		{
-			game->player.currentCut++;
-			game->player.currentCut %= 18;
+			if (game->bullets[i])
+			{
+				game->bullets[i]->x += game->bullets[i]->dx;
+				if (checkBullets(game, i) == 1)
+				{
+					removeBullet(game, i);
+				}
+			}
+
+		}
+
+		//Movement of enemies
+		for (int i = 0; i < NUM_ENEMIES; i++)
+		{
+			if (game->enemies[i])
+			{
+				game->enemies[i]->x += game->enemies[i]->dx;
+				if (game->time % 127 == 0)
+				{
+					game->enemies[i]->dx *= -1;
+					game->enemies[i]->flipChar = 0;
+				}
+				else if (game->time % 251 == 0)
+				{
+					game->enemies[i]->dx *= -1;
+					game->enemies[i]->flipChar = 1;
+
+				}
+				else if (fabs(game->player.x - game->enemies[i]->x) < 200 && game->player.x < game->enemies[i]->x) //Left
+				{
+					game->enemies[i]->dx = -4;
+					game->enemies[i]->flipChar = 0;
+
+				}
+				else if (fabs(game->player.x - game->enemies[i]->x) < 200 && game->player.x > game->enemies[i]->x) //Right
+				{
+					game->enemies[i]->dx = 4;
+					game->enemies[i]->flipChar = 1;
+
+				}
+			}
 		}
 	}
+
+	//screen game over
+	if (collision_with_ennemies(game) == 1)
+	{
+		game->status = GAME_OVER;
+		init_status_over(game);
+	}
+
 	//Speed
 	game->player.x += game->player.dx;
 	game->player.y += game->player.dy;
 	game->player.dy += GRAVITY;
-
-	//Process bullet
-	for (int i = 0; i < MAX_BULLETS; i++)
-	{
-		if (game->bullets[i])
-		{
-			game->bullets[i]->x += game->bullets[i]->dx;
-			if (checkBullets(game, i) == 1)
-			{
-				removeBullet(game, i);
-			}
-		}
-
-	}
 
 	game->scrollX = -game->player.x + SCREEN_WIDTH / 2; //Make sure the screen cannot go over the middle of the screen
 	if (game->scrollX > 0)
@@ -408,139 +395,96 @@ void processGameAni(GameState* game)
 	{
 		game->scrollX = -game->bricks[1].w * (NUM_PBRICK-30) + SCREEN_WIDTH/2; //Cannot seen the right of the map
 	}
-
-	//Movement of enemies
-	for (int i = 0; i < NUM_ENEMIES; i++)
-	{
-		if (game->enemies[i])
-		{
-			game->enemies[i]->x += game->enemies[i]->dx;
-			if (game->time % 127 == 0)
-			{
-				game->enemies[i]->dx *= -1;
-				game->enemies[i]->flipChar = 0;
-			}
-			else if (game->time % 251 == 0)
-			{
-				game->enemies[i]->dx *= -1;
-				game->enemies[i]->flipChar = 1;
-
-			}
-			else if (fabs(game->player.x - game->enemies[i]->x) < 300 && game->player.x < game->enemies[i]->x) //Left
-			{
-				game->enemies[i]->dx = -4;
-				game->enemies[i]->flipChar = 0;
-
-			}
-			else if (fabs(game->player.x - game->enemies[i]->x) < 300 && game->player.x > game->enemies[i]->x) //Right
-			{
-				game->enemies[i]->dx = 4;
-				game->enemies[i]->flipChar = 1;
-
-			}
-		}
-	}
-}
-
-void collisionDetect(GameState* game)
-{
-	//Collision with bricks
-	for (int i = 0; i < NUM_PBRICK; i++) 
-	{
-	float px = game->player.x, py = game->player.y, pw = game->player.w, ph = game->player.h;
-		float bx =game->bricks[i].x, by = game->bricks[i].y, bw = game->bricks[i].w, bh = game->bricks[i].h;
-
-		if (px + pw >= bx + 10 && px <= bx + bw -10)
-		{
-			if (py + ph >= by && py < by && game->player.dy > 0) //On brick
-			{
-				game->player.y = by - ph;
-				py = by - ph;
-				game->player.onBrick = 1;
-				game->player.dy = 0;
-			}
-			if (py < by + bh && py > by && game->player.dy < 0) //Brick above
-			{
-				game->player.y = by + bh;
-				py = by + bh;
-				game->player.dy = 0;
-			}
-		}
-		if (py + ph > by + 6 && py < by + bh*39/40 )
-		{
-			if (px + pw > bx && px < bx && game->player.dx > 0)
-			{
-				game->player.x = bx - pw ; //edge left
-				px = bx - pw ;
-				game->player.dx = 0;
-			}
-			else if (px < bx + bw && px + pw> bx + bw && game->player.dx < 0)
-			{
-				game->player.x = bx + bw ; //edge right
-				px = bx + bw ;
-				game->player.dx = 0;
-			}
-		}
-		//collision bullet with bricks
-
-		/*printf("x = %.2f\t", game->player.x);*/
-		//printf("y = %.2f\n",game->player.y);
-	}
 }
 
 void doRenderer(SDL_Renderer* renderer, GameState* game)
 {
-	//Draw background
-	SDL_Rect rect_bg = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-	SDL_RenderCopy(renderer, game->backGr, NULL, &rect_bg);
-
-	//Draw bircks
-	for (int i = 0; i < NUM_PBRICK; i++) 
+	if (game->status == GAME_NEW)
 	{
-		SDL_Rect rect = { game->scrollX + game->bricks[i].x, game->bricks[i].y, game->bricks[i].w, game->bricks[i].h};
-		SDL_RenderCopy(renderer, game->IMGbrick, NULL, &rect);
+		draw_status_lives(game);
 	}
-
-	//Draw enemies
-	for (int i = 0; i < NUM_ENEMIES; i++)
+	else if (game->status == GAME_PLAY)
 	{
-		if (game->enemies[i] != NULL)
+		//Draw background
+		SDL_Rect rect_bg = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+		SDL_RenderCopy(renderer, game->backGr, NULL, &rect_bg);
+
+		//Draw bircks
+		for (int i = 0; i < NUM_PBRICK; i++)
 		{
-		SDL_Rect rectE = { game->scrollX + game->enemies[i]->x, game->enemies[i]->y, game->enemies[i]->w, game->enemies[i]->h };
-		SDL_RenderCopyEx(renderer, game->IMGenemies, NULL, &rectE, 0 ,NULL, game->enemies[i]->flipChar);
+			SDL_Rect rect = { game->scrollX + game->bricks[i].x, game->bricks[i].y, game->bricks[i].w, game->bricks[i].h };
+			SDL_RenderCopy(renderer, game->IMGbrick, NULL, &rect);
+		}
+
+		//Draw enemies
+		for (int i = 0; i < NUM_ENEMIES; i++)
+		{
+			if (game->enemies[i] != NULL)
+			{
+				//Draw something
+				SDL_SetRenderDrawColor(renderer, 220, 20, 60, 255);
+				if (fabs(game->player.x - game->enemies[i]->x) < 300)
+				{
+					if (game->enemies[i]->lives == 2) {
+						SDL_Rect hpRect = { game->scrollX + game->enemies[i]->x, game->enemies[i]->y - 30, 45, 5 };
+						//Draw hp
+						SDL_RenderFillRects(renderer, &hpRect, 1);
+					}
+					else if (game->enemies[i]->lives == 1)
+					{
+						SDL_Rect hpRect = { game->scrollX + game->enemies[i]->x, game->enemies[i]->y - 30, 22.5, 5 };
+						//Draw hp
+						SDL_RenderFillRects(renderer, &hpRect, 1);
+					}
+				}
+				SDL_Rect rectE = { game->scrollX + game->enemies[i]->x, game->enemies[i]->y, game->enemies[i]->w, game->enemies[i]->h };
+
+				//Draw enemies
+				SDL_RenderCopyEx(renderer, game->IMGenemies, NULL, &rectE, 0, NULL, game->enemies[i]->flipChar);
+			}
+		}
+		//Draw player
+		SDL_Rect rect_p = { game->scrollX + game->player.x, game->player.y, game->player.w, game->player.h };
+		if (game->player.animFrame == 2)
+		{
+			SDL_Rect scrRect_p = { 43 * game->player.currentCut, 0, 43, 37 };
+			SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
+		}
+		else if (game->player.animFrame == 1)
+		{
+			SDL_Rect scrRect_p = { 22 * game->player.currentWalk, 0 , 22, 33 };
+			SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
+		}
+		else
+		{
+			SDL_Rect scrRect_p = { 24 * game->player.currentWait, 0, 24, 32 };
+			SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
+		}
+
+
+
+		//Draw bullet
+
+		for (int i = 0; i < MAX_BULLETS; i++)
+		{
+			if (game->bullets[i])
+			{
+				SDL_Rect rectBu = { game->scrollX + game->bullets[i]->x, game->bullets[i]->y, 8, 8 };
+				SDL_RenderCopy(renderer, game->IMGbullet, NULL, &rectBu);
+			}
 		}
 	}
-	//Draw player
-	SDL_Rect rect_p = { game->scrollX + game->player.x, game->player.y, game->player.w, game->player.h };
-	if (game->player.animFrame == 2)
+	else if(game->status == GAME_OVER)
 	{
-		SDL_Rect scrRect_p = { 43 * game->player.currentCut, 0, 43, 37 };
-		SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
-	}
-	else if (game->player.animFrame == 1)
-	{
-		SDL_Rect scrRect_p = { 22 * game->player.currentWalk, 0 , 22, 33 };
-		SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
-	}
-	else
-	{
-		SDL_Rect scrRect_p = { 24 * game->player.currentWait, 0, 24, 32 };
-		SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
-	}
+		//chinh mau nen thanh den
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-	
-	//Draw bullet
-	
-	for (int i = 0; i < MAX_BULLETS; i++)
-	{
-		if (game->bullets[i])
-		{
-			SDL_Rect rectBu = { game->scrollX + game->bullets[i]->x, game->bullets[i]->y, 8, 8 };
-			SDL_RenderCopy(renderer, game->IMGbullet, NULL, &rectBu);
-		}
-	}
+		//cho toan man hinh thanh xam
+		SDL_RenderClear(renderer);
 
-	//Show renderer
-	SDL_RenderPresent(renderer);
+		draw_status_over(game);
+	}
+		//Show renderer
+		SDL_RenderPresent(renderer);
 }
 

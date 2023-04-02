@@ -1,4 +1,4 @@
-#include "Hfunc.h"
+#include "Func.h"
 
 int main(int argc, char* argv[]) {
 	//init and declare
@@ -9,7 +9,9 @@ int main(int argc, char* argv[]) {
 	windown = SDL_CreateWindow("Game gi do", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 	renderer = SDL_CreateRenderer(windown, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-	gameState.renderer = renderer;
+	TTF_Init();
+
+	gameState.renderer1 = renderer;
 
 	loadGame(&gameState);
 
@@ -33,16 +35,19 @@ int main(int argc, char* argv[]) {
 	SDL_DestroyTexture(gameState.backGr);
 	SDL_DestroyTexture(gameState.IMGenemies);
 	SDL_DestroyTexture(gameState.IMGbullet);
+	SDL_DestroyTexture(gameState.label);
+
+	TTF_CloseFont(gameState.font);
 
 	for (int i = 0; i < MAX_BULLETS; i++)
 	{
 		removeBullet(&gameState, i);
 	}
 	
-
-
 	SDL_DestroyWindow(windown);
 	SDL_DestroyRenderer(renderer);
+	TTF_Quit();
+
 	SDL_Quit();
 
 	return 0;
