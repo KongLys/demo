@@ -159,6 +159,45 @@ void loadGame(GameState* game)
 	game->bricks[97].h = 100;
 }
 
+void loadAgain(GameState* game)
+{
+	game->player.x = 50;
+	game->player.y = 50;
+	game->player.w = 64;
+	game->player.h = 64;
+	game->player.dx = 0;
+	game->player.dy = 0;
+	game->player.animFrame = 0;
+	game->player.flipChar = 0;
+	game->player.onBrick = 0;
+	game->player.shootBullet = 0;
+	game->player.stopMove = 1;
+	game->player.currentCut = 0;
+	game->player.currentWait = 0;
+	game->player.currentWalk = 0;
+
+	game->scrollX = 0;
+	game->time = 0;
+
+	game->status = GAME_NEW;
+
+	for (int i = 0; i < NUM_ENEMIES; i++)
+	{
+		game->enemies[i] = (Enemy*)malloc(sizeof(Enemy));
+		game->enemies[i]->x = 500 * i;
+		game->enemies[i]->y = 700;
+		game->enemies[i]->w = 64;
+		game->enemies[i]->h = 64;
+		game->enemies[i]->dx = 2;
+		game->enemies[i]->flipChar = 1;
+		game->enemies[i]->lives = 2;
+
+	}
+	game->enemies[49]->x = 550;
+
+	game->enemies[0]->x = 450;
+}
+
 int processEvent(SDL_Window* windown, GameState* game)
 {
 	SDL_Event event;
@@ -377,6 +416,19 @@ void processGameAni(GameState* game)
 	//screen game over
 	if (collision_with_ennemies(game) == 1)
 	{
+		for (int i = 0; i < MAX_BULLETS; i++)
+		{
+			if (game->enemies[i] != NULL)
+			{
+				removeEnemies(game, i);
+			}
+		}
+		loadAgain(game);
+		init_status_lives(game);
+	}
+
+	if (game->player.lives <= 0)
+	{
 		game->status = GAME_OVER;
 		init_status_over(game);
 	}
@@ -401,6 +453,12 @@ void doRenderer(SDL_Renderer* renderer, GameState* game)
 {
 	if (game->status == GAME_NEW)
 	{
+		//chinh mau nen thanh den
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
+		//cho toan man hinh thanh xam
+		SDL_RenderClear(renderer);
+
 		draw_status_lives(game);
 	}
 	else if (game->status == GAME_PLAY)

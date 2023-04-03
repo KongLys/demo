@@ -43,6 +43,14 @@ int main(int argc, char* argv[]) {
 	{
 		removeBullet(&gameState, i);
 	}
+
+	for (int i = 0; i < MAX_BULLETS; i++)
+	{
+		if (gameState.enemies[i] != NULL)
+		{
+			removeEnemies(&gameState, i);
+		}
+	}
 	
 	SDL_DestroyWindow(windown);
 	SDL_DestroyRenderer(renderer);

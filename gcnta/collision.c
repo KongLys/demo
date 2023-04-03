@@ -54,6 +54,8 @@ short collision_with_ennemies(GameState* game)
 		{
 			if (game->player.x + game->player.w > game->enemies[i]->x && game->player.x < game->enemies[i]->x + game->enemies[i]->w && game->player.y + game->player.h > game->enemies[i]->y && game->player.y < game->enemies[i]->y + game->enemies[i]->h)
 			{
+				if(game->player.lives > 0)
+				game->player.lives--;
 				return 1;
 			}
 		}
