@@ -87,7 +87,7 @@ void loadGame(GameState* game)
 
 	//Load info player
 	game->player.x = 50;
-	game->player.y = 50;
+	game->player.y = 650;
 	game->player.w = 64;
 	game->player.h = 64;
 	game->player.dx = 0;
@@ -162,7 +162,7 @@ void loadGame(GameState* game)
 void loadAgain(GameState* game)
 {
 	game->player.x = 50;
-	game->player.y = 50;
+	game->player.y = 650;
 	game->player.w = 64;
 	game->player.h = 64;
 	game->player.dx = 0;
@@ -386,16 +386,17 @@ void processGameAni(GameState* game)
 			if (game->enemies[i])
 			{
 				game->enemies[i]->x += game->enemies[i]->dx;
-				if (game->time % 127 == 0)
+				if (game->time % 100 == 0)
 				{
 					game->enemies[i]->dx *= -1;
-					game->enemies[i]->flipChar = 0;
-				}
-				else if (game->time % 251 == 0)
-				{
-					game->enemies[i]->dx *= -1;
-					game->enemies[i]->flipChar = 1;
-
+					if (game->enemies[i]->flipChar == 0)
+					{
+						game->enemies[i]->flipChar = 1;
+					}
+					else
+					{
+						game->enemies[i]->flipChar = 0;
+					}
 				}
 				else if (fabs(game->player.x - game->enemies[i]->x) < 200 && game->player.x < game->enemies[i]->x) //Left
 				{
@@ -527,7 +528,7 @@ void doRenderer(SDL_Renderer* renderer, GameState* game)
 		{
 			if (game->bullets[i])
 			{
-				SDL_Rect rectBu = { game->scrollX + game->bullets[i]->x, game->bullets[i]->y, 8, 8 };
+				SDL_Rect rectBu = { game->scrollX + game->bullets[i]->x, game->bullets[i]->y, 16, 16 };
 				SDL_RenderCopy(renderer, game->IMGbullet, NULL, &rectBu);
 			}
 		}
@@ -545,4 +546,3 @@ void doRenderer(SDL_Renderer* renderer, GameState* game)
 		//Show renderer
 		SDL_RenderPresent(renderer);
 }
-

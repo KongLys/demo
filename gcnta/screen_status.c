@@ -3,8 +3,8 @@
 void init_status_lives(GameState* game)
 {
 
-	char* str = (char*)malloc(20, sizeof(char));
-	sprintf_s(str, 20, "x %d", game->player.lives);
+	char* str = (char*)malloc(10, sizeof(char));
+	sprintf_s(str, 10, "x %d", game->player.lives);
 
 	SDL_Color white = { 255, 255, 255, 255 };
 	SDL_Surface* tmp = TTF_RenderText_Blended(game->font, str, white);
@@ -12,7 +12,7 @@ void init_status_lives(GameState* game)
 	game->label_w = tmp->w;
 	game->label = SDL_CreateTextureFromSurface(game->renderer1, tmp);
 	SDL_FreeSurface(tmp);
-
+	free(str);
 }
 
 void init_status_over(GameState* game)
