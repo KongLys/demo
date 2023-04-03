@@ -27,12 +27,36 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Func.c">
+    <ClCompile Include="main_func.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="load_game.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="enemies.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Func.h">
+    <ClInclude Include="main_func.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="screen_status.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="enemies.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="load_game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

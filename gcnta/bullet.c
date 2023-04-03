@@ -1,4 +1,4 @@
-#include "Func.h"
+#include "bullet.h"
 
 void addBullet(GameState* game)
 {

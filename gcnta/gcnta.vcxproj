@@ -132,12 +132,20 @@
   <ItemGroup>
     <ClCompile Include="bullet.c" />
     <ClCompile Include="collision.c" />
-    <ClCompile Include="Func.c" />
+    <ClCompile Include="enemies.c" />
+    <ClCompile Include="main_func.c" />
+    <ClCompile Include="load_game.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="screen_status.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Func.h" />
+    <ClInclude Include="bullet.h" />
+    <ClInclude Include="collision.h" />
+    <ClInclude Include="enemies.h" />
+    <ClInclude Include="libary.h" />
+    <ClInclude Include="load_game.h" />
+    <ClInclude Include="main_func.h" />
+    <ClInclude Include="screen_status.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

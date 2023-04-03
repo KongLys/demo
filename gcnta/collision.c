@@ -46,7 +46,7 @@ void collisionDetect(GameState* game)
 		//printf("y = %.2f\n",game->player.y);
 	}
 }
-short collision_with_ennemies(GameState* game)
+short collisionPlayerWithEnnemies(GameState* game)
 {
 	for (int i = 0; i < NUM_ENEMIES; i++)
 	{

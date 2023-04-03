@@ -12,7 +12,7 @@
 #define NUM_ENEMIES 100
 #define MAX_BULLETS 100
 
-#define GRAVITY 0.45
+#define GRAVITY 0.4
 
 #define GAME_NEW 0
 #define GAME_PLAY 1
@@ -38,7 +38,7 @@ typedef struct
 
 typedef struct
 {
-	float x, y, w ,h;
+	float x, y, w, h;
 } Brick;
 
 
@@ -51,10 +51,10 @@ typedef struct
 {
 	//scroll follow
 	float scrollX;
-	
+
 	//Player
 	Player player;
-	
+
 	//Bullet
 	Bullet* bullets[MAX_BULLETS];
 
@@ -62,11 +62,11 @@ typedef struct
 	Brick bricks[NUM_PBRICK];
 
 	//Position enemies
-	Enemy *enemies[NUM_ENEMIES];
+	Enemy* enemies[NUM_ENEMIES];
 
 
 	//Renderer
-	SDL_Renderer *renderer1;
+	SDL_Renderer* renderer1;
 
 	//Time
 	int time;
@@ -83,26 +83,7 @@ typedef struct
 
 	//Status
 	short status;
-	
+
 	//Fonts
 	TTF_Font* font;
 } GameState;
-
-void loadGame(GameState* game);
-int processEvent(SDL_Window* windown, GameState* game);
-void addBullet(GameState* game);
-short checkBulletsWithBrick(GameState* game, int j);
-short checkBulletsWithEnemies(GameState* game, int j);
-short checkBullets(GameState* game, int j);
-void removeBullet(GameState* game, int i);
-void removeEnemies(GameState* game, int i);
-void processGameAni(GameState* game);
-void collisionDetect(GameState* game);
-short collision_with_ennemies(GameState* game);
-void doRenderer(SDL_Renderer* renderer, GameState* game);
-
-
-//screen status
-void init_status_lives(GameState* game);
-void draw_status_lives(GameState* game);
-void shutdown_status_lives(GameState* game);

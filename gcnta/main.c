@@ -1,4 +1,4 @@
-#include "Func.h"
+#include "main_func.h"
 
 int main(int argc, char* argv[]) {
 	//init and declare
@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
 	{
 		done = processEvent(windown, &gameState);
 
-		processGameAni(&gameState);
+		processGame(&gameState);
 
 		collisionDetect(&gameState);
 
