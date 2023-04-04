@@ -88,6 +88,7 @@ typedef struct
 	SDL_Texture* IMGenemies;
 	SDL_Texture* IMGbullet;
 	SDL_Texture* label;
+	SDL_Surface* backGrSur;
 
 	int label_w, label_h;
 

@@ -203,11 +203,11 @@ void processGame(GameState* game)
 		loadAgain(game);
 		initStatusLives(game);
 	}
-
-	if (game->player.lives <= 0)
+	if(game->player.lives <= 0)
 	{
-		game->status = GAME_OVER;
-		initStatusOver(game);
+		short done = 1;
+		game->player.lives = 3;
+		menuED(game->renderer1, game->font, done);
 	}
 }
 

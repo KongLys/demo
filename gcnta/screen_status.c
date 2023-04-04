@@ -1,18 +1,33 @@
-#include "screen_status.h"
+﻿#include "screen_status.h"
 
 void initStatusLives(GameState* game)
 {
+	if (game->player.lives > 0)
+	{
+		char* str = (char*)malloc(10, sizeof(char));
+		sprintf_s(str, 10, "x %d", game->player.lives);
 
-	char* str = (char*)malloc(10, sizeof(char));
-	sprintf_s(str, 10, "x %d", game->player.lives);
+		SDL_Color white = { 255, 255, 255, 255 };
+		SDL_Surface* tmp = TTF_RenderText_Blended(game->font, str, white);
+		game->label_h = 50;
+		game->label_w = 100;
+		game->label = SDL_CreateTextureFromSurface(game->renderer1, tmp);
+		SDL_FreeSurface(tmp);
+		free(str);
+	}
+	else
+	{
+		char* str = (char*)malloc(10, sizeof(char));
+		sprintf_s(str, 10, "x %d", 3 - game->player.lives);
 
-	SDL_Color white = { 255, 255, 255, 255 };
-	SDL_Surface* tmp = TTF_RenderText_Blended(game->font, str, white);
-	game->label_h = tmp->h;
-	game->label_w = tmp->w;
-	game->label = SDL_CreateTextureFromSurface(game->renderer1, tmp);
-	SDL_FreeSurface(tmp);
-	free(str);
+		SDL_Color white = { 255, 255, 255, 255 };
+		SDL_Surface* tmp = TTF_RenderText_Blended(game->font, str, white);
+		game->label_h = 50;
+		game->label_w = 100;
+		game->label = SDL_CreateTextureFromSurface(game->renderer1, tmp);
+		SDL_FreeSurface(tmp);
+		free(str);
+	}
 }
 
 void initStatusOver(GameState* game)
@@ -22,8 +37,8 @@ void initStatusOver(GameState* game)
 
 	SDL_Color white = { 255, 255, 255, 255 };
 	SDL_Surface* tmp = TTF_RenderText_Blended(game->font, str, white);
-	game->label_h = tmp->h;
-	game->label_w = tmp->w;
+	game->label_h = 100;
+	game->label_w = 200;
 	game->label = SDL_CreateTextureFromSurface(game->renderer1, tmp);
 	SDL_FreeSurface(tmp);
 }
