@@ -1,62 +1,24 @@
 #include "main_func.h"
 
+
 int main(int argc, char* argv[]) {
-	//init and declare
-	GameState gameState;
-	SDL_Window* windown = NULL;
-	SDL_Renderer* renderer = NULL;
-	SDL_Init(SDL_INIT_VIDEO);
-	windown = SDL_CreateWindow("Game gi do", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
-	renderer = SDL_CreateRenderer(windown, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    GameState gameState;
+    SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
 
-	TTF_Init();
+    SDL_Window* window = SDL_CreateWindow("Menu Example", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    TTF_Font* font = TTF_OpenFont("Take-Coffee.ttf", 32);
 
-	gameState.renderer1 = renderer;
+    loadGame(&gameState);
 
-	loadGame(&gameState);
+    menu(renderer,font);
 
-	short done = 0;
-	while (!done)
-	{
-		done = processEvent(windown, &gameState);
+    TTF_CloseFont(font);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    TTF_Quit();
+    SDL_Quit();
 
-		processGame(&gameState);
-
-		collisionDetect(&gameState);
-
-		doRenderer(renderer, &gameState);
-
-	}
-
-	//Free and close the program
-	SDL_DestroyTexture(gameState.IMGbrick);
-	SDL_DestroyTexture(gameState.playerFrames[0]);
-	SDL_DestroyTexture(gameState.playerFrames[1]);
-	SDL_DestroyTexture(gameState.backGr);
-	SDL_DestroyTexture(gameState.IMGenemies);
-	SDL_DestroyTexture(gameState.IMGbullet);
-	SDL_DestroyTexture(gameState.label);
-
-	TTF_CloseFont(gameState.font);
-
-	for (int i = 0; i < MAX_BULLETS; i++)
-	{
-		removeBullet(&gameState, i);
-	}
-
-	for (int i = 0; i < MAX_BULLETS; i++)
-	{
-		if (gameState.enemies[i] != NULL)
-		{
-			removeEnemies(&gameState, i);
-		}
-	}
-	
-	SDL_DestroyWindow(windown);
-	SDL_DestroyRenderer(renderer);
-	TTF_Quit();
-
-	SDL_Quit();
-
-	return 0;
+    return 0;
 }

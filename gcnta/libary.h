@@ -11,6 +11,7 @@
 #define NUM_PBRICK 100
 #define NUM_ENEMIES 100
 #define MAX_BULLETS 100
+#define MAX_MENUITEMS 4
 
 #define GRAVITY 0.4
 
@@ -47,6 +48,13 @@ typedef struct
 	float x, y, dx;
 }Bullet;
 
+typedef struct {
+	SDL_Rect rect;
+	const char* label;
+	SDL_Color text_color;
+} MenuItem;
+
+
 typedef struct
 {
 	//scroll follow
@@ -64,6 +72,8 @@ typedef struct
 	//Position enemies
 	Enemy* enemies[NUM_ENEMIES];
 
+	//Menu Items
+	MenuItem* items;
 
 	//Renderer
 	SDL_Renderer* renderer1;
@@ -78,6 +88,7 @@ typedef struct
 	SDL_Texture* IMGenemies;
 	SDL_Texture* IMGbullet;
 	SDL_Texture* label;
+
 	int label_w, label_h;
 
 

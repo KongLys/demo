@@ -1,4 +1,4 @@
-#include "Func.h"
+#include "main_func.h"
 
 
 void collisionDetect(GameState* game)

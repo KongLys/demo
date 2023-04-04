@@ -136,6 +136,7 @@
     <ClCompile Include="main_func.c" />
     <ClCompile Include="load_game.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="menu.c" />
     <ClCompile Include="screen_status.c" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="libary.h" />
     <ClInclude Include="load_game.h" />
     <ClInclude Include="main_func.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="screen_status.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
