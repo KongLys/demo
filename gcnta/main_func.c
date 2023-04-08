@@ -32,6 +32,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 				{
 				game->player.dy = -8;
 				game->player.onBrick = 0;
+				jumbSound();
 				}
 				break;
 			case SDLK_w:
@@ -39,6 +40,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 				{
 					game->player.dy = -8;
 					game->player.onBrick = 0;
+					jumbSound();
 				}
 				break;
 			}
@@ -76,6 +78,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 			addBullet(game);
 		}
 		game->player.currentCut = 1;
+		shotSound();
 	}
 	else
 	{

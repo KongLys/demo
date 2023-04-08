@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 #define SCREEN_WIDTH 1366
 #define SCREEN_HEIGHT  768 
@@ -18,6 +19,7 @@
 #define GAME_NEW 0
 #define GAME_PLAY 1
 #define GAME_OVER 2
+
 
 
 typedef struct

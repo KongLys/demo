@@ -7,6 +7,7 @@
 #include "bullet.h"
 #include "collision.h"
 #include "menu.h"
+#include "audio.h"
 
 int processEvent(SDL_Window* windown, GameState* game);
 void processGame(GameState* game);

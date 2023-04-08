@@ -8,6 +8,10 @@ int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_VIDEO);
 	windown = SDL_CreateWindow("Game gi do", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 	renderer = SDL_CreateRenderer(windown, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (initAudio() != 0) {
+		printf("Failed to initialize audio!");
+		return 1;
+	}
 
 	TTF_Init();
 	TTF_Font* font = TTF_OpenFont("Take-Coffee.ttf", 32);
@@ -15,7 +19,7 @@ int main(int argc, char* argv[]) {
 	gameState.renderer1 = renderer;
 	
 	loadGame(&gameState);
-
+	backgroundMusic();
 	short done = 0;
 	menuOP(renderer, font, done);
 	while (!done)
@@ -29,6 +33,7 @@ int main(int argc, char* argv[]) {
 		doRenderer(renderer, &gameState);
 
 	}
+	cleanUpAudio();
 	//Free and close the program
 	SDL_DestroyTexture(gameState.IMGbrick);
 	SDL_DestroyTexture(gameState.playerFrames[0]);
