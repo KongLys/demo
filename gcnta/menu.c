@@ -1,4 +1,5 @@
 ﻿#include "menu.h"
+#include "audio.h"
 
 
 void render_menu(SDL_Renderer* renderer, MenuItem* items, int item_count, int selected_item, TTF_Font* font) {
@@ -30,6 +31,7 @@ void render_menu(SDL_Renderer* renderer, MenuItem* items, int item_count, int se
 
 short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done)
 {
+    OPMusic();
     GameState gameState;
     MenuItem items[] = {
         { { 680, 350, 0, 0 }, "CONTINUE", { 255, 255, 155, 255 } },
@@ -90,6 +92,7 @@ short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done)
                     }
                     if (selected_item == 1)
                     {
+                        backgroundMusic();
                         done = 0;
                         quit = 1;
                     }
@@ -154,6 +157,7 @@ short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done)
 
 short menuED(SDL_Renderer* renderer, TTF_Font* font, short done)
 {
+    endMusic();
     GameState gameState;
     MenuItem items[] = {
         { { 900, 200, 0, 0 }, "GAME OVER!", { 255, 255, 255, 255 } },

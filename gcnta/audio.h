@@ -5,4 +5,8 @@ int initAudio();
 void cleanUpAudio();
 void jumbSound();
 void shotSound();
+void dameSound();
 void backgroundMusic();
+void endMusic();
+void OPMusic();
+

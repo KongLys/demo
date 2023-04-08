@@ -19,9 +19,9 @@ int main(int argc, char* argv[]) {
 	gameState.renderer1 = renderer;
 	
 	loadGame(&gameState);
-	backgroundMusic();
 	short done = 0;
 	menuOP(renderer, font, done);
+	
 	while (!done)
 	{
 		done = processEvent(windown, &gameState);
@@ -33,7 +33,9 @@ int main(int argc, char* argv[]) {
 		doRenderer(renderer, &gameState);
 
 	}
+
 	cleanUpAudio();
+
 	//Free and close the program
 	SDL_DestroyTexture(gameState.IMGbrick);
 	SDL_DestroyTexture(gameState.playerFrames[0]);

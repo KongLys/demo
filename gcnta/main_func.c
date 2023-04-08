@@ -196,6 +196,7 @@ void processGame(GameState* game)
 	//Reload info
 	if (collisionPlayerWithEnnemies(game) == 1)
 	{
+		dameSound();
 		for (int i = 0; i < MAX_BULLETS; i++)
 		{
 			if (game->enemies[i] != NULL)
