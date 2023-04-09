@@ -35,8 +35,11 @@ int initAudio()
 
 void cleanUpAudio() 
 {
-    Mix_FreeMusic(soundBackground);
-    Mix_FreeChunk(soundEffect);
+    for (int i = 0; i < 3; i++)
+    {
+        Mix_FreeMusic(soundBackground[i]);
+        Mix_FreeChunk(soundEffect[i]);
+    }
     Mix_CloseAudio();
     SDL_Quit();
 }
