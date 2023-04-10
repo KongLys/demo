@@ -10,8 +10,10 @@
 #define SCREEN_WIDTH 1366
 #define SCREEN_HEIGHT  768 
 #define NUM_PBRICK 100
-#define NUM_ENEMIES 100
-#define MAX_BULLETS 100
+#define NUM_ENEMIES 50
+#define NUM_ENEMIES_2 50
+#define MAX_BULLETS 25
+#define MAX_BULLETS_ENEMIES 75
 #define MAX_MENUITEMS 4
 
 #define GRAVITY 0.4
@@ -34,10 +36,19 @@ typedef struct
 typedef struct
 {
 	float  x, y, w, h;
-	float dx;
+	float dx, dy;
 	short animFrame, flipChar, onBrick, shootBullet;
 	short lives;
 } Enemy;
+
+typedef struct
+{
+	float  x, y, w, h;
+	float dx, dy;
+	short flipChar;
+	short lives, valid;
+	int xAni, yAni;
+} EnemyShort;
 
 typedef struct
 {
@@ -47,7 +58,8 @@ typedef struct
 
 typedef struct
 {
-	float x, y, dx;
+	float x, y, dx, dy;
+	float rangeLeft, rangeRight;
 }Bullet;
 
 typedef struct {
@@ -67,12 +79,14 @@ typedef struct
 
 	//Bullet
 	Bullet* bullets[MAX_BULLETS];
+	Bullet* bulletEnemies[MAX_BULLETS_ENEMIES];
 
 	//Position Bricks
 	Brick bricks[NUM_PBRICK];
 
 	//Position enemies
 	Enemy* enemies[NUM_ENEMIES];
+	EnemyShort* enemiesShort[NUM_ENEMIES_2];
 
 	//Menu Items
 	MenuItem* items;
@@ -88,6 +102,7 @@ typedef struct
 	SDL_Texture* playerFrames[3];
 	SDL_Texture* backGr;
 	SDL_Texture* IMGenemies;
+	SDL_Texture* IMGenemiesShort;
 	SDL_Texture* IMGbullet;
 	SDL_Texture* label;
 	SDL_Surface* backGrSur;

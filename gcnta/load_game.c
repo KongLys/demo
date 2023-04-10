@@ -67,6 +67,18 @@ void loadGame(GameState* game)
 	game->IMGenemies = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
 
+	//Load enemies short
+	surface = IMG_Load("enemiesShort.png");
+	if (surface == NULL)
+	{
+		printf("enemiesShort.png!\n\n");
+		SDL_Quit();
+		exit(1);
+	}
+	game->IMGenemiesShort = SDL_CreateTextureFromSurface(game->renderer1, surface);
+	SDL_FreeSurface(surface);
+
+	//Load bullet
 	surface = IMG_Load("ballr.png");
 	if (surface == NULL)
 	{
@@ -117,7 +129,12 @@ void loadGame(GameState* game)
 		game->bullets[i] = NULL;
 	}
 
-	//Load position of brick
+	for (int i = 0; i < MAX_BULLETS_ENEMIES; i++)
+	{
+		game->bulletEnemies[i] = NULL;
+	}
+
+	//Load position of enemies
 	for (int i = 0; i < NUM_ENEMIES; i++)
 	{
 		game->enemies[i] = (Enemy*)malloc(sizeof(Enemy));
@@ -126,13 +143,28 @@ void loadGame(GameState* game)
 		game->enemies[i]->w = 64;
 		game->enemies[i]->h = 64;
 		game->enemies[i]->dx = 2;
+		game->enemies[i]->dy = 2;
 		game->enemies[i]->flipChar = 1;
 		game->enemies[i]->lives = 2;
-
 	}
 
-	//Load position of enemies
+	for (int i = 0; i < NUM_ENEMIES_2; i++)
+	{
+		game->enemiesShort[i] = (EnemyShort*)malloc(sizeof(EnemyShort));
+		game->enemiesShort[i]->x = 650 * (i + 1);
+		game->enemiesShort[i]->y = 700;
+		game->enemiesShort[i]->w = 48;
+		game->enemiesShort[i]->h = 48;
+		game->enemiesShort[i]->dx = 2;
+		game->enemiesShort[i]->dy = 0;
+		game->enemiesShort[i]->xAni = 0;
+		game->enemiesShort[i]->yAni = 1;
+		game->enemiesShort[i]->valid = 1;
+		game->enemiesShort[i]->flipChar = 1;
+		game->enemiesShort[i]->lives = 1;
+	}
 
+	//Load position of bricks
 	for (int i = 0; i < NUM_PBRICK; i++)
 	{
 		game->bricks[i].x = i * 500;
@@ -150,9 +182,9 @@ void loadGame(GameState* game)
 	game->bricks[98].w = 1;
 	game->bricks[98].h = SCREEN_HEIGHT;
 
-	game->bricks[97].x = 1500;
+	game->bricks[97].x = 650;
 	game->bricks[97].y = 520;
-	game->bricks[97].w = 100;
+	game->bricks[97].w = 500;
 	game->bricks[97].h = 100;
 }
 
@@ -186,8 +218,23 @@ void loadAgain(GameState* game)
 		game->enemies[i]->w = 64;
 		game->enemies[i]->h = 64;
 		game->enemies[i]->dx = 2;
+		game->enemies[i]->dy = 2;
 		game->enemies[i]->flipChar = 1;
 		game->enemies[i]->lives = 2;
-
+	}
+	for (int i = 0; i < NUM_ENEMIES_2; i++)
+	{
+		game->enemiesShort[i] = (EnemyShort*)malloc(sizeof(EnemyShort));
+		game->enemiesShort[i]->x = 650 * (i + 1);
+		game->enemiesShort[i]->y = 700;
+		game->enemiesShort[i]->w = 48;
+		game->enemiesShort[i]->h = 48;
+		game->enemiesShort[i]->dx = 2;
+		game->enemiesShort[i]->dy = 0;
+		game->enemiesShort[i]->xAni = 0;
+		game->enemiesShort[i]->yAni = 1;
+		game->enemiesShort[i]->valid = 1;
+		game->enemiesShort[i]->flipChar = 1;
+		game->enemiesShort[i]->lives = 1;
 	}
 }

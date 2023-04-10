@@ -33,20 +33,21 @@ int main(int argc, char* argv[]) {
 		doRenderer(renderer, &gameState);
 
 	}
-
-	cleanUpAudio();
-
 	//Free and close the program
 	SDL_DestroyTexture(gameState.IMGbrick);
 	SDL_DestroyTexture(gameState.playerFrames[0]);
 	SDL_DestroyTexture(gameState.playerFrames[1]);
+	SDL_DestroyTexture(gameState.playerFrames[2]);
 	SDL_DestroyTexture(gameState.backGr);
 	SDL_DestroyTexture(gameState.IMGenemies);
+	SDL_DestroyTexture(gameState.IMGenemiesShort);
 	SDL_DestroyTexture(gameState.IMGbullet);
 	SDL_DestroyTexture(gameState.label);
 
 	TTF_CloseFont(gameState.font);
 	
+	cleanUpAudio();
+
 	SDL_DestroyWindow(windown);
 	SDL_DestroyRenderer(renderer);
 	TTF_Quit();

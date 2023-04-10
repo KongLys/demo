@@ -72,7 +72,7 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 	{
 		if (game->enemies[i] != NULL)
 		{
-			//Draw something
+			//Set hp color
 			SDL_SetRenderDrawColor(renderer, 220, 20, 60, 255);
 			if (fabs(game->player.x - game->enemies[i]->x) < 300)
 			{
@@ -92,6 +92,25 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 
 			//Draw enemies
 			SDL_RenderCopyEx(renderer, game->IMGenemies, NULL, &rectE, 0, NULL, game->enemies[i]->flipChar);
+		}
+	}
+	//Draw enemies short
+	for (int i = 0; i < NUM_ENEMIES_2; i++)
+	{
+		if (game->enemiesShort[i] != NULL)
+		{
+			SDL_SetRenderDrawColor(renderer, 220, 20, 60, 255); // Set color of heath point
+			if (fabs(game->player.x - game->enemiesShort[i]->x) < 300 && game->enemiesShort[i]->valid == 1)
+			{
+				SDL_Rect hpRect2 = { game->scrollX + game->enemiesShort[i]->x, game->enemiesShort[i]->y - 30, 45, 5 };
+				//Draw hp
+				SDL_RenderFillRects(renderer, &hpRect2, 1);
+			}
+			SDL_Rect rectES = { game->scrollX + game->enemiesShort[i]->x, game->enemiesShort[i]->y, game->enemiesShort[i]->w, game->enemiesShort[i]->h };
+			SDL_Rect scrRectES = { 48 * game->enemiesShort[i]->xAni, 48 * game->enemiesShort[i]->yAni , game->enemiesShort[i]->w, game->enemiesShort[i]->h };
+
+			//Draw enemies
+			SDL_RenderCopyEx(renderer, game->IMGenemiesShort, &scrRectES, &rectES, 0, NULL, game->enemiesShort[i]->flipChar);
 		}
 	}
 	//Draw player
@@ -120,8 +139,18 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 	{
 		if (game->bullets[i])
 		{
-			SDL_Rect rectBu = { game->scrollX + game->bullets[i]->x, game->bullets[i]->y, 16, 16 };
+			SDL_Rect rectBu = { game->scrollX + game->bullets[i]->x, game->bullets[i]->y, 8, 8 };
 			SDL_RenderCopy(renderer, game->IMGbullet, NULL, &rectBu);
+		}
+	}
+
+	//Draw bullet of enemies
+	for (int i = 0; i < MAX_BULLETS_ENEMIES; i++)
+	{
+		if (game->bulletEnemies[i])
+		{
+			SDL_Rect rectBuE = { game->scrollX + game->bulletEnemies[i]->x, game->bulletEnemies[i]->y, 8, 8 };
+			SDL_RenderCopy(renderer, game->IMGbullet, NULL, &rectBuE);
 		}
 	}
 }

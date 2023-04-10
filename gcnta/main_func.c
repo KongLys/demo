@@ -154,33 +154,43 @@ void processGame(GameState* game)
 		shutdownStatusLives(game);
 		game->status = GAME_PLAY;
 	}
-
+	//Set game play
 	if (game->status == GAME_PLAY)
 	{
-		//Cut animation
-		//if (game->player.currentCut != 0)
-		//{
-		//	if (game->time % 5 == 0)
-		//	{
-		//		game->player.currentCut++;
-		//		game->player.currentCut %= 18;
-		//	}
-		//}
-
 		//Process bullet
 		for (int i = 0; i < MAX_BULLETS; i++)
 		{
 			if (game->bullets[i])
 			{
 				game->bullets[i]->x += game->bullets[i]->dx;
+				game->bullets[i]->y += game->bullets[i]->dy;
 				if (checkBullets(game, i) == 1)
 				{
 					removeBullet(game, i);
 				}
 			}
-
 		}
 
+		for (int k = 0; k < NUM_ENEMIES_2; k++)
+		{
+			if (game->enemies[k])
+			{
+				for (int i = 0; i < MAX_BULLETS_ENEMIES; i++)
+				{
+					if (game->bulletEnemies[i])
+					{
+						game->bulletEnemies[i]->x += game->bulletEnemies[i]->dx;
+						game->bulletEnemies[i]->y += game->bulletEnemies[i]->dy;
+						if (checkBulletEnemies(game, i, k) == 1)
+						{
+							removeBulletEnemies(game, i);
+						}
+					}
+				}
+			}
+		}
+
+		
 		//Speed
 		game->player.x += game->player.dx;
 		game->player.y += game->player.dy;
@@ -191,17 +201,27 @@ void processGame(GameState* game)
 
 		//Movement of enemies
 		movementEnemies(game);
+		movementEnemiesShort(game);
+		aniEnemiesShort(game);
 	}
 
-	//Reload info
-	if (collisionPlayerWithEnnemies(game) == 1)
+	//When player touch enemies
+	if (collisionPlayerWithEnnemies(game) == 1 || collisionPlayerWithEnnemiesShort(game) == 1)
 	{
 		dameSound();
-		for (int i = 0; i < MAX_BULLETS; i++)
+		//Delete and load again
+		for (int i = 0; i < NUM_ENEMIES; i++)
 		{
 			if (game->enemies[i] != NULL)
 			{
 				removeEnemies(game, i);
+			}
+		}
+		for (int i = 0; i < NUM_ENEMIES_2; i++)
+		{
+			if (game->enemiesShort[i] != NULL)
+			{
+				removeEnemiesShort(game, i);
 			}
 		}
 		loadAgain(game);
