@@ -2,7 +2,7 @@
 #include "bullet.h"
 void movementEnemies(GameState* game)
 {
-	for (int i = 0; i < NUM_ENEMIES; i++)
+	for (int i = 0; i < game->numEnemies; i++)
 	{
 		if (game->enemies[i])
 		{
@@ -44,7 +44,7 @@ void movementEnemies(GameState* game)
 
 void movementEnemiesShort(GameState* game)
 {
-	for (int i = 0; i < NUM_ENEMIES_2; i++)
+	for (int i = 0; i < game->numEnemiesShort; i++)
 	{
 		if (game->enemiesShort[i])
 		{
@@ -77,10 +77,10 @@ void movementEnemiesShort(GameState* game)
 
 void aniEnemiesShort(GameState* game)
 {
-	for (int i = 0; i < NUM_ENEMIES_2; i++)
+	for (int i = 0; i < game->numEnemiesShort; i++)
 	{
 		if (game->enemiesShort[i])
-		{
+		{ 
 			if (game->enemiesShort[i]->valid == 1 )
 			{
 				if (fabs(game->enemiesShort[i]->x - game->player.x) <= 150)

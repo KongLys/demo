@@ -7,11 +7,8 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-#define SCREEN_WIDTH 1366
-#define SCREEN_HEIGHT  768 
-#define NUM_PBRICK 100
-#define NUM_ENEMIES 50
-#define NUM_ENEMIES_2 50
+#define SCREEN_WIDTH 1920
+#define SCREEN_HEIGHT  1080
 #define MAX_BULLETS 25
 #define MAX_BULLETS_ENEMIES 75
 #define MAX_MENUITEMS 4
@@ -37,7 +34,7 @@ typedef struct
 {
 	float  x, y, w, h;
 	float dx, dy;
-	short animFrame, flipChar, onBrick, shootBullet;
+	short flipChar, onBrick, shootBullet;
 	short lives;
 } Enemy;
 
@@ -82,11 +79,14 @@ typedef struct
 	Bullet* bulletEnemies[MAX_BULLETS_ENEMIES];
 
 	//Position Bricks
-	Brick bricks[NUM_PBRICK];
+	Brick** bricks;
+	int numBrick;
 
 	//Position enemies
-	Enemy* enemies[NUM_ENEMIES];
-	EnemyShort* enemiesShort[NUM_ENEMIES_2];
+	Enemy** enemies;
+	int numEnemies;
+	EnemyShort** enemiesShort;
+	int numEnemiesShort;
 
 	//Menu Items
 	MenuItem* items;

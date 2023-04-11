@@ -5,10 +5,10 @@ void collisionDetect(GameState* game)
 {
 	//Collision with bricks
 	float px = game->player.x, py = game->player.y, pw = game->player.w, ph = game->player.h;
-	for (int i = 0; i < NUM_PBRICK; i++)
+	for (int i = 0; i < game->numBrick; i++)
 	{
 		//Player with bricks
-		float bx = game->bricks[i].x, by = game->bricks[i].y, bw = game->bricks[i].w, bh = game->bricks[i].h;
+		float bx = game->bricks[i]->x, by = game->bricks[i]->y, bw = game->bricks[i]->w, bh = game->bricks[i]->h;
 
 		if (px + pw >= bx + 10 && px <= bx + bw - 10)
 		{
@@ -41,9 +41,8 @@ void collisionDetect(GameState* game)
 				game->player.dx = 0;
 			}
 		}
-		
 		//collision enemies with bricks
-		for (int j = 0; j < NUM_ENEMIES; j++)
+		for (int j = 0; j < game->numEnemies; j++)
 		{
 			if (game->enemies[j])
 			{
@@ -75,10 +74,9 @@ void collisionDetect(GameState* game)
 						ex = bx + bw;
 					}
 				}
-				
 			}
 		}
-		for (int j = 0; j < NUM_ENEMIES_2; j++)
+		for (int j = 0; j < game->numEnemiesShort; j++)
 		{
 			if (game->enemiesShort[j])
 			{
@@ -111,7 +109,7 @@ void collisionDetect(GameState* game)
 }
 short collisionPlayerWithEnnemies(GameState* game)
 {
-	for (int i = 0; i < NUM_ENEMIES; i++)
+	for (int i = 0; i < game->numEnemies; i++)
 	{
 		if (game->enemies[i])
 		{
@@ -129,7 +127,7 @@ short collisionPlayerWithEnnemies(GameState* game)
 
 short collisionPlayerWithEnnemiesShort(GameState* game)
 {
-	for (int i = 0; i < NUM_ENEMIES_2; i++)
+	for (int i = 0; i < game->numEnemiesShort; i++)
 	{
 		if (game->enemiesShort[i] && game->enemiesShort[i]->valid == 1)
 		{

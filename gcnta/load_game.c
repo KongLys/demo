@@ -4,10 +4,10 @@ void loadGame(GameState* game)
 {
 	//Load brick
 	SDL_Surface* surface;
-	surface = IMG_Load("brick.jfif");
+	surface = IMG_Load("brick.png");
 	if (surface == NULL)
 	{
-		printf("Cannot find brick.jfif! \n\n");
+		printf("Cannot find brick.png! \n\n");
 		SDL_Quit();
 		exit(1);
 	}
@@ -98,8 +98,8 @@ void loadGame(GameState* game)
 	}
 
 	//Load info player
-	game->player.x = 50;
-	game->player.y = 650;
+	game->player.x = 250;
+	game->player.y = 10;
 	game->player.w = 64;
 	game->player.h = 64;
 	game->player.dx = 0;
@@ -135,63 +135,20 @@ void loadGame(GameState* game)
 		game->bulletEnemies[i] = NULL;
 	}
 
-	//Load position of enemies
-	for (int i = 0; i < NUM_ENEMIES; i++)
-	{
-		game->enemies[i] = (Enemy*)malloc(sizeof(Enemy));
-		game->enemies[i]->x = 500 * (i+1);
-		game->enemies[i]->y = 700;
-		game->enemies[i]->w = 64;
-		game->enemies[i]->h = 64;
-		game->enemies[i]->dx = 2;
-		game->enemies[i]->dy = 0;
-		game->enemies[i]->flipChar = 1;
-		game->enemies[i]->lives = 2;
-	}
+	//Count bricks, enemies, short enemies
+	game->numBrick = cntBrick(game);
+	game->numEnemies = cntEnemies(game);
+	game->numEnemiesShort = cntEnemiesShort(game);
 
-	for (int i = 0; i < NUM_ENEMIES_2; i++)
-	{
-		game->enemiesShort[i] = (EnemyShort*)malloc(sizeof(EnemyShort));
-		game->enemiesShort[i]->x = 650 * (i + 1);
-		game->enemiesShort[i]->y = 700;
-		game->enemiesShort[i]->w = 48;
-		game->enemiesShort[i]->h = 48;
-		game->enemiesShort[i]->dx = 2;
-		game->enemiesShort[i]->dy = 0;
-		game->enemiesShort[i]->xAni = 0;
-		game->enemiesShort[i]->yAni = 1;
-		game->enemiesShort[i]->valid = 1;
-		game->enemiesShort[i]->flipChar = 1;
-		game->enemiesShort[i]->lives = 1;
-	}
-
-	//Load position of bricks
-	for (int i = 0; i < NUM_PBRICK; i++)
-	{
-		game->bricks[i].x = i * 500;
-		game->bricks[i].y = 750;
-		game->bricks[i].w = 500;
-		game->bricks[i].h = 100;
-	}
-	game->bricks[99].x = 500 * 98;
-	game->bricks[99].y = 0;
-	game->bricks[99].w = 1;
-	game->bricks[99].h = SCREEN_HEIGHT;
-
-	game->bricks[98].x = 0;
-	game->bricks[98].y = 0;
-	game->bricks[98].w = 1;
-	game->bricks[98].h = SCREEN_HEIGHT;
-
-	game->bricks[97].x = 650;
-	game->bricks[97].y = 520;
-	game->bricks[97].w = 500;
-	game->bricks[97].h = 100;
+	//Load bricks, enemies, short enemies
+	loadEnemies(game);
+	loadEnemiesShort(game);
+	loadMap(game);
 }
 
 void loadAgain(GameState* game)
 {
-	game->player.x = 50;
+	game->player.x = 250;
 	game->player.y = 650;
 	game->player.w = 64;
 	game->player.h = 64;
@@ -211,31 +168,6 @@ void loadAgain(GameState* game)
 
 	game->status = GAME_NEW;
 
-	for (int i = 0; i < NUM_ENEMIES; i++)
-	{
-		game->enemies[i] = (Enemy*)malloc(sizeof(Enemy));
-		game->enemies[i]->x = 500 * (i+1);
-		game->enemies[i]->y = 700;
-		game->enemies[i]->w = 64;
-		game->enemies[i]->h = 64;
-		game->enemies[i]->dx = 2;
-		game->enemies[i]->dy = 2;
-		game->enemies[i]->flipChar = 1;
-		game->enemies[i]->lives = 2;
-	}
-	for (int i = 0; i < NUM_ENEMIES_2; i++)
-	{
-		game->enemiesShort[i] = (EnemyShort*)malloc(sizeof(EnemyShort));
-		game->enemiesShort[i]->x = 650 * (i + 1);
-		game->enemiesShort[i]->y = 700;
-		game->enemiesShort[i]->w = 48;
-		game->enemiesShort[i]->h = 48;
-		game->enemiesShort[i]->dx = 2;
-		game->enemiesShort[i]->dy = 0;
-		game->enemiesShort[i]->xAni = 0;
-		game->enemiesShort[i]->yAni = 1;
-		game->enemiesShort[i]->valid = 1;
-		game->enemiesShort[i]->flipChar = 1;
-		game->enemiesShort[i]->lives = 1;
-	}
+	loadEnemies(game);
+	loadEnemiesShort(game);
 }

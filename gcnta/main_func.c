@@ -205,17 +205,17 @@ void processGame(GameState* game)
 	{
 		game->player.hit = 0;
 		dameSound();
-		//Delete and load again
-		for (int i = 0; i < NUM_ENEMIES; i++)
+		//Free and reload
+		for (int i = 0; i < game->numEnemies; i++)
 		{
-			if (game->enemies[i] != NULL)
+			if (game->enemies[i])
 			{
 				removeEnemies(game, i);
 			}
 		}
-		for (int i = 0; i < NUM_ENEMIES_2; i++)
+		for (int i = 0; i < game->numEnemiesShort; i++)
 		{
-			if (game->enemiesShort[i] != NULL)
+			if (game->enemiesShort[i])
 			{
 				removeEnemiesShort(game, i);
 			}
