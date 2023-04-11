@@ -10,18 +10,15 @@ void movementEnemies(GameState* game)
 			{
 				game->enemies[i]->x += game->enemies[i]->dx;
 				game->enemies[i]->y += game->enemies[i]->dy;
-				if (game->time % 100 == 0)
+				game->enemies[i]->dy = 3 * sin(2 * M_PI * 0.01 * game->time);
+				game->enemies[i]->dx = 2 * cos(2 * M_PI * 0.002 * game->time);
+				if (game->enemies[i]->dx > 0)
 				{
-					game->enemies[i]->dx *= -1;
-					game->enemies[i]->dy *= -1;
-					if (game->enemies[i]->dx > 0)
-					{
-						game->enemies[i]->flipChar = 1;
-					}
-					else
-					{
-						game->enemies[i]->flipChar = 0;
-					}
+					game->enemies[i]->flipChar = 1;
+				}
+				else
+				{
+					game->enemies[i]->flipChar = 0;
 				}
 			}
 			else
@@ -36,7 +33,7 @@ void movementEnemies(GameState* game)
 				{
 					game->enemies[i]->flipChar = 1;
 				}
-				if (game->time % 10 == 0)
+				if (game->time % 25 == 0)
 				{
 					addBulletEnemies(game, i);
 				}
@@ -54,25 +51,22 @@ void movementEnemiesShort(GameState* game)
 			game->enemiesShort[i]->x += game->enemiesShort[i]->dx;
 			game->enemiesShort[i]->y += game->enemiesShort[i]->dy;
 			game->enemiesShort[i]->dy += GRAVITY;
-			if (game->time % 100 == 0)
+			game->enemiesShort[i]->dx = 2 * cos(2 * M_PI * 0.002 * game->time);
+			if (game->enemiesShort[i]->dx > 0)
 			{
-				game->enemiesShort[i]->dx *= -1;
-				if (game->enemiesShort[i]->dx > 0)
-				{
-					game->enemiesShort[i]->flipChar = 1;
-				}
-				else
-				{
-					game->enemiesShort[i]->flipChar = 0;
-				}
+				game->enemiesShort[i]->flipChar = 1;
 			}
-			else if (fabs(game->player.x - game->enemiesShort[i]->x) < 200 && game->player.x < game->enemiesShort[i]->x) //Left
+			else
+			{
+				game->enemiesShort[i]->flipChar = 0;
+			}
+			if (fabs(game->player.x - game->enemiesShort[i]->x) < 200 && game->player.x < game->enemiesShort[i]->x) //Left of player
 			{
 				game->enemiesShort[i]->dx = -4;
 				game->enemiesShort[i]->flipChar = 0;
 
 			}
-			else if (fabs(game->player.x - game->enemiesShort[i]->x) < 200 && game->player.x > game->enemiesShort[i]->x) //Right
+			else if (fabs(game->player.x - game->enemiesShort[i]->x) < 200 && game->player.x > game->enemiesShort[i]->x) //Right of player
 			{
 				game->enemiesShort[i]->dx = 4;
 				game->enemiesShort[i]->flipChar = 1;

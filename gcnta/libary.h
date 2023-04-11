@@ -30,7 +30,7 @@ typedef struct
 	float dx, dy;
 	short animFrame, flipChar, onBrick, stopMove, shootBullet;
 	short currentWait, currentWalk, currentCut;
-	short lives;
+	short lives, hit;
 } Player;
 
 typedef struct

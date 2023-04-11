@@ -105,6 +105,7 @@ void loadGame(GameState* game)
 	game->player.dx = 0;
 	game->player.dy = 0;
 	game->player.lives = 3;
+	game->player.hit = 0;
 	game->player.animFrame = 0;
 	game->player.flipChar = 0;
 	game->player.onBrick = 0;
@@ -143,7 +144,7 @@ void loadGame(GameState* game)
 		game->enemies[i]->w = 64;
 		game->enemies[i]->h = 64;
 		game->enemies[i]->dx = 2;
-		game->enemies[i]->dy = 2;
+		game->enemies[i]->dy = 0;
 		game->enemies[i]->flipChar = 1;
 		game->enemies[i]->lives = 2;
 	}

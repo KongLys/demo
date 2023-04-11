@@ -16,7 +16,8 @@ void removeBullet(GameState* game, int i);
 //bullet of enemies
 void addBulletEnemies(GameState* game, int j);
 
-short checkBulletEnemiesWithBrick(GameState* game, int j, int k);
+short checkBulletEnemiesWithBrick(GameState* game, int j);
+short checkBulletEnemiesWithPlayer(GameState* game, int j);
 short checkBulletEnemies(GameState* game, int j);
 
 void removeBulletEnemies(GameState* game, int i);

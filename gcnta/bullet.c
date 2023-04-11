@@ -126,23 +126,22 @@ void addBulletEnemies(GameState* game, int j)
 			break;
 		}
 	}
-	printf("%d\n",foundE);
 	if (foundE >= 0)
 	{
 		game->bulletEnemies[foundE] = (Bullet*)malloc(sizeof(Bullet));
 		game->bulletEnemies[foundE]->y = game->enemies[j]->y + game->enemies[j]->h / 2;
 		if (game->enemies[j]->flipChar == 1) //When face to right
 		{
-			game->bulletEnemies[foundE]->dx = 20;
-			game->bulletEnemies[foundE]->dy = 0;
+			game->bulletEnemies[foundE]->dx = 10 * cos(atan2(game->player.y + game->player.h / 2 - game->enemies[j]->y - game->enemies[j]->h/2 , game->player.x + game->player.w / 2 - game->enemies[j]->x - game->enemies[j]->w ));
+			game->bulletEnemies[foundE]->dy = 10 * sin(atan2(game->player.y + game->player.h / 2 - game->enemies[j]->y - game->enemies[j]->h/2 , game->player.x + game->player.w / 2 - game->enemies[j]->x - game->enemies[j]->w ));
 			game->bulletEnemies[foundE]->x = game->enemies[j]->x + game->enemies[j]->w;
 			game->bulletEnemies[foundE]->rangeLeft = game->bulletEnemies[foundE]->x - 400;
 			game->bulletEnemies[foundE]->rangeRight = game->bulletEnemies[foundE]->x + 400;
 		}
 		else //When face to left
 		{
-			game->bulletEnemies[foundE]->dx = -20;
-			game->bulletEnemies[foundE]->dy = 0;
+			game->bulletEnemies[foundE]->dx = 10 * cos(atan2(game->player.y + game->player.h / 2 - game->enemies[j]->y - game->enemies[j]->h / 2, game->player.x + game->player.w / 2 - game->enemies[j]->x));
+			game->bulletEnemies[foundE]->dy = 10 * sin(atan2(game->player.y + game->player.h / 2 - game->enemies[j]->y - game->enemies[j]->h / 2, game->player.x + game->player.w / 2 - game->enemies[j]->x));
 			game->bulletEnemies[foundE]->x = game->enemies[j]->x;
 			game->bulletEnemies[foundE]->rangeLeft = game->bulletEnemies[foundE]->x - 400;
 			game->bulletEnemies[foundE]->rangeRight = game->bulletEnemies[foundE]->x + 400;
@@ -150,7 +149,7 @@ void addBulletEnemies(GameState* game, int j)
 	}
 }
 
-short checkBulletEnemiesWithBrick(GameState* game, int j, int k)
+short checkBulletEnemiesWithBrick(GameState* game, int j)
 {
 	for (int i = 0; i < NUM_PBRICK; i++)
 	{
@@ -166,9 +165,23 @@ short checkBulletEnemiesWithBrick(GameState* game, int j, int k)
 	return 0;
 }
 
-short checkBulletEnemies(GameState* game, int j, int k)
+short checkBulletEnemiesWithPlayer(GameState* game, int j)
 {
-	if (checkBulletEnemiesWithBrick(game, j, k) == 1)
+	if (game->bulletEnemies[j]->x + 8 >= game->player.x && game->bulletEnemies[j]->x <= game->player.x + game->player.w && game->bulletEnemies[j]->y + 8 >= game->player.y && game->bulletEnemies[j]->y <= game->player.y + game->player.h)
+	{
+		if (game->player.lives >= 0)
+		{
+			game->player.lives--;
+			game->player.hit = 1;
+		}
+		return 1;
+	}
+	return 0;
+}
+
+short checkBulletEnemies(GameState* game, int j)
+{
+	if (checkBulletEnemiesWithBrick(game, j) == 1 || checkBulletEnemiesWithPlayer(game, j))
 	{
 		return 1;
 	}

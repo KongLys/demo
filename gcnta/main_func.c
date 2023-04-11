@@ -157,7 +157,7 @@ void processGame(GameState* game)
 	//Set game play
 	if (game->status == GAME_PLAY)
 	{
-		//Process bullet
+		//Process bullet of player
 		for (int i = 0; i < MAX_BULLETS; i++)
 		{
 			if (game->bullets[i])
@@ -170,25 +170,20 @@ void processGame(GameState* game)
 				}
 			}
 		}
-
-		for (int k = 0; k < NUM_ENEMIES_2; k++)
+		//Process bullet of enemies
+		for (int i = 0; i < MAX_BULLETS_ENEMIES; i++)
 		{
-			if (game->enemies[k])
+			if (game->bulletEnemies[i])
 			{
-				for (int i = 0; i < MAX_BULLETS_ENEMIES; i++)
+				game->bulletEnemies[i]->x += game->bulletEnemies[i]->dx;
+				game->bulletEnemies[i]->y += game->bulletEnemies[i]->dy;
+				if (checkBulletEnemies(game, i) == 1)
 				{
-					if (game->bulletEnemies[i])
-					{
-						game->bulletEnemies[i]->x += game->bulletEnemies[i]->dx;
-						game->bulletEnemies[i]->y += game->bulletEnemies[i]->dy;
-						if (checkBulletEnemies(game, i, k) == 1)
-						{
-							removeBulletEnemies(game, i);
-						}
-					}
+					removeBulletEnemies(game, i);
 				}
 			}
 		}
+
 
 		
 		//Speed
@@ -206,8 +201,9 @@ void processGame(GameState* game)
 	}
 
 	//When player touch enemies
-	if (collisionPlayerWithEnnemies(game) == 1 || collisionPlayerWithEnnemiesShort(game) == 1)
+	if (collisionPlayerWithEnnemies(game) == 1 || collisionPlayerWithEnnemiesShort(game) == 1 || game->player.hit == 1)
 	{
+		game->player.hit = 0;
 		dameSound();
 		//Delete and load again
 		for (int i = 0; i < NUM_ENEMIES; i++)
