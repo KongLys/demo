@@ -27,8 +27,6 @@ int main(int argc, char* argv[]) {
 		done = processEvent(windown, &gameState);
 
 		processGame(&gameState);
-		
-		collisionDetect(&gameState);
 
 		doRenderer(renderer, &gameState);
 

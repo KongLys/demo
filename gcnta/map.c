@@ -67,12 +67,38 @@ int cntBrick(GameState* game)
 		for (int j = 0; j < MAX_X; j++)
 		{
 			fscanf_s(fp, "%d", &val);
-			if (val != 0)
+			if (val == 1)
 			{
 				cnt++;
 			}
 		}
 	}
+	fclose(fp);
+	return cnt;
+}
+
+int cntCoin(GameState* game)
+{
+	FILE* fp = NULL;
+	fopen_s(&fp, "map_demo.txt", "r");
+	if (fp == NULL)
+	{
+		printf("Cannot open map_demo.txt!\n\n");
+		return;
+	}
+	int cnt = 0;
+	for (int i = 0, val = 0; i < MAX_Y; i++)
+	{
+		for (int j = 0; j < MAX_X; j++)
+		{
+			fscanf_s(fp, "%d", &val);
+			if (val == 4)
+			{
+				cnt++;
+			}
+		}
+	}
+	game->coin = (Coin**)malloc(cnt * sizeof(Coin*));
 	fclose(fp);
 	return cnt;
 }
@@ -143,6 +169,37 @@ void loadEnemiesShort(GameState* game)
 				game->enemiesShort[cnt]->valid = 1;
 				game->enemiesShort[cnt]->flipChar = 1;
 				game->enemiesShort[cnt]->lives = 1;
+				cnt++;
+			}
+		}
+	}
+	fclose(fp);
+}
+
+void loadCoin(GameState* game)
+{
+	FILE* fp = NULL;
+	fopen_s(&fp, "map_demo.txt", "r");
+	if (fp == NULL)
+	{
+		printf("Cannot open map_demo.txt!\n\n");
+		return;
+	}
+	for (int i = 0; i < game->numCoin; i++)
+	{
+		game->coin[i] = (Coin*)malloc(sizeof(Coin));
+	}
+	for (int i = 0, cnt = 0, val = 0; i < MAX_Y; i++)
+	{
+		for (int j = 0; j < MAX_X; j++)
+		{
+			fscanf_s(fp, "%d", &val);
+			if (val == 4)
+			{
+				game->coin[cnt]->w = 24;
+				game->coin[cnt]->h = 24;
+				game->coin[cnt]->x = j * game->coin[cnt]->w *3/2;
+				game->coin[cnt]->y = i * game->coin[cnt]->h * 3/2;
 				cnt++;
 			}
 		}

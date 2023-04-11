@@ -198,6 +198,10 @@ void processGame(GameState* game)
 		movementEnemies(game);
 		movementEnemiesShort(game);
 		aniEnemiesShort(game);
+
+		//Collision
+		collisionPlayerWithCoin(game);
+		collisionDetect(game);
 	}
 
 	//When player touch enemies

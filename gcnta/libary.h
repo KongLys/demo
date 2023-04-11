@@ -52,6 +52,10 @@ typedef struct
 	float x, y, w, h;
 } Brick;
 
+typedef struct
+{
+	float x, y, w, h;
+} Coin;
 
 typedef struct
 {
@@ -88,6 +92,10 @@ typedef struct
 	EnemyShort** enemiesShort;
 	int numEnemiesShort;
 
+	//Coin
+	Coin** coin;
+	int numCoin;
+
 	//Menu Items
 	MenuItem* items;
 
@@ -101,6 +109,7 @@ typedef struct
 	SDL_Texture* IMGbrick;
 	SDL_Texture* playerFrames[3];
 	SDL_Texture* backGr;
+	SDL_Texture* IMGCoin;
 	SDL_Texture* IMGenemies;
 	SDL_Texture* IMGenemiesShort;
 	SDL_Texture* IMGbullet;
