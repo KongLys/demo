@@ -61,14 +61,14 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 	SDL_RenderCopy(renderer, game->backGr, NULL, &rect_bg);
 
 	//Draw bircks
-	for (int i = 0; i < NUM_PBRICK; i++)
+	for (int i = 0; i < game->numBrick; i++)
 	{
-		SDL_Rect rect = { game->scrollX + game->bricks[i].x, game->bricks[i].y, game->bricks[i].w, game->bricks[i].h };
+		SDL_Rect rect = { game->scrollX + game->bricks[i]->x, game->bricks[i]->y, game->bricks[i]->w, game->bricks[i]->h };
 		SDL_RenderCopy(renderer, game->IMGbrick, NULL, &rect);
 	}
 
 	//Draw enemies
-	for (int i = 0; i < NUM_ENEMIES; i++)
+	for (int i = 0; i < game->numEnemies; i++)
 	{
 		if (game->enemies[i] != NULL)
 		{
@@ -95,7 +95,7 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 		}
 	}
 	//Draw enemies short
-	for (int i = 0; i < NUM_ENEMIES_2; i++)
+	for (int i = 0; i < game->numEnemiesShort; i++)
 	{
 		if (game->enemiesShort[i] != NULL)
 		{
@@ -162,9 +162,9 @@ void followScreen(GameState* game)
 	{
 		game->scrollX = 0; //Cannot seen the left of the map
 	}
-	if (game->scrollX < -game->bricks[1].w * (NUM_PBRICK - 30) + SCREEN_WIDTH / 2)
+	if (game->scrollX < -game->bricks[1]->w * game->numBrick + SCREEN_WIDTH / 2)
 	{
-		game->scrollX = -game->bricks[1].w * (NUM_PBRICK - 30) + SCREEN_WIDTH / 2; //Cannot seen the right of the map
+		game->scrollX = -game->bricks[1]->w * game->numBrick + SCREEN_WIDTH / 2; //Cannot seen the right of the map
 	}
 }
 

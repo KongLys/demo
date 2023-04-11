@@ -38,13 +38,13 @@ void addBullet(GameState* game)
 
 short checkBulletsWithBrick(GameState* game, int j)
 {
-	for (int i = 0; i < NUM_PBRICK; i++)
+	for (int i = 0; i < game->numBrick; i++)
 	{
 		if (game->bullets[j]->x < game->bullets[j]->rangeLeft || game->bullets[j]->x > game->bullets[j]->rangeRight)
 		{
 			return 1;
 		}
-		if (game->bullets[j]->x + 8 > game->bricks[i].x && game->bullets[j]->x < game->bricks[i].x + game->bricks[i].w && game->bullets[j]->y + 8 > game->bricks[i].y && game->bullets[j]->y < game->bricks[i].y + game->bricks[i].h)
+		if (game->bullets[j]->x + 8 > game->bricks[i]->x && game->bullets[j]->x < game->bricks[i]->x + game->bricks[i]->w && game->bullets[j]->y + 8 > game->bricks[i]->y && game->bullets[j]->y < game->bricks[i]->y + game->bricks[i]->h)
 		{
 			return 1;
 		}
@@ -54,7 +54,7 @@ short checkBulletsWithBrick(GameState* game, int j)
 
 short checkBulletsWithEnemies(GameState* game, int j)
 {
-	for (int i = 0; i < NUM_ENEMIES; i++)
+	for (int i = 0; i < game->numEnemies; i++)
 	{
 		if (game->enemies[i] != NULL)
 		{
@@ -74,7 +74,7 @@ short checkBulletsWithEnemies(GameState* game, int j)
 
 short checkBulletsWithEnemiesShort(GameState* game, int j)
 {
-	for (int i = 0; i < NUM_ENEMIES_2; i++)
+	for (int i = 0; i < game->numEnemiesShort; i++)
 	{
 		if (game->enemiesShort[i] != NULL)
 		{
@@ -151,13 +151,13 @@ void addBulletEnemies(GameState* game, int j)
 
 short checkBulletEnemiesWithBrick(GameState* game, int j)
 {
-	for (int i = 0; i < NUM_PBRICK; i++)
+	for (int i = 0; i < game->numBrick; i++)
 	{
 		if (game->bulletEnemies[j]->x < game->bulletEnemies[j]->rangeLeft || game->bulletEnemies[j]->x > game->bulletEnemies[j]->rangeRight)
 		{
 			return 1;
 		}
-		if (game->bulletEnemies[j]->x + 8 > game->bricks[i].x && game->bulletEnemies[j]->x < game->bricks[i].x + game->bricks[i].w && game->bulletEnemies[j]->y + 8 > game->bricks[i].y && game->bulletEnemies[j]->y < game->bricks[i].y + game->bricks[i].h)
+		if (game->bulletEnemies[j]->x + 8 > game->bricks[i]->x && game->bulletEnemies[j]->x < game->bricks[i]->x + game->bricks[i]->w && game->bulletEnemies[j]->y + 8 > game->bricks[i]->y && game->bulletEnemies[j]->y < game->bricks[i]->y + game->bricks[i]->h)
 		{
 			return 1;
 		}
