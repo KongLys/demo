@@ -34,19 +34,19 @@ short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done)
     OPMusic();
     GameState gameState;
     MenuItem items[] = {
-        { { 680, 350, 0, 0 }, "CONTINUE", { 255, 255, 155, 255 } },
-        { { 680, 450, 0, 0 }, "NEW GAME", { 255, 255, 155, 255 } },
-        { { 680, 550, 0, 0 }, "LEAVE",    { 255, 255, 155, 255 } }
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100, 0, 0 }, "CONTINUE", { 255, 255, 155, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0 }, "NEW GAME", { 255, 255, 155, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100, 0, 0 }, "LEAVE",    { 255, 255, 155, 255 } }
     };
     short item_count = sizeof(items) / sizeof(items[0]);
     short selected_item = -1;
 
     //Load BackGround
     SDL_Surface* backGrSur;
-    backGrSur = IMG_Load("Rehtona-game.jpg");
+    backGrSur = IMG_Load("menuOP_wallpaper.jpg");
     if (backGrSur == NULL)
     {
-        printf("Cannot find Rehtona-game.jpg! \n\n");
+        printf("Cannot find menuOP_wallpaper.jpg! \n\n");
         SDL_Quit();
         exit(1);
     }
@@ -122,6 +122,7 @@ short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done)
                         }
                         if (selected_item == 1)
                         {
+                            backgroundMusic();
                             done = 0;
                             quit = 1;
                         }
@@ -160,10 +161,8 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done)
     endMusic();
     GameState gameState;
     MenuItem items[] = {
-        { { 900, 200, 0, 0 }, "GAME OVER!", { 255, 255, 255, 255 } },
-        { { 900, 300, 0, 0 }, "YOUR HIGHTEST SCORE IS: ", { 255, 255, 255, 255 } },
-        { { 900, 400, 0, 0 }, "MENU", { 255, 255, 255, 255 } },
-        { { 900, 500, 0, 0 }, "LEAVE", { 255, 255, 255, 255 } }
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 50, 0, 0 }, "MENU", { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50, 0, 0 }, "LEAVE", { 255, 255, 255, 255 } }
     };
     short item_count = sizeof(items) / sizeof(items[2]);
     short selected_item = -1;
@@ -211,13 +210,13 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done)
                     break;
                 case SDLK_RETURN:
                 {
-                    if (selected_item == 2)
+                    if (selected_item == 0)
                     {
                         done = 1;
                         menuOP(renderer, font, done);
                         quit = 1;
                     }
-                    if (selected_item == 3)
+                    if (selected_item == 1)
                     {
                         SDL_Quit();
                     }
@@ -230,18 +229,18 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done)
             {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
-                for (int i = 2; i < item_count; i++)
+                for (int i = 0; i < item_count; i++)
                 {
                     if ((x >= items[i].rect.x - 50 && x <= items[i].rect.x + 50) && y >= items[i].rect.y - 32 && y <= items[i].rect.y + 32)
                     {
                         selected_item = i;
-                        if (selected_item == 2)
+                        if (selected_item == 0)
                         {
                             done = 0;
                             menuOP(renderer, font, done);
                             quit = 1;
                         }
-                        if (selected_item == 3)
+                        if (selected_item == 1)
                         {
                             SDL_Quit();
                         }                       
@@ -255,7 +254,7 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done)
             {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
-                for (int i = 2; i < item_count; i++)
+                for (int i = 0; i < item_count; i++)
                 {
                     if ((x >= items[i].rect.x - 55 && x <= items[i].rect.x + 55) && y >= items[i].rect.y - 32 && y <= items[i].rect.y + 32)
                     {

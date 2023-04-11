@@ -118,8 +118,8 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 	{
 		if (game->coin[i])
 		{
-			SDL_Rect rectBu = { game->scrollX + game->coin[i]->x, game->coin[i]->y, game->coin[i]->w, game->coin[i]->h};
-			SDL_RenderCopy(renderer, game->IMGbullet, NULL, &rectBu);
+			SDL_Rect rectCoin = { game->scrollX + game->coin[i]->x, game->coin[i]->y, game->coin[i]->w, game->coin[i]->h};
+			SDL_RenderCopy(renderer, game->coin, NULL, &rectCoin);
 		}
 	}
 
