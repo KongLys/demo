@@ -14,8 +14,8 @@ int main(int argc, char* argv[]) {
 	}
 
 	TTF_Init();
-	TTF_Font* font = TTF_OpenFont("Take-Coffee.ttf", 32);
-
+	TTF_Font* font = TTF_OpenFont("victor-pixel.ttf", 48);
+	gameState.font = font;
 	gameState.renderer1 = renderer;
 	
 	loadGame(&gameState);

@@ -23,6 +23,9 @@ int processEvent(SDL_Window* windown, GameState* game)
 		{
 			switch (event.key.keysym.sym)
 			{
+			case SDLK_p:
+				menuPause(game->renderer1, game->font);
+				break;
 			case SDLK_ESCAPE:
 				done = 1;
 				break;

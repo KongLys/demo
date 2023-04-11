@@ -49,6 +49,11 @@ typedef struct
 
 typedef struct
 {
+	float  x, y, w, h;
+} CheckPoint;
+
+typedef struct
+{
 	float x, y, w, h;
 } Brick;
 
@@ -91,6 +96,10 @@ typedef struct
 	int numEnemies;
 	EnemyShort** enemiesShort;
 	int numEnemiesShort;
+
+	//Check Point
+	CheckPoint** checkpoints;
+	int numCheckPoints;
 
 	//Coin
 	Coin** coin;

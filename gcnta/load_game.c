@@ -100,14 +100,7 @@ void loadGame(GameState* game)
 	game->IMGCoin = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
 
-	//load fonts
-	game->font = TTF_OpenFont("victor-pixel.ttf", 48);
-	if (!game->font)
-	{
-		printf("Cannot find font file! \n\n");
-		SDL_Quit();
-		exit(1);
-	}
+	
 
 	//Load info player
 	game->player.x = 250;
@@ -152,11 +145,13 @@ void loadGame(GameState* game)
 	game->numEnemies = cntEnemies(game);
 	game->numEnemiesShort = cntEnemiesShort(game);
 	game->numCoin = cntCoin(game);
+	game->numCheckPoints = cntCheckPoint(game);
 
 	//Load bricks, enemies, short enemies
 	loadEnemies(game);
 	loadEnemiesShort(game);
 	loadCoin(game);
+	loadCheckPoint(game);
 	loadMap(game);
 }
 
@@ -185,4 +180,5 @@ void loadAgain(GameState* game)
 	loadEnemies(game);
 	loadEnemiesShort(game);
 	loadCoin(game);
+	loadCheckPoint(game);
 }
