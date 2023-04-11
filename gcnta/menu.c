@@ -84,20 +84,21 @@ short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done)
                     render_menu(renderer, items, item_count, selected_item, font);
                     break;
                 case SDLK_RETURN:
-                {                  
+                {
                     if (selected_item == 0)
                     {
-                        
+
                         SDL_Quit();
                     }
                     if (selected_item == 1)
                     {
+                        player_name(renderer, font);
                         backgroundMusic();
                         done = 0;
                         quit = 1;
                     }
                     if (selected_item == 2)
-                    {                        
+                    {
                         SDL_Quit();
                     }
 
@@ -122,6 +123,7 @@ short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done)
                         }
                         if (selected_item == 1)
                         {
+                            printf("%s", player_name(renderer, font));
                             backgroundMusic();
                             done = 0;
                             quit = 1;
@@ -243,7 +245,7 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done)
                         if (selected_item == 1)
                         {
                             SDL_Quit();
-                        }                       
+                        }
                         break;
                     }
                 }
@@ -268,4 +270,188 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done)
             }
         }
     }
+}
+
+void menuPause(SDL_Renderer* renderer, TTF_Font* font)
+{
+    GameState gameState;
+    MenuItem items[] = {
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100, 0, 0 }, "CONTINUE", { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0 }, "SETTING", { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100, 0, 0 }, "LEAVE",    { 255, 255, 255, 255 } }
+    };
+    short item_count = sizeof(items) / sizeof(items[0]);
+    short selected_item = -1;
+
+    render_menu(renderer, items, item_count, selected_item, font);
+
+    SDL_Event event;
+    short quit = 0;
+    while (!quit)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+            case SDL_QUIT:
+                SDL_Quit();
+                break;
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym)
+                {
+                case SDLK_w:
+                case SDLK_UP:
+                    selected_item = (selected_item - 1 + item_count) % item_count;
+                    render_menu(renderer, items, item_count, selected_item, font);
+                    break;
+                case SDLK_s:
+                case SDLK_DOWN:
+                    selected_item = (selected_item + 1) % item_count;
+                    render_menu(renderer, items, item_count, selected_item, font);
+                    break;
+                case SDLK_RETURN:
+                {
+                    if (selected_item == 0)
+                    {
+                        quit = 1;
+                    }
+                    if (selected_item == 1)
+                    {
+                        quit = 1;
+                        SDL_Quit();
+                    }
+                    if (selected_item == 2)
+                    {
+                        SDL_Quit();
+                    }
+
+                    break;
+                }
+
+                }
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+            {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                for (int i = 0; i < item_count; i++)
+                {
+                    if ((x >= items[i].rect.x - 100 && x <= items[i].rect.x + 100) && y >= items[i].rect.y - 32 && y <= items[i].rect.y + 32)
+                    {
+                        selected_item = i;
+                        if (selected_item == 0)
+                        {
+                            quit = 1;
+                        }
+                        if (selected_item == 1)
+                        {
+                            quit = 1;
+                            SDL_Quit();
+                        }
+                        if (selected_item == 2)
+                        {
+                            SDL_Quit();
+                        }
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case SDL_MOUSEMOTION:
+            {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                for (int i = 0; i < item_count; i++)
+                {
+                    if ((x >= items[i].rect.x - 100 && x <= items[i].rect.x + 100) && y >= items[i].rect.y - 32 && y <= items[i].rect.y + 32)
+                    {
+                        selected_item = i;
+                        render_menu(renderer, items, item_count, selected_item, font);
+                    }
+                }
+                break;
+            }
+            break;
+            }
+        }
+    }
+}
+
+char* player_name(SDL_Renderer* renderer, TTF_Font* font)
+{
+    GameState gameState;
+    MenuItem items[] = {
+        { { SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2, 0, 0 }, "YOUR NAME:", { 255, 255, 155, 255 } }
+    };
+    short item_count = sizeof(items) / sizeof(items[0]);
+    short selected_item = -1;
+
+    //Load BackGround
+    SDL_Surface* backGrSur;
+    backGrSur = IMG_Load("menuOP_wallpaper.jpg");
+    if (backGrSur == NULL)
+    {
+        printf("Cannot find menuOP_wallpaper.jpg! \n\n");
+        SDL_Quit();
+        exit(1);
+    }
+    SDL_Texture* backGrText = SDL_CreateTextureFromSurface(renderer, backGrSur);
+    SDL_FreeSurface(backGrSur);
+    SDL_Rect backGr = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+    // bắt kí  tự nhập chuỗi (1)
+    char inputText[100] = "";
+    int len = 0;
+
+    SDL_Color textColor = { 255, 255, 255, 255 };
+    // xử lí sự kiện
+    short quit = 0;
+    SDL_Event event;
+    while (!quit) {
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+            case SDL_QUIT:
+                quit = 1;
+                break;
+            case SDL_KEYDOWN:
+                if (event.key.keysym.sym == SDLK_BACKSPACE && len > 0) {
+                    // Xóa ký tự cuối cùng
+                    inputText[len - 1] = '\0';
+                    len--;
+                }
+                if (event.key.keysym.sym == SDLK_RETURN && len > 0) {
+                    quit = 1;
+                }
+                break;
+            case SDL_TEXTINPUT:
+                // Thêm ký tự mới vào cuối chuỗi
+                strcat(inputText, event.text.text);
+                len++;
+                break;
+            }
+
+            SDL_RenderClear(renderer);
+            SDL_RenderCopy(renderer, backGrText, NULL, &backGr);
+            // truyền -1 vào để trong render_menu không làm đổi màu khi ta bấm nút
+            render_menu(renderer, items, item_count, -1, font);
+            int x = SCREEN_WIDTH / 2, y = SCREEN_HEIGHT / 2 - 25;
+            for (int i = 0; i < len; i++) {
+                char c = inputText[i];
+
+                // Vẽ kí tự
+                SDL_Surface* surface = TTF_RenderGlyph_Blended(font, c, textColor);
+                SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+                SDL_Rect destRect = { x, y, surface->w, surface->h };
+                SDL_RenderCopy(renderer, texture, NULL, &destRect);
+
+
+                // Tăng x để chuẩn bị vẽ kí tự tiếp theo
+                x += destRect.w;
+            }
+
+            SDL_RenderPresent(renderer);
+        }
+    }
+    return inputText;
+    free(inputText);
 }

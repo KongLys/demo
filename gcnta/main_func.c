@@ -23,16 +23,19 @@ int processEvent(SDL_Window* windown, GameState* game)
 		{
 			switch (event.key.keysym.sym)
 			{
+			case SDLK_p:
+				menuPause(game->renderer1, game->font);
+				break;
 			case SDLK_ESCAPE:
 				done = 1;
 				break;
 
 			case SDLK_UP:
-				if(game->player.onBrick)
+				if (game->player.onBrick)
 				{
-				game->player.dy = -8;
-				game->player.onBrick = 0;
-				jumbSound();
+					game->player.dy = -8;
+					game->player.onBrick = 0;
+					jumbSound();
 				}
 				break;
 			case SDLK_w:
@@ -64,16 +67,16 @@ int processEvent(SDL_Window* windown, GameState* game)
 	}
 	if (state[SDL_SCANCODE_W] || state[SDL_SCANCODE_UP])
 	{
-			game->player.dy -= 0.3;
-			if (game->player.dy < -9)
-			{
-				game->player.dy = -9;
-			}
+		game->player.dy -= 0.3;
+		if (game->player.dy < -9)
+		{
+			game->player.dy = -9;
+		}
 	}
 	if (state[SDL_SCANCODE_SPACE])
 	{
 		game->player.shootBullet = 1;
-		if (game->time % 5 == 0) 
+		if (game->time % 5 == 0)
 		{
 			addBullet(game);
 		}
@@ -185,12 +188,12 @@ void processGame(GameState* game)
 		}
 
 
-		
+
 		//Speed
 		game->player.x += game->player.dx;
 		game->player.y += game->player.dy;
 		game->player.dy += GRAVITY;
-		
+
 		//follow
 		followScreen(game);
 
@@ -227,7 +230,7 @@ void processGame(GameState* game)
 		loadAgain(game);
 		initStatusLives(game);
 	}
-	if(game->player.lives <= 0)
+	if (game->player.lives <= 0)
 	{
 		short done = 1;
 		game->player.lives = 3;
@@ -245,10 +248,10 @@ void doRenderer(SDL_Renderer* renderer, GameState* game)
 	{
 		screenContain(renderer, game);
 	}
-	else if(game->status == GAME_OVER)
+	else if (game->status == GAME_OVER)
 	{
 		scrennOver(renderer, game);
 	}
-		//Show renderer
-		SDL_RenderPresent(renderer);
+	//Show renderer
+	SDL_RenderPresent(renderer);
 }
