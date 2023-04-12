@@ -10,7 +10,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 		switch (event.type)
 		{
 		case SDL_WINDOWEVENT_CLOSE:
-		{
+		{	
 			if (windown)
 			{
 				SDL_DestroyWindow(windown);
@@ -28,11 +28,11 @@ int processEvent(SDL_Window* windown, GameState* game)
 				break;
 
 			case SDLK_UP:
-				if(game->player.onBrick)
+				if (game->player.onBrick)
 				{
-				game->player.dy = -8;
-				game->player.onBrick = 0;
-				jumbSound();
+					game->player.dy = -8;
+					game->player.onBrick = 0;
+					jumbSound();
 				}
 				break;
 			case SDLK_w:
@@ -86,6 +86,10 @@ int processEvent(SDL_Window* windown, GameState* game)
 	}
 	if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT])
 	{
+		if (game->player.onBrick == 1)
+		{
+			walkingSound();
+		}
 		game->player.dx -= 2;
 		if (game->player.dx <= -5)
 		{
@@ -102,6 +106,10 @@ int processEvent(SDL_Window* windown, GameState* game)
 	}
 	else if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT])
 	{
+		if (game->player.onBrick == 1)
+		{
+			walkingSound();
+		}
 		game->player.dx += 2;
 		if (game->player.dx >= 5)
 		{

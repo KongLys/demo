@@ -7,6 +7,7 @@ void jumbSound();
 void shotSound();
 void dameSound();
 void backgroundMusic();
+void walkingSound();
 void endMusic();
 void OPMusic();
 

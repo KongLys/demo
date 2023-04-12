@@ -3,7 +3,7 @@
 
 Mix_Chunk* soundEffect[3];
 Mix_Music* soundBackground[3];
-
+Mix_Chunk* jumpEffect;
 int initAudio() 
 {
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
@@ -17,9 +17,10 @@ int initAudio()
     }
 
     // Load file âm thanh
-    soundEffect[0] = Mix_LoadWAV("jump.wav");
-    soundEffect[1] = Mix_LoadWAV("hit.wav");
-    soundEffect[2] = Mix_LoadWAV("dame.wav");
+    jumpEffect = Mix_LoadWAV("jump.wav");
+    soundEffect[0] = Mix_LoadWAV("hit.wav");
+    soundEffect[1] = Mix_LoadWAV("dame.wav");
+    soundEffect[2] = Mix_LoadWAV("walking.wav");
     soundBackground[0] = Mix_LoadMUS("background.mp3");
     soundBackground[1] = Mix_LoadMUS("rat.mp3");
     soundBackground[2] = Mix_LoadMUS("OP.mp3");
@@ -35,6 +36,7 @@ int initAudio()
 
 void cleanUpAudio() 
 {
+    Mix_FreeChunk(jumpEffect);
     for (int i = 0; i < 3; i++)
     {
         Mix_FreeMusic(soundBackground[i]);
@@ -47,28 +49,31 @@ void cleanUpAudio()
 void jumbSound() 
 {
     // Phát âm thanh
-    Mix_PlayChannel(-1, soundEffect[0], 0);
+    Mix_PlayChannelTimed (-1, jumpEffect, 0, 0);
 }
 
 void shotSound() 
 {
     // Phát âm thanh
-    Mix_PlayChannel(-1, soundEffect[1], 0);
-
+    Mix_PlayChannel(-1, soundEffect[0], 0);
 }
 
 void dameSound()
 {
     // Phát âm thanh
-    Mix_PlayChannel(-1, soundEffect[2], 0);
+    Mix_PlayChannel(-1, soundEffect[1], 0);
+}
 
+void walkingSound()
+{
+    // Phát âm thanh
+    Mix_PlayChannel(-1,  soundEffect[2], 0);
 }
 
 void backgroundMusic()
 {
     // Phát âm thanh
     Mix_PlayMusic(soundBackground[0], -1);
-
 }
 
 void endMusic()
