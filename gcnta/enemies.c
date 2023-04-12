@@ -119,6 +119,20 @@ void aniEnemiesShort(GameState* game)
 
 }
 
+void bossShoot(GameState* game)
+{
+	for (int i = 0; i < game->numBoss; i++)
+	{
+		if (game->boss[i] && game->time % 20 == 0)
+		{
+			if (game->time % 20 == 0)
+			{
+				addBulletBoss(game, i);
+			}
+		}
+	}
+}
+
 void removeEnemies(GameState* game, int i)
 {
 	free(game->enemies[i]);
@@ -128,5 +142,11 @@ void removeEnemies(GameState* game, int i)
 void removeEnemiesShort(GameState* game, int i)
 {
 	free(game->enemiesShort[i]);
+	game->enemiesShort[i] = NULL;
+}
+
+void removeBoss(GameState* game, int i)
+{
+	free(game->boss[i]);
 	game->enemiesShort[i] = NULL;
 }

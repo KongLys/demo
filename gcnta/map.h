@@ -8,10 +8,13 @@
 //val = 2 is enemies
 //val = 3 is short enemies
 //val = 4 is coin
+//val = 5 is check point
+//val = 6 is boss
 
 int cntBrick(GameState* game);
 int cntEnemies(GameState* game);
 int cntEnemiesShort(GameState* game);
+int cntBoss(GameState* game);
 int cntCheckPoint(GameState* game);
 int cntCoin(GameState* game);
 

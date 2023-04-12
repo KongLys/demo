@@ -29,10 +29,9 @@ void render_menu(SDL_Renderer* renderer, MenuItem* items, int item_count, int se
     SDL_RenderPresent(renderer);
 }
 
-short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done)
+short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game)
 {
     OPMusic();
-    GameState gameState;
     MenuItem items[] = {
         { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100, 0, 0 }, "CONTINUE", { 255, 255, 155, 255 } },
         { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0 }, "NEW GAME", { 255, 255, 155, 255 } },
@@ -158,7 +157,7 @@ short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done)
     }
 }
 
-short menuED(SDL_Renderer* renderer, TTF_Font* font, short done)
+short menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game)
 {
     endMusic();
     GameState gameState;
@@ -215,7 +214,7 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done)
                     if (selected_item == 0)
                     {
                         done = 1;
-                        menuOP(renderer, font, done);
+                        menuOP(renderer, font, done, game);
                         quit = 1;
                     }
                     if (selected_item == 1)
@@ -239,7 +238,7 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done)
                         if (selected_item == 0)
                         {
                             done = 0;
-                            menuOP(renderer, font, done);
+                            menuOP(renderer, font, done, game);
                             quit = 1;
                         }
                         if (selected_item == 1)

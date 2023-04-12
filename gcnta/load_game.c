@@ -26,34 +26,14 @@ void loadGame(GameState* game)
 	SDL_FreeSurface(surface);
 
 	//Load character
-	surface = IMG_Load("waiting.png");
+	surface = IMG_Load("player.png");
 	if (surface == NULL)
 	{
-		printf("robot.jpg! \n\n");
+		printf("player.png! \n\n");
 		SDL_Quit();
 		exit(1);
 	}
-	game->playerFrames[0] = SDL_CreateTextureFromSurface(game->renderer1, surface);
-	SDL_FreeSurface(surface);
-
-	surface = IMG_Load("walk.png");
-	if (surface == NULL)
-	{
-		printf("robot2.jpg! \n\n");
-		SDL_Quit();
-		exit(1);
-	}
-	game->playerFrames[1] = SDL_CreateTextureFromSurface(game->renderer1, surface);
-	SDL_FreeSurface(surface);
-
-	surface = IMG_Load("cut.png");
-	if (surface == NULL)
-	{
-		printf("robot2.jpg! \n\n");
-		SDL_Quit();
-		exit(1);
-	}
-	game->playerFrames[2] = SDL_CreateTextureFromSurface(game->renderer1, surface);
+	game->IMGPlayer = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
 
 	//Load background
@@ -68,10 +48,10 @@ void loadGame(GameState* game)
 	SDL_FreeSurface(surface);
 
 	//Load enemies
-	surface = IMG_Load("beeRobotR.png");
+	surface = IMG_Load("fly.png");
 	if (surface == NULL)
 	{
-		printf("beeRobotR.png! \n\n");
+		printf("fly.png! \n\n");
 		SDL_Quit();
 		exit(1);
 	}
@@ -114,20 +94,22 @@ void loadGame(GameState* game)
 	//Load info player
 	game->player.x = 250;
 	game->player.y = 10;
-	game->player.w = 64;
-	game->player.h = 64;
+	game->player.w = 48;
+	game->player.h = 48;
 	game->player.dx = 0;
 	game->player.dy = 0;
+	game->player.dashCoolDown = 0;
+	game->player.dashPower = 0;
+	game->player.angle = 0;
 	game->player.lives = 3;
 	game->player.hit = 0;
-	game->player.animFrame = 0;
+	game->player.xAni = 0;
+	game->player.yAni = 0;
+	game->player.aiming = 0;
 	game->player.flipChar = 0;
 	game->player.onBrick = 0;
 	game->player.shootBullet = 0;
 	game->player.stopMove = 1;
-	game->player.currentCut = 0;
-	game->player.currentWait = 0;
-	game->player.currentWalk = 0;
 
 
 	//Load info GameState
@@ -148,6 +130,10 @@ void loadGame(GameState* game)
 	{
 		game->bulletEnemies[i] = NULL;
 	}
+	for (int i = 0; i < MAX_BULLETS_BOSS; i++)
+	{
+		game->bulletBoss[i] = NULL;
+	}
 
 	//Count bricks, enemies, short enemies, check points
 	game->numBrick = cntBrick(game);
@@ -155,10 +141,12 @@ void loadGame(GameState* game)
 	game->numEnemiesShort = cntEnemiesShort(game);
 	game->numCoin = cntCoin(game);
 	game->numCheckPoint = cntCheckPoint(game);
+	game->numBoss = cntBoss(game);
 
 	//Load bricks, enemies, short enemies, check point
 	loadEnemies(game);
 	loadEnemiesShort(game);
+	loadBoss(game);
 	loadCoin(game);
 	loadCheckPoint(game);
 	loadMap(game);
@@ -167,19 +155,21 @@ void loadGame(GameState* game)
 void loadAgain(GameState* game)
 {
 	game->player.x = 250;
-	game->player.y = 650;
-	game->player.w = 64;
-	game->player.h = 64;
+	game->player.y = 10;
+	game->player.w = 36;
+	game->player.h = 36;
 	game->player.dx = 0;
 	game->player.dy = 0;
-	game->player.animFrame = 0;
+	game->player.dashCoolDown = 0;
+	game->player.angle = 0;
+	game->player.hit = 0;
+	game->player.xAni = 0;
+	game->player.yAni = 0;
+	game->player.aiming = 0;
 	game->player.flipChar = 0;
 	game->player.onBrick = 0;
 	game->player.shootBullet = 0;
 	game->player.stopMove = 1;
-	game->player.currentCut = 0;
-	game->player.currentWait = 0;
-	game->player.currentWalk = 0;
 
 	game->scrollX = 0;
 	game->time = 0;
@@ -188,5 +178,6 @@ void loadAgain(GameState* game)
 
 	loadEnemies(game);
 	loadEnemiesShort(game);
+	loadBoss(game);
 	loadCoin(game);
 }

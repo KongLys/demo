@@ -21,3 +21,14 @@ short checkBulletEnemiesWithPlayer(GameState* game, int j);
 short checkBulletEnemies(GameState* game, int j);
 
 void removeBulletEnemies(GameState* game, int i);
+
+//boss
+void addBulletBoss(GameState* game, int j);
+void extraBullet(GameState* game);
+
+short checkBulletBossWithBrick(GameState* game, int j);
+short checkBulletBossWithPlayer(GameState* game, int j);
+
+short checkBulletBoss(GameState* game, int j);
+
+void removeBulletBoss(GameState* game, int i);

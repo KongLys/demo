@@ -30,7 +30,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 				done = 1;
 				break;
 
-			case SDLK_UP:
+			case SDLK_x:
 				if (game->player.onBrick)
 				{
 					game->player.dy = -8;
@@ -38,12 +38,27 @@ int processEvent(SDL_Window* windown, GameState* game)
 					jumbSound();
 				}
 				break;
-			case SDLK_w:
+			case SDLK_k:
 				if (game->player.onBrick)
 				{
 					game->player.dy = -8;
 					game->player.onBrick = 0;
 					jumbSound();
+				}
+				break;
+			case SDLK_z:
+				if (game->player.dashCoolDown == 0)
+				{
+					if (game->player.flipChar == 0)
+					{
+						game->player.dashPower = 5;
+					}
+					else
+					{
+						game->player.dashPower = -5;
+					}
+
+					game->player.dashCoolDown = 10;
 				}
 				break;
 			}
@@ -57,30 +72,48 @@ int processEvent(SDL_Window* windown, GameState* game)
 		}
 	}
 	//Hold key
-	if (state[SDL_SCANCODE_S] || state[SDL_SCANCODE_DOWN])
-	{
-		game->player.dy += 0.6;
-		if (game->player.dy > 10)
-		{
-			game->player.dy = 10;
-		}
-	}
 	if (state[SDL_SCANCODE_W] || state[SDL_SCANCODE_UP])
+	{
+		game->player.angle = -45;
+		game->player.aiming = 1;
+	}
+	else if (state[SDL_SCANCODE_S] || state[SDL_SCANCODE_DOWN])
+	{
+		game->player.angle = 45;
+		game->player.aiming = 2;
+	}
+	else
+	{
+		game->player.aiming = 0;
+	}
+	if (state[SDL_SCANCODE_X] || state[SDL_SCANCODE_K])
 	{
 		game->player.dy -= 0.3;
 		if (game->player.dy < -9)
 		{
 			game->player.dy = -9;
 		}
+		game->player.yAni = 5;
 	}
-	if (state[SDL_SCANCODE_SPACE])
+	if (state[SDL_SCANCODE_C] || state[SDL_SCANCODE_J])
 	{
 		game->player.shootBullet = 1;
 		if (game->time % 5 == 0)
 		{
 			addBullet(game);
 		}
-		game->player.currentCut = 1;
+		if (game->player.aiming == 1)
+		{
+			game->player.yAni = 3;
+		}
+		else if (game->player.aiming == 2)
+		{
+			game->player.yAni = 4;
+		}
+		else
+		{
+			game->player.yAni = 2;
+		}
 		shotSound();
 	}
 	else
@@ -100,11 +133,9 @@ int processEvent(SDL_Window* windown, GameState* game)
 		}
 		game->player.flipChar = 1;
 		game->player.stopMove = 0;
-		game->player.animFrame = 1;
-		if (game->time % 6 == 0)
+		if (!game->player.shootBullet)
 		{
-			game->player.currentWalk++;
-			game->player.currentWalk %= 13;
+			game->player.yAni = 1;
 		}
 	}
 	else if (state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT])
@@ -120,12 +151,11 @@ int processEvent(SDL_Window* windown, GameState* game)
 		}
 		game->player.flipChar = 0;
 		game->player.stopMove = 0;
-		game->player.animFrame = 1;
-		if (game->time % 6 == 0)
+		if (!game->player.shootBullet)
 		{
-			game->player.currentWalk++;
-			game->player.currentWalk %= 13;
+			game->player.yAni = 1;
 		}
+
 	}
 	else
 	{
@@ -135,7 +165,6 @@ int processEvent(SDL_Window* windown, GameState* game)
 			game->player.dx = 0;
 		}
 		game->player.stopMove = 1;
-		game->player.animFrame = 0;
 	}
 	return done;
 }
@@ -146,20 +175,6 @@ int processEvent(SDL_Window* windown, GameState* game)
 void processGame(GameState* game)
 {
 	game->time++;
-
-	//Wait animation
-	if (game->time % 5 == 0 && game->player.onBrick && game->player.stopMove)
-	{
-		game->player.currentWait++;
-		game->player.currentWait %= 11;
-	}
-
-	//set waiting
-	if (!game->player.onBrick)
-	{
-		game->player.animFrame = 0;
-	}
-
 	if (game->time > 120)
 	{
 		shutdownStatusLives(game);
@@ -168,6 +183,58 @@ void processGame(GameState* game)
 	//Set game play
 	if (game->status == GAME_PLAY)
 	{
+		if (game->player.dashCoolDown > 0)
+		{
+			game->player.dashCoolDown--;
+		}
+		if (!game->player.shootBullet)
+		{
+			if (game->player.stopMove)
+			{
+				game->player.yAni = 0;
+			}
+			else
+			{
+				game->player.yAni = 1;
+			}
+		}
+
+		if (game->time % 6 == 0)
+		{
+			game->player.xAni++;
+			if (game->player.yAni == 4 || game->player.yAni == 3 || game->player.yAni == 2)
+			{
+				if (game->player.xAni > 3)
+				{
+					game->player.xAni = 3;
+				}
+			}
+			game->player.xAni %= 4;
+		}
+		if (!game->player.aiming)
+		{
+			game->player.angle = 0;
+		}
+
+		//Speed
+		game->player.x += (game->player.dx + game->player.dashPower);
+		if (game->player.dashCoolDown > 4)
+		{
+			game->player.dashPower *= 1.5;
+		}
+		else
+		{
+			game->player.dashPower = 0;
+		}
+		game->player.y += game->player.dy;
+		game->player.dy += GRAVITY;
+
+
+		//Movement of enemies
+		movementEnemies(game);
+		movementEnemiesShort(game);
+		aniEnemiesShort(game);
+
 		//Process bullet of player
 		for (int i = 0; i < MAX_BULLETS; i++)
 		{
@@ -181,7 +248,9 @@ void processGame(GameState* game)
 				}
 			}
 		}
+
 		//Process bullet of enemies
+
 		for (int i = 0; i < MAX_BULLETS_ENEMIES; i++)
 		{
 			if (game->bulletEnemies[i])
@@ -194,21 +263,23 @@ void processGame(GameState* game)
 				}
 			}
 		}
-
-
-
-		//Speed
-		game->player.x += game->player.dx;
-		game->player.y += game->player.dy;
-		game->player.dy += GRAVITY;
+		bossShoot(game);
+		//Process bullet of boss
+		for (int i = 0; i < MAX_BULLETS_BOSS; i++)
+		{
+			if (game->bulletBoss[i])
+			{
+				game->bulletBoss[i]->x += game->bulletBoss[i]->dx;
+				game->bulletBoss[i]->y += game->bulletBoss[i]->dy;
+				if (checkBulletBoss(game, i) == 1)
+				{
+					removeBulletBoss(game, i);
+				}
+			}
+		}
 
 		//follow
 		followScreen(game);
-
-		//Movement of enemies
-		movementEnemies(game);
-		movementEnemiesShort(game);
-		aniEnemiesShort(game);
 
 		//Collision
 		collisionPlayerWithCoin(game);
@@ -242,7 +313,7 @@ void processGame(GameState* game)
 	{
 		short done = 1;
 		game->player.lives = 3;
-		menuED(game->renderer1, game->font, done);
+		menuED(game->renderer1, game->font, done, game);
 	}
 }
 
