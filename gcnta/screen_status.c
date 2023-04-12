@@ -125,7 +125,7 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 
 	//Draw player
 	SDL_Rect rect_p = { game->scrollX + game->player.x, game->player.y, game->player.w, game->player.h };
-	SDL_Rect scrRect_p = { 48 * game->player.xAni, 48 * game->player.yAni, 48, 48 };
+	SDL_Rect scrRect_p = { 33 * game->player.xAni, 27 * game->player.yAni, 33, 27 };
 	SDL_RenderCopyEx(renderer, game->IMGPlayer, &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
 	
 
@@ -190,8 +190,8 @@ void drawStatusLives(GameState* game)
 	SDL_SetRenderDrawColor(game->renderer1, 255, 255, 255, 255);
 
 	//vi tri hinh nhan vat
-	SDL_Rect scrRect_p = { 0, 0, 24, 32 };
-	SDL_Rect rect_p = { SCREEN_WIDTH / 2 - 80, SCREEN_HEIGHT / 2 - 50, 48, 48 };
+	SDL_Rect scrRect_p = { 0, 0, 33, 27 };
+	SDL_Rect rect_p = { SCREEN_WIDTH / 2 - 80, SCREEN_HEIGHT / 2 - 50, 55, 45 };
 	SDL_RenderCopyEx(game->renderer1, game->IMGPlayer, &scrRect_p, &rect_p, 0, NULL, 0);
 
 	//ve text

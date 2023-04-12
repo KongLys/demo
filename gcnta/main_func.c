@@ -47,6 +47,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 				}
 				break;
 			case SDLK_z:
+			case SDLK_l:
 				if (game->player.dashCoolDown == 0)
 				{
 					if (game->player.flipChar == 0)
@@ -58,7 +59,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 						game->player.dashPower = -5;
 					}
 
-					game->player.dashCoolDown = 10;
+					game->player.dashCoolDown = 35;
 				}
 				break;
 			}
@@ -183,10 +184,13 @@ void processGame(GameState* game)
 	//Set game play
 	if (game->status == GAME_PLAY)
 	{
+		//Set dash cd
 		if (game->player.dashCoolDown > 0)
 		{
 			game->player.dashCoolDown--;
 		}
+
+		//Set animation
 		if (!game->player.shootBullet)
 		{
 			if (game->player.stopMove)
@@ -198,19 +202,20 @@ void processGame(GameState* game)
 				game->player.yAni = 1;
 			}
 		}
-
 		if (game->time % 6 == 0)
 		{
 			game->player.xAni++;
 			if (game->player.yAni == 4 || game->player.yAni == 3 || game->player.yAni == 2)
 			{
-				if (game->player.xAni > 3)
+				if (game->player.xAni > 4)
 				{
 					game->player.xAni = 3;
 				}
 			}
-			game->player.xAni %= 4;
+			game->player.xAni %= 5;
 		}
+
+		//Set angle shooting
 		if (!game->player.aiming)
 		{
 			game->player.angle = 0;
@@ -218,9 +223,9 @@ void processGame(GameState* game)
 
 		//Speed
 		game->player.x += (game->player.dx + game->player.dashPower);
-		if (game->player.dashCoolDown > 4)
+		if (game->player.dashCoolDown > 25)
 		{
-			game->player.dashPower *= 1.5;
+			game->player.dashPower *= 1.25;
 		}
 		else
 		{
