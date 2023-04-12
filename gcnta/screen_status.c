@@ -113,6 +113,16 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 			SDL_RenderCopyEx(renderer, game->IMGenemiesShort, &scrRectES, &rectES, 0, NULL, game->enemiesShort[i]->flipChar);
 		}
 	}
+	//Draw coin
+	for (int i = 0; i < game->numCoin; i++)
+	{
+		if (game->coin[i])
+		{
+			SDL_Rect rectCoin = { game->scrollX + game->coin[i]->x, game->coin[i]->y, game->coin[i]->w, game->coin[i]->h};
+			SDL_RenderCopy(renderer, game->coin, NULL, &rectCoin);
+		}
+	}
+
 	//Draw player
 	SDL_Rect rect_p = { game->scrollX + game->player.x, game->player.y, game->player.w, game->player.h };
 	if (game->player.animFrame == 2)

@@ -49,9 +49,18 @@ typedef struct
 
 typedef struct
 {
+	float  x, y, w, h;
+}CheckPoint;
+
+typedef struct
+{
 	float x, y, w, h;
 } Brick;
 
+typedef struct
+{
+	float x, y, w, h;
+} Coin;
 
 typedef struct
 {
@@ -88,6 +97,14 @@ typedef struct
 	EnemyShort** enemiesShort;
 	int numEnemiesShort;
 
+	//Coin
+	Coin** coin;
+	int numCoin;
+
+	//CheckPoint
+	CheckPoint** checkpoint;
+	int numCheckPoint;
+
 	//Menu Items
 	MenuItem* items;
 
@@ -98,9 +115,11 @@ typedef struct
 	int time;
 
 	//Image
+	SDL_Texture* IMGcheckpoint;
 	SDL_Texture* IMGbrick;
 	SDL_Texture* playerFrames[3];
 	SDL_Texture* backGr;
+	SDL_Texture* IMGCoin;
 	SDL_Texture* IMGenemies;
 	SDL_Texture* IMGenemiesShort;
 	SDL_Texture* IMGbullet;

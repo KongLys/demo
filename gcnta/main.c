@@ -14,21 +14,19 @@ int main(int argc, char* argv[]) {
 	}
 
 	TTF_Init();
-	TTF_Font* font = TTF_OpenFont("Take-Coffee.ttf", 32);
-
+	TTF_Font* font = TTF_OpenFont("victor-pixel.ttf", 48);
+	gameState.font = font;
 	gameState.renderer1 = renderer;
-	
+
 	loadGame(&gameState);
 	short done = 0;
 	menuOP(renderer, font, done);
-	
+
 	while (!done)
 	{
 		done = processEvent(windown, &gameState);
 
 		processGame(&gameState);
-		
-		collisionDetect(&gameState);
 
 		doRenderer(renderer, &gameState);
 
@@ -45,7 +43,7 @@ int main(int argc, char* argv[]) {
 	SDL_DestroyTexture(gameState.label);
 
 	TTF_CloseFont(gameState.font);
-	
+
 	cleanUpAudio();
 
 	SDL_DestroyWindow(windown);
