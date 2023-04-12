@@ -12,8 +12,10 @@
 int cntBrick(GameState* game);
 int cntEnemies(GameState* game);
 int cntEnemiesShort(GameState* game);
+int cntCheckPoint(GameState* game);
 int cntCoin(GameState* game);
 
+void loadCheckPoint(GameState* game);
 void loadEnemies(GameState* game);
 void loadEnemiesShort(GameState* game);
 void loadCoin(GameState* game);

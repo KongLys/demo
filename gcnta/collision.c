@@ -140,6 +140,21 @@ void collisionPlayerWithCoin(GameState* game)
 	}
 }
 
+void collisionPlayerWithCheckPoint(GameState* game)
+{
+	for (int i = 0; i < game->numCheckPoint; i++)
+	{
+		if (game->checkpoint[i])
+		{
+			if (game->player.x + game->player.w > game->checkpoint[i]->x && game->player.x < game->checkpoint[i]->x + game->checkpoint[i]->w && game->player.y + game->player.h > game->checkpoint[i]->y && game->player.y < game->checkpoint[i]->y + game->checkpoint[i]->h)
+			{
+				game->player.x = game->checkpoint[i]->x + game->checkpoint[i]->w / 2;
+				game->player.y = game->checkpoint[i]->y + game->checkpoint[i]->h;
+			}
+		}
+	}
+}
+
 short collisionPlayerWithEnnemiesShort(GameState* game)
 {
 	for (int i = 0; i < game->numEnemiesShort; i++)

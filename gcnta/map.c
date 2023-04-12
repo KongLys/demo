@@ -52,6 +52,32 @@ int cntEnemiesShort(GameState* game)
 	return cnt;
 }
 
+int cntCheckPoint(GameState* game)
+{
+	FILE* fp = NULL;
+	fopen_s(&fp, "map_demo.txt", "r");
+	if (fp == NULL)
+	{
+		printf("Cannot open map_demo.txt!\n\n");
+		return;
+	}
+	int cnt = 0;
+	for (int i = 0, val = 0; i < MAX_Y; i++)
+	{
+		for (int j = 0; j < MAX_X; j++)
+		{
+			fscanf_s(fp, "%d", &val);
+			if (val == 5)
+			{
+				cnt++;
+			}
+		}
+	}
+	game->checkpoint = (CheckPoint**)malloc(cnt * sizeof(CheckPoint*));
+	fclose(fp);
+	return cnt;
+}
+
 int cntBrick(GameState* game)
 {
 	FILE* fp = NULL;
@@ -200,6 +226,37 @@ void loadCoin(GameState* game)
 				game->coin[cnt]->h = 24;
 				game->coin[cnt]->x = j * game->coin[cnt]->w *3/2;
 				game->coin[cnt]->y = i * game->coin[cnt]->h * 3/2;
+				cnt++;
+			}
+		}
+	}
+	fclose(fp);
+}
+
+void loadCheckPoint(GameState* game)
+{
+	FILE* fp = NULL;
+	fopen_s(&fp, "map_demo.txt", "r");
+	if (fp == NULL)
+	{
+		printf("Cannot open map_demo.txt!\n\n");
+		return;
+	}
+	for (int i = 0; i < game->numCheckPoint; i++)
+	{
+		game->checkpoint[i] = (CheckPoint*)malloc(sizeof(CheckPoint));
+	}
+	for (int i = 0, cnt = 0, val = 0; i < MAX_Y; i++)
+	{
+		for (int j = 0; j < MAX_X; j++)
+		{
+			fscanf_s(fp, "%d", &val);
+			if (val == 5)
+			{
+				game->checkpoint[cnt]->w = 64;
+				game->checkpoint[cnt]->h = 64;
+				game->checkpoint[cnt]->x = j * game->checkpoint[cnt]->w;
+				game->checkpoint[cnt]->y = i * game->checkpoint[cnt]->h;
 				cnt++;
 			}
 		}

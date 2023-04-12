@@ -14,6 +14,17 @@ void loadGame(GameState* game)
 	game->IMGbrick = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
 
+	//Load CheckPoint
+	surface = IMG_Load("check_points.jpg");
+	if (surface == NULL)
+	{
+		printf("Cannot find check_points.jpg! \n\n");
+		SDL_Quit();
+		exit(1);
+	}
+	game->IMGcheckpoint= SDL_CreateTextureFromSurface(game->renderer1, surface);
+	SDL_FreeSurface(surface);
+
 	//Load character
 	surface = IMG_Load("waiting.png");
 	if (surface == NULL)
@@ -100,15 +111,6 @@ void loadGame(GameState* game)
 	game->IMGCoin = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
 
-	//load fonts
-	game->font = TTF_OpenFont("victor-pixel.ttf", 48);
-	if (!game->font)
-	{
-		printf("Cannot find font file! \n\n");
-		SDL_Quit();
-		exit(1);
-	}
-
 	//Load info player
 	game->player.x = 250;
 	game->player.y = 10;
@@ -147,16 +149,18 @@ void loadGame(GameState* game)
 		game->bulletEnemies[i] = NULL;
 	}
 
-	//Count bricks, enemies, short enemies
+	//Count bricks, enemies, short enemies, check points
 	game->numBrick = cntBrick(game);
 	game->numEnemies = cntEnemies(game);
 	game->numEnemiesShort = cntEnemiesShort(game);
 	game->numCoin = cntCoin(game);
+	game->numCheckPoint = cntCheckPoint(game);
 
-	//Load bricks, enemies, short enemies
+	//Load bricks, enemies, short enemies, check point
 	loadEnemies(game);
 	loadEnemiesShort(game);
 	loadCoin(game);
+	loadCheckPoint(game);
 	loadMap(game);
 }
 
