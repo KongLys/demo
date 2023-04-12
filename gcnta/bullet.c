@@ -19,7 +19,7 @@ void addBullet(GameState* game)
 		if (game->player.flipChar == 0)
 		{
 			game->bullets[found]->dx = 20;
-			game->bullets[found]->dy = 0;
+			game->bullets[found]->dy = 20 * sin(game->player.angle * M_PI / 180);
 			game->bullets[found]->x = game->player.x + game->player.w;
 			game->bullets[found]->rangeLeft = game->bullets[found]->x - 500;
 			game->bullets[found]->rangeRight = game->bullets[found]->x + 500;
@@ -27,7 +27,7 @@ void addBullet(GameState* game)
 		else
 		{
 			game->bullets[found]->dx = -20;
-			game->bullets[found]->dy = 0;
+			game->bullets[found]->dy = 20 * sin(game->player.angle * M_PI / 180);
 			game->bullets[found]->x = game->player.x;
 			game->bullets[found]->rangeLeft = game->bullets[found]->x - 500;
 			game->bullets[found]->rangeRight = game->bullets[found]->x + 500;
@@ -194,5 +194,87 @@ void removeBulletEnemies(GameState* game, int i)
 	{
 		free(game->bulletEnemies[i]);
 		game->bulletEnemies[i] = NULL;
+	}
+}
+
+//Boss
+void addBulletBoss(GameState* game, int j)
+{
+	int foundB = -1;
+	for (int i = 0; i < MAX_BULLETS_BOSS; i++)
+	{
+		if (game->bulletBoss[i] == NULL)
+		{
+			foundB = i;
+			break;
+		}
+	}
+	if (foundB >= 0)
+	{
+		game->bulletBoss[foundB] = (Bullet*)malloc(sizeof(Bullet));
+		game->bulletBoss[foundB]->y = game->boss[j]->y + game->boss[j]->h / 2;
+		game->bulletBoss[foundB]->x = game->boss[j]->x;
+		game->bulletBoss[foundB]->dx = 10 * cos(atan2(game->player.y + game->player.h / 2 - game->boss[j]->y - game->boss[j]->h / 2, game->player.x + game->player.w / 2 - game->boss[j]->x));
+		game->bulletBoss[foundB]->dy = 10 * sin(atan2(game->player.y + game->player.h / 2 - game->boss[j]->y - game->boss[j]->h / 2, game->player.x + game->player.w / 2 - game->boss[j]->x));
+		game->bulletBoss[foundB]->rangeLeft = game->bulletBoss[foundB]->x - SCREEN_WIDTH;
+		game->bulletBoss[foundB]->rangeRight = game->bulletBoss[foundB]->x + SCREEN_WIDTH;
+	}
+}
+
+void ChangeOrbitBullet(GameState* game, int i)
+{
+	if (game->bulletBoss[i])
+	{
+		game->bulletBoss[i]->dx = 10 * sin(2 * game->time * 0.1 * M_PI / 180);
+		game->bulletBoss[i]->dy = 10 * cos(2 * game->time * 0.1 * M_PI / 180);
+	}
+}
+
+short checkBulletBossWithBrick(GameState* game, int j)
+{
+	for (int i = 0; i < game->numBrick; i++)
+	{
+		if (game->bulletBoss[j]->x < game->bulletBoss[j]->rangeLeft || game->bulletBoss[j]->x > game->bulletBoss[j]->rangeRight)
+		{
+			return 1;
+		}
+		if (game->bulletBoss[j]->x + 8 > game->bricks[i]->x && game->bulletBoss[j]->x < game->bricks[i]->x + game->bricks[i]->w && game->bulletBoss[j]->y + 8 > game->bricks[i]->y && game->bulletBoss[j]->y < game->bricks[i]->y + game->bricks[i]->h)
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+
+
+short checkBulletBossWithPlayer(GameState* game, int j)
+{
+	if (game->bulletBoss[j]->x + 8 >= game->player.x && game->bulletBoss[j]->x <= game->player.x + game->player.w && game->bulletBoss[j]->y + 8 >= game->player.y && game->bulletBoss[j]->y <= game->player.y + game->player.h)
+	{
+		if (game->player.lives >= 0)
+		{
+			game->player.lives--;
+			game->player.hit = 1;
+		}
+		return 1;
+	}
+	return 0;
+}
+
+short checkBulletBoss(GameState* game, int j)
+{
+	if (checkBulletBossWithBrick(game, j) == 1 || checkBulletBossWithPlayer(game, j))
+	{
+		return 1;
+	}
+	return 0;
+}
+
+void removeBulletBoss(GameState* game, int i)
+{
+	if (game->bulletBoss[i])
+	{
+		free(game->bulletBoss[i]);
+		game->bulletBoss[i] = NULL;
 	}
 }

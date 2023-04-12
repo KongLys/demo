@@ -125,23 +125,9 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 
 	//Draw player
 	SDL_Rect rect_p = { game->scrollX + game->player.x, game->player.y, game->player.w, game->player.h };
-	if (game->player.animFrame == 2)
-	{
-		SDL_Rect scrRect_p = { 43 * game->player.currentCut, 0, 43, 37 };
-		SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
-	}
-	else if (game->player.animFrame == 1)
-	{
-		SDL_Rect scrRect_p = { 22 * game->player.currentWalk, 0 , 22, 33 };
-		SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
-	}
-	else
-	{
-		SDL_Rect scrRect_p = { 24 * game->player.currentWait, 0, 24, 32 };
-		SDL_RenderCopyEx(renderer, game->playerFrames[game->player.animFrame], &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
-	}
-
-
+	SDL_Rect scrRect_p = { 48 * game->player.xAni, 48 * game->player.yAni, 48, 48 };
+	SDL_RenderCopyEx(renderer, game->IMGPlayer, &scrRect_p, &rect_p, 0, NULL, game->player.flipChar);
+	
 
 	//Draw bullet
 
@@ -161,6 +147,15 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 		{
 			SDL_Rect rectBuE = { game->scrollX + game->bulletEnemies[i]->x, game->bulletEnemies[i]->y, 8, 8 };
 			SDL_RenderCopy(renderer, game->IMGbullet, NULL, &rectBuE);
+		}
+	}
+	//Draw bullet of boss
+	for (int i = 0; i < MAX_BULLETS_BOSS; i++)
+	{
+		if (game->bulletBoss[i])
+		{
+			SDL_Rect rectBuB = { game->scrollX + game->bulletBoss[i]->x, game->bulletBoss[i]->y, 8, 8 };
+			SDL_RenderCopy(renderer, game->IMGbullet, NULL, &rectBuB);
 		}
 	}
 }
@@ -197,7 +192,7 @@ void drawStatusLives(GameState* game)
 	//vi tri hinh nhan vat
 	SDL_Rect scrRect_p = { 0, 0, 24, 32 };
 	SDL_Rect rect_p = { SCREEN_WIDTH / 2 - 80, SCREEN_HEIGHT / 2 - 50, 48, 48 };
-	SDL_RenderCopyEx(game->renderer1, game->playerFrames[0], &scrRect_p, &rect_p, 0, NULL, 0);
+	SDL_RenderCopyEx(game->renderer1, game->IMGPlayer, &scrRect_p, &rect_p, 0, NULL, 0);
 
 	//ve text
 	SDL_Rect textRect = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - game->label_h, game->label_w, game->label_h };

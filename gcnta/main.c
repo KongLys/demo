@@ -33,9 +33,7 @@ int main(int argc, char* argv[]) {
 	}
 	//Free and close the program
 	SDL_DestroyTexture(gameState.IMGbrick);
-	SDL_DestroyTexture(gameState.playerFrames[0]);
-	SDL_DestroyTexture(gameState.playerFrames[1]);
-	SDL_DestroyTexture(gameState.playerFrames[2]);
+	SDL_DestroyTexture(gameState.IMGPlayer);
 	SDL_DestroyTexture(gameState.backGr);
 	SDL_DestroyTexture(gameState.IMGenemies);
 	SDL_DestroyTexture(gameState.IMGenemiesShort);

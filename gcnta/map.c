@@ -52,6 +52,32 @@ int cntEnemiesShort(GameState* game)
 	return cnt;
 }
 
+int cntBoss(GameState* game)
+{
+	FILE* fp = NULL;
+	fopen_s(&fp, "map_demo.txt", "r");
+	if (fp == NULL)
+	{
+		printf("Cannot open map_demo.txt!\n\n");
+		return;
+	}
+	int cnt = 0;
+	for (int i = 0, val = 0; i < MAX_Y; i++)
+	{
+		for (int j = 0; j < MAX_X; j++)
+		{
+			fscanf_s(fp, "%d", &val);
+			if (val == 6)
+			{
+				cnt++;
+			}
+		}
+	}
+	game->boss = (EnemyShort**)malloc(cnt * sizeof(EnemyShort*));
+	fclose(fp);
+	return cnt;
+}
+
 int cntCheckPoint(GameState* game)
 {
 	FILE* fp = NULL;
@@ -195,6 +221,38 @@ void loadEnemiesShort(GameState* game)
 				game->enemiesShort[cnt]->valid = 1;
 				game->enemiesShort[cnt]->flipChar = 1;
 				game->enemiesShort[cnt]->lives = 1;
+				cnt++;
+			}
+		}
+	}
+	fclose(fp);
+}
+
+void loadBoss(GameState* game)
+{
+	FILE* fp = NULL;
+	fopen_s(&fp, "map_demo.txt", "r");
+	if (fp == NULL)
+	{
+		printf("Cannot open map_demo.txt!\n\n");
+		return;
+	}
+	for (int i = 0; i < game->numBoss; i++)
+	{
+		game->boss[i] = (Enemy*)malloc(sizeof(Enemy));
+	}
+	for (int i = 0, cnt = 0, val = 0; i < MAX_Y; i++)
+	{
+		for (int j = 0; j < MAX_X; j++)
+		{
+			fscanf_s(fp, "%d", &val);
+			if (val == 6)
+			{
+				game->boss[cnt]->w = 64;
+				game->boss[cnt]->h = 64;
+				game->boss[cnt]->x = j * game->enemies[cnt]->w;
+				game->boss[cnt]->y = i * game->enemies[cnt]->h;
+				game->boss[cnt]->lives = 100;
 				cnt++;
 			}
 		}
