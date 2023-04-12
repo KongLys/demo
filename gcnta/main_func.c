@@ -115,7 +115,6 @@ int processEvent(SDL_Window* windown, GameState* game)
 		{
 			game->player.yAni = 2;
 		}
-		shotSound();
 	}
 	else
 	{

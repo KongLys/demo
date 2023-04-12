@@ -1,8 +1,10 @@
 #include "bullet.h"
+#include "audio.h"
 
 //Bullet of player
 void addBullet(GameState* game)
 {
+	shotSound();
 	int found = -1;
 	for (int i = 0; i < MAX_BULLETS; i++)
 	{
