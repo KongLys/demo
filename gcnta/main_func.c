@@ -55,6 +55,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 					}
 					game->player.canDash = 0;
 					game->player.dashCoolDown = 35;
+					flash();
 				}
 				break;
 			}
