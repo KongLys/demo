@@ -4,7 +4,6 @@
 //Bullet of player
 void addBullet(GameState* game)
 {
-	shotSound();
 	int found = -1;
 	for (int i = 0; i < MAX_BULLETS; i++)
 	{
@@ -16,6 +15,7 @@ void addBullet(GameState* game)
 	}
 	if (found >= 0)
 	{
+		shotSound();
 		game->bullets[found] = (Bullet*)malloc(sizeof(Bullet));
 		game->bullets[found]->y = game->player.y + game->player.h / 2;
 		if (game->player.flipChar == 0)
