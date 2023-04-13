@@ -18,10 +18,12 @@ int main(int argc, char* argv[]) {
 	gameState.font = font;
 	gameState.renderer1 = renderer;
 
-	loadGame(&gameState);
 	short done = 0;
-	menuOP(renderer, font, done, &gameState);
 
+	 done = menuOP(renderer, font, done, &gameState);
+
+	loadGame(&gameState);
+	
 	while (!done)
 	{
 		done = processEvent(windown, &gameState);

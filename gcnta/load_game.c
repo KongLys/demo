@@ -1,4 +1,4 @@
-#include "load_game.h"
+﻿#include "load_game.h"
 
 void loadGame(GameState* game)
 {
@@ -92,6 +92,7 @@ void loadGame(GameState* game)
 	SDL_FreeSurface(surface);
 
 	//Load info player
+
 	game->player.x = 250;
 	game->player.y = 10;
 	game->player.w = 33;
@@ -111,6 +112,13 @@ void loadGame(GameState* game)
 	game->player.shootBullet = 0;
 	game->player.stopMove = 1;
 
+	game->player.currentCut = 0;
+	game->player.currentWait = 0;
+	game->player.currentWalk = 0;
+	if (game->continueGame)
+	{
+		take_process(game);
+	}
 
 	//Load info GameState
 	game->scrollX = 0;
@@ -152,12 +160,61 @@ void loadGame(GameState* game)
 	loadMap(game);
 }
 
+void save_process(GameState* game)
+{
+	FILE* fp = NULL;
+	fopen_s(&fp, "save_process.txt", "w");
+	fprintf_s(fp, "%f\n%f\n%d\n", game->player.x, game->player.y, game->player.lives);
+	fclose(fp);// là á, t chưa có gọi cái hàm save_process này ở đâu, nhma khi chết nó vẫn lấy tọa đọ của xy để nó đọc lại
+}
+
+short take_process(GameState* game)
+{
+	FILE* fp = NULL;
+	int num_values_read = 0;
+	fopen_s(&fp, "save_process.txt", "r");
+	if (fp == NULL)
+	{
+		printf("Error!");
+		exit(1);
+	}
+
+	num_values_read = fscanf_s(fp, "%f%f%d", &game->player.x, &game->player.y, &game->player.lives);
+	fclose(fp);
+	if (num_values_read == 0) {
+		return 0;
+	}
+	else {
+		return num_values_read;
+	}	
+}
+
+void readXY(GameState* game)
+{
+	FILE* fp = NULL;
+	fopen_s(&fp, "save_process.txt", "r");
+	if (fp == NULL)
+	{
+		printf("Error!");
+		exit(1);
+	}
+	int num_values_read;
+	num_values_read = fscanf_s(fp, "%f%f", &game->player.x, &game->player.y);
+	fclose(fp);
+	if (num_values_read == 0) {
+		return 0;
+	}
+	else {
+		return num_values_read;
+	}
+	
+}
+
 void loadAgain(GameState* game)
 {
-	game->player.x = 250;
-	game->player.y = 10;
-	game->player.w = 36;
-	game->player.h = 36;
+	readXY(game);
+	game->player.w = 64;
+	game->player.h = 64;
 	game->player.dx = 0;
 	game->player.dy = 0;
 	game->player.dashCoolDown = 0;
@@ -180,4 +237,6 @@ void loadAgain(GameState* game)
 	loadEnemiesShort(game);
 	loadBoss(game);
 	loadCoin(game);
+	loadCheckPoint(game);
 }
+ 

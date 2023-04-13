@@ -18,9 +18,6 @@
     <ClCompile Include="collision.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bullet.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="screen_status.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,10 +36,13 @@
     <ClCompile Include="menu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="audio.c">
+    <ClCompile Include="map.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="map.c">
+    <ClCompile Include="bullet.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="audio.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

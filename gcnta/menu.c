@@ -86,18 +86,22 @@ short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game
                 {
                     if (selected_item == 0)
                     {
-
-                        SDL_Quit();
+                        game->continueGame = 1;
+                        done = 0;
+                        quit = 1;
                     }
                     if (selected_item == 1)
                     {
-                        player_name(renderer, font);
+                        //player_name(renderer, font, &game);
                         backgroundMusic();
+                        game->continueGame = 0;
                         done = 0;
                         quit = 1;
                     }
                     if (selected_item == 2)
                     {
+                        done = 1;
+                        quit = 1;
                         SDL_Quit();
                     }
 
@@ -115,20 +119,25 @@ short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game
                     if ((x >= items[i].rect.x - 100 && x <= items[i].rect.x + 100) && y >= items[i].rect.y - 32 && y <= items[i].rect.y + 32)
                     {
                         selected_item = i;
-                        if (selected_item == 0)
+                        if (selected_item == 0) 
                         {
-
-                            SDL_Quit();
+                            done = 0;
+                            game->continueGame = 1; 
+                            quit = 1;
                         }
                         if (selected_item == 1)
                         {
-                            printf("%s", player_name(renderer, font));
+                            //player_name(renderer, font, &game);
                             backgroundMusic();
+                            game->continueGame = 0;
                             done = 0;
                             quit = 1;
                         }
                         if (selected_item == 2)
                         {
+                            done = 1;
+                            quit = 1;
+
                             SDL_Quit();
                         }
                         break;
@@ -155,14 +164,14 @@ short menuOP(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game
             }
         }
     }
+    return done;
 }
 
-short menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game)
+short menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game, SDL_Window* windown)
 {
     endMusic();
-    GameState gameState;
     MenuItem items[] = {
-        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 50, 0, 0 }, "MENU", { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 50, 0, 0 }, "PLAY AGAIN", { 255, 255, 255, 255 } },
         { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50, 0, 0 }, "LEAVE", { 255, 255, 255, 255 } }
     };
     short item_count = sizeof(items) / sizeof(items[2]);
@@ -199,31 +208,31 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game
             case SDL_KEYDOWN:
                 switch (event.key.keysym.sym)
                 {
-                case SDLK_w:
-                case SDLK_UP:
-                    selected_item = (selected_item - 1 + item_count) % item_count;
-                    render_menu(renderer, items, item_count, selected_item, font);
-                    break;
-                case SDLK_s:
-                case SDLK_DOWN:
-                    selected_item = (selected_item + 1) % item_count;
-                    render_menu(renderer, items, item_count, selected_item, font);
-                    break;
-                case SDLK_RETURN:
-                {
-                    if (selected_item == 0)
+                    case SDLK_w:
+                    case SDLK_UP:
+                        selected_item = (selected_item - 1 + item_count) % item_count;
+                        render_menu(renderer, items, item_count, selected_item, font);
+                        break;
+                    case SDLK_s:
+                    case SDLK_DOWN:
+                        selected_item = (selected_item + 1) % item_count;
+                        render_menu(renderer, items, item_count, selected_item, font);
+                        break;
+                    case SDLK_RETURN:
                     {
-                        done = 1;
-                        menuOP(renderer, font, done, game);
-                        quit = 1;
+                        if (selected_item == 0)
+                        {
+                            backgroundMusic();
+                            quit = 1;
+                        }
+                        if (selected_item == 1)
+                        {
+                            quit = 1;
+                            //SDL_DestroyWindow(windown);
+                            SDL_Quit();
+                        }
+                        break;
                     }
-                    if (selected_item == 1)
-                    {
-                        SDL_Quit();
-                    }
-                    break;
-                }
-
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
@@ -232,17 +241,18 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game
                 SDL_GetMouseState(&x, &y);
                 for (int i = 0; i < item_count; i++)
                 {
-                    if ((x >= items[i].rect.x - 50 && x <= items[i].rect.x + 50) && y >= items[i].rect.y - 32 && y <= items[i].rect.y + 32)
+                    if ((x >= items[i].rect.x - 150 && x <= items[i].rect.x + 150) && y >= items[i].rect.y - 32 && y <= items[i].rect.y + 32)
                     {
                         selected_item = i;
                         if (selected_item == 0)
                         {
-                            done = 0;
-                            menuOP(renderer, font, done, game);
+                            backgroundMusic();
                             quit = 1;
                         }
                         if (selected_item == 1)
                         {
+                            quit = 1;
+                            //SDL_DestroyWindow(windown);
                             SDL_Quit();
                         }
                         break;
@@ -269,11 +279,11 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game
             }
         }
     }
+    return done;
+    
 }
-
 void menuPause(SDL_Renderer* renderer, TTF_Font* font)
 {
-    GameState gameState;
     MenuItem items[] = {
         { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100, 0, 0 }, "CONTINUE", { 255, 255, 255, 255 } },
         { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0 }, "SETTING", { 255, 255, 255, 255 } },
@@ -375,11 +385,10 @@ void menuPause(SDL_Renderer* renderer, TTF_Font* font)
             }
         }
     }
-}
-
-char* player_name(SDL_Renderer* renderer, TTF_Font* font)
+} 
+/*
+char* player_name(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
 {
-    GameState gameState;
     MenuItem items[] = {
         { { SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2, 0, 0 }, "YOUR NAME:", { 255, 255, 155, 255 } }
     };
@@ -401,6 +410,8 @@ char* player_name(SDL_Renderer* renderer, TTF_Font* font)
     // bắt kí  tự nhập chuỗi (1)
     char inputText[100] = "";
     int len = 0;
+    
+    //game->player.name = (char*)malloc(50 * sizeof(char));
 
     SDL_Color textColor = { 255, 255, 255, 255 };
     // xử lí sự kiện
@@ -419,6 +430,7 @@ char* player_name(SDL_Renderer* renderer, TTF_Font* font)
                     len--;
                 }
                 if (event.key.keysym.sym == SDLK_RETURN && len > 0) {
+                    game->player.name = inputText;
                     quit = 1;
                 }
                 break;
@@ -428,7 +440,6 @@ char* player_name(SDL_Renderer* renderer, TTF_Font* font)
                 len++;
                 break;
             }
-
             SDL_RenderClear(renderer);
             SDL_RenderCopy(renderer, backGrText, NULL, &backGr);
             // truyền -1 vào để trong render_menu không làm đổi màu khi ta bấm nút
@@ -454,3 +465,4 @@ char* player_name(SDL_Renderer* renderer, TTF_Font* font)
     return inputText;
     free(inputText);
 }
+*/

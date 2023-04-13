@@ -288,7 +288,10 @@ void processGame(GameState* game)
 		//Collision
 		collisionPlayerWithCoin(game);
 		collisionDetect(game);
+		collisionPlayerWithCheckPoint(game);
 	}
+
+	//When player touch checkpoint
 
 	//When player touch enemies
 	if (collisionPlayerWithEnnemies(game) == 1 || collisionPlayerWithEnnemiesShort(game) == 1 || game->player.hit == 1)
@@ -296,6 +299,22 @@ void processGame(GameState* game)
 		game->player.hit = 0;
 		dameSound();
 		//Free and reload
+		for (int i = 0; i < MAX_BULLETS; i++)
+		{
+			if (game->bullets[i])
+			{
+				removeBullet(game, i);
+			}
+		}
+
+		for (int i = 0; i < MAX_BULLETS_ENEMIES; i++)
+		{
+			if (game->bulletEnemies[i])
+			{ 
+				removeBulletEnemies(game, i);
+			}
+		}
+
 		for (int i = 0; i < game->numEnemies; i++)
 		{
 			if (game->enemies[i])
@@ -317,6 +336,8 @@ void processGame(GameState* game)
 	{
 		short done = 1;
 		game->player.lives = 3;
+		game->player.x = 250;
+		game->player.y = 550;
 		menuED(game->renderer1, game->font, done, game);
 	}
 }
