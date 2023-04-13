@@ -123,10 +123,21 @@ void aniBoss(GameState* game)
 {
 	for (int i = 0; i < game->numBoss; i++)
 	{
-		if (game->boss[i] && game->time % 8 == 0)
+		if (game->boss[i])
 		{
-			game->boss[i]->xAni++;
-			game->boss[i]->xAni %= 2;
+			if (game->boss[i]->x + game->boss[i]->w/2 > game->player.x)
+			{
+				game->boss[i]->flipChar = 0;
+			}
+			else
+			{
+				game->boss[i]->flipChar = 1;
+			}
+			if (game->time % 8 == 0)
+			{
+				game->boss[i]->xAni++;
+				game->boss[i]->xAni %= 2;
+			}
 		}
 	}
 }
@@ -140,7 +151,8 @@ void bossMove(GameState* game)
 			game->boss[i]->x += game->boss[i]->dx;
 			game->boss[i]->y += game->boss[i]->dy;
 			game->boss[i]->dy += GRAVITY;
-			if (game->time % 20 == 0)
+			game->boss[i]->dx = 2 * cos(2 * M_PI * 0.002 * game->time);
+			if (game->time % 200 == 0)
 			{
 				addBulletBoss(game, i);
 			}

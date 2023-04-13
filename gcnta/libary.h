@@ -51,7 +51,7 @@ typedef struct
 typedef struct
 {
 	float  x, y, w, h, dx, dy;
-	short lives, xAni;
+	short lives, xAni, flipChar;
 } Boss;
 
 typedef struct

@@ -55,18 +55,19 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 	}
 
 	//Draw Score
-		char* str = (char*)malloc(30, sizeof(char));
-		sprintf_s(str, 30, "SCORE: %d", game->player.score);
+	char* str = (char*)malloc(30, sizeof(char));
+	sprintf_s(str, 30, "SCORE: %d", game->player.score);
 
-		SDL_Color white = { 255, 255, 255, 255 };
-		SDL_Surface* tmp = TTF_RenderText_Blended(game->font, str, white);
-		game->label_h = tmp->h;
-		game->label_w = tmp->w;
-		game->label = SDL_CreateTextureFromSurface(renderer, tmp);
-		SDL_FreeSurface(tmp);
-		free(str);
-		SDL_Rect textRect = { 0, 0, game->label_w, game->label_h };
-		SDL_RenderCopy(renderer, game->label, NULL, &textRect);
+	SDL_Color white = { 255, 255, 255, 255 };
+	SDL_Surface* tmp = TTF_RenderText_Blended(game->font, str, white);
+	game->label_h = tmp->h;
+	game->label_w = tmp->w;
+	game->label = SDL_CreateTextureFromSurface(renderer, tmp);
+	SDL_FreeSurface(tmp);
+	free(str);
+	SDL_Rect textRect = { 0, 0, game->label_w, game->label_h };
+	SDL_RenderCopy(renderer, game->label, NULL, &textRect);
+
 	//Draw enemies
 	for (int i = 0; i < game->numEnemies; i++)
 	{
@@ -120,9 +121,9 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 		if (game->boss[i] != NULL)
 		{
 			SDL_SetRenderDrawColor(renderer, 220, 20, 60, 255); // Set color of heath point
-			if (fabs(game->player.x - game->boss[i]->x) < SCREEN_WIDTH / 2)
+			if (fabs(game->player.x - game->boss[i]->x) < SCREEN_WIDTH )
 			{
-				SDL_Rect hpRectBoss = { game->scrollX + game->boss[i]->x, game->boss[i]->y - 30, 1*game->boss[i]->lives, 5};
+				SDL_Rect hpRectBoss = { game->scrollX + game->boss[i]->x + game->boss[i]->w /2 - game->boss[i]->lives, game->boss[i]->y - 100, 2 * game->boss[i]->lives, 7};
 				//Draw hp
 				SDL_RenderFillRects(renderer, &hpRectBoss, 1);
 			}
@@ -130,7 +131,7 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 			SDL_Rect scrRectES = { 360 * game->boss[i]->xAni, 0, game->boss[i]->w, game->boss[i]->h };
 
 			//Draw enemies
-			SDL_RenderCopyEx(renderer, game->IMGBoss, &scrRectES, &rectES, 0, NULL, 0);
+			SDL_RenderCopyEx(renderer, game->IMGBoss, &scrRectES, &rectES, 0, NULL, game->boss[i]->flipChar);
 		}
 	}
 

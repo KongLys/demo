@@ -11,12 +11,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 		{
 		case SDL_WINDOWEVENT_CLOSE:
 		{	
-			if (windown)
-			{
-				SDL_DestroyWindow(windown);
-				windown = NULL;
-				done = 1;
-			}
+			game->done = 1;
 		}
 		break;
 		case SDL_KEYDOWN:
@@ -27,7 +22,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 				menuPause(game->renderer1, game->font);
 				break;
 			case SDLK_ESCAPE:
-				done = 1;
+				game->done = 1;
 				break;
 
 			case SDLK_x:
@@ -68,7 +63,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 		break;
 		case SDL_QUIT:
 			//quit the game
-			done = 1;
+			game->done = 1;
 			break;
 		}
 	}

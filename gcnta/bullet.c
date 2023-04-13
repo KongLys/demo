@@ -102,9 +102,29 @@ short checkBulletsWithEnemiesShort(GameState* game, int j)
 	return 0;
 }
 
+short checkBulletsWithBoss(GameState* game, int j)
+{
+	for (int i = 0; i < game->numBoss; i++)
+	{
+		if (game->boss[i] != NULL)
+		{
+			if (game->bullets[j]->x + 8 >= game->boss[i]->x + 90 && game->bullets[j]->x <= game->boss[i]->x + 180 && game->bullets[j]->y + 8 >= game->boss[i]->y +10 && game->bullets[j]->y <= game->boss[i]->y + 90)
+			{
+				game->boss[i]->lives--;
+				if (game->boss[i]->lives == 0)
+				{
+					game->player.score += 999;
+				}
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
 short checkBullets(GameState* game, int j)
 {
-	if (checkBulletsWithBrick(game, j) == 1 || checkBulletsWithEnemies(game, j) == 1 || checkBulletsWithEnemiesShort(game, j) == 1)
+	if (checkBulletsWithBrick(game, j) == 1 || checkBulletsWithEnemies(game, j) == 1 || checkBulletsWithEnemiesShort(game, j) == 1 || checkBulletsWithBoss(game, j) == 1)
 	{
 		return 1;
 	}

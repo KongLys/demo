@@ -267,6 +267,7 @@ void loadBoss(GameState* game)
 				game->boss[cnt]->dx = 0;
 				game->boss[cnt]->dy = 0;
 				game->boss[cnt]->xAni = 0;
+				game->boss[cnt]->flipChar = 0;
 				game->boss[cnt]->lives = 100;
 				cnt++;
 			}

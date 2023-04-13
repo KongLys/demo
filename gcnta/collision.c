@@ -132,6 +132,7 @@ void collisionDetect(GameState* game)
 				}				
 			}
 		}
+		//boss
 		for (int j = 0; j < game->numBoss; j++)
 		{
 			if (game->boss[j])
@@ -141,9 +142,14 @@ void collisionDetect(GameState* game)
 				{
 					if (bossy + bossh > by && bossy < by && game->boss[j]->dy > 0) //On brick
 					{
-						game->boss[j]->y = by - bh;
+						game->boss[j]->y = by - bossh;
 						bossy = by - bossh;
 						game->boss[j]->dy = 0;
+					}
+					if (bossy < by + bh && bossy > by && game->boss[j]->dy < 0) //Brick above
+					{
+						game->boss[j]->y = by + bh;
+						bossy = by + bh;
 					}
 				}
 				if (bossy + bossh > by + 6 && bossy < by + bh * 39 / 40)
@@ -152,11 +158,13 @@ void collisionDetect(GameState* game)
 					{
 						game->boss[j]->x = bx - bossw; //edge left
 						bossx = bx - bossw;
+						game->boss[j]->dx = 0;
 					}
 					else if (bossx < bx + bw && bossx + bossw> bx + bw && game->boss[j]->dx < 0)
 					{
 						game->boss[j]->x = bx + bw; //edge right
 						bossx = bx + bw;
+						game->boss[j]->dx = 0;
 					}
 				}
 			}
@@ -174,6 +182,23 @@ short collisionPlayerWithEnnemies(GameState* game)
 				if(game->player.lives > 0)
 				game->player.lives--;
 				removeEnemies(game, i);
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+short collisionPlayerWithBoss(GameState* game)
+{
+	for (int i = 0; i < game->numBoss; i++)
+	{
+		if (game->boss[i])
+		{
+			if (game->player.x + game->player.w > game->boss[i]->x && game->player.x < game->boss[i]->x + game->boss[i]->w && game->player.y + game->player.h > game->boss[i]->y && game->player.y < game->boss[i]->y + game->boss[i]->h)
+			{
+				if (game->player.lives > 0)
+					game->player.lives--;
 				return 1;
 			}
 		}
