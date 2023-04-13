@@ -178,8 +178,8 @@ void loadEnemies(GameState* game)
 
 				game->enemies[cnt]->w = 64;
 				game->enemies[cnt]->h = 64;
-				game->enemies[cnt]->x = j * game->enemies[cnt]->w;
-				game->enemies[cnt]->y = i * game->enemies[cnt]->h;
+				game->enemies[cnt]->x = j * 120;
+				game->enemies[cnt]->y = i * 60;
 				game->enemies[cnt]->flipChar = 1;
 				game->enemies[cnt]->dx = 2;
 				game->enemies[cnt]->dy = 2;
@@ -219,8 +219,8 @@ void loadEnemiesShort(GameState* game)
 			{
 				game->enemiesShort[cnt]->w = 48;
 				game->enemiesShort[cnt]->h = 48;
-				game->enemiesShort[cnt]->x = j * game->enemiesShort[cnt]->w;
-				game->enemiesShort[cnt]->y = i * game->enemiesShort[cnt]->h;
+				game->enemiesShort[cnt]->x = j * 120 + 60;
+				game->enemiesShort[cnt]->y = i * 60;
 				game->enemiesShort[cnt]->xAni = 0;
 				game->enemiesShort[cnt]->yAni = 1;
 				game->enemiesShort[cnt]->dx = 2;
@@ -262,8 +262,8 @@ void loadBoss(GameState* game)
 			{
 				game->boss[cnt]->w = 64;
 				game->boss[cnt]->h = 64;
-				game->boss[cnt]->x = j * game->enemies[cnt]->w;
-				game->boss[cnt]->y = i * game->enemies[cnt]->h;
+				game->boss[cnt]->x = j * 120;
+				game->boss[cnt]->y = i * 60;
 				game->boss[cnt]->lives = 100;
 				cnt++;
 			}

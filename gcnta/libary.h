@@ -7,8 +7,8 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-#define SCREEN_WIDTH 1600
-#define SCREEN_HEIGHT  900
+#define SCREEN_WIDTH 1920
+#define SCREEN_HEIGHT  1080
 #define MAX_BULLETS 2
 #define MAX_BULLETS_ENEMIES 75
 #define MAX_BULLETS_BOSS 100

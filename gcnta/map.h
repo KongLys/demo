@@ -1,7 +1,7 @@
 #pragma once
 #include "libary.h"
 
-#define MAX_X 200 //Number column of the map
+#define MAX_X 400 //Number column of the map
 #define MAX_Y 15 //Number row of the map
 
 //val = 1 is wall
