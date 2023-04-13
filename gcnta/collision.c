@@ -133,6 +133,7 @@ void collisionPlayerWithCoin(GameState* game)
 		{
 			if (game->player.x + game->player.w > game->coin[i]->x && game->player.x < game->coin[i]->x + game->coin[i]->w && game->player.y + game->player.h > game->coin[i]->y && game->player.y < game->coin[i]->y + game->coin[i]->h)
 			{
+				game->player.score += 10;
 				free(game->coin[i]);
 				game->coin[i] = NULL;
 			}

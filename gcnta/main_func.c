@@ -210,6 +210,18 @@ void processGame(GameState* game)
 			}
 			game->player.xAni %= 5;
 		}
+		// Animation of Coin
+		for (int i = 0; i < game->numCoin; i++)
+		{
+			if (game->coin[i])
+			{
+				if (game->time % 10 == 0)
+				{
+					game->coin[i]->xAni++;
+					game->coin[i]->xAni %= 7;
+				}
+			}
+		}
 
 		//Set angle shooting
 		if (!game->player.aiming)

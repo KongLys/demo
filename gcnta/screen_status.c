@@ -67,6 +67,19 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 		SDL_RenderCopy(renderer, game->IMGbrick, NULL, &rect);
 	}
 
+	//Draw Score
+		char* str = (char*)malloc(30, sizeof(char));
+		sprintf_s(str, 30, "SCORE: %d", game->player.score);
+
+		SDL_Color white = { 255, 255, 255, 255 };
+		SDL_Surface* tmp = TTF_RenderText_Blended(game->font, str, white);
+		game->label_h = tmp->h;
+		game->label_w = tmp->w;
+		game->label = SDL_CreateTextureFromSurface(renderer, tmp);
+		SDL_FreeSurface(tmp);
+		free(str);
+		SDL_Rect textRect = { 0, 0, game->label_w, game->label_h };
+		SDL_RenderCopy(renderer, game->label, NULL, &textRect);
 	//Draw enemies
 	for (int i = 0; i < game->numEnemies; i++)
 	{
@@ -119,7 +132,8 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 		if (game->coin[i])
 		{
 			SDL_Rect rectCoin = { game->scrollX + game->coin[i]->x, game->coin[i]->y, game->coin[i]->w, game->coin[i]->h};
-			SDL_RenderCopy(renderer, game->IMGCoin, NULL, &rectCoin);
+			SDL_Rect scrRectCoin = { 800 * game->coin[i]->xAni, game->coin[i]->yAni * 800, 800, 800 };
+			SDL_RenderCopyEx(renderer, game->IMGCoin, &scrRectCoin, &rectCoin, 0, 0, 0);
 		}
 	}
 

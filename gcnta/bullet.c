@@ -65,6 +65,7 @@ short checkBulletsWithEnemies(GameState* game, int j)
 				game->enemies[i]->lives--;
 				if (game->enemies[i]->lives == 0)
 				{
+					game->player.score += 30;
 					removeEnemies(game, i);
 				}
 				return 1;
@@ -82,12 +83,16 @@ short checkBulletsWithEnemiesShort(GameState* game, int j)
 		{
 			if (game->bullets[j]->x + 8 >= game->enemiesShort[i]->x && game->bullets[j]->x <= game->enemiesShort[i]->x + game->enemiesShort[i]->w && game->bullets[j]->y + 8 >= game->enemiesShort[i]->y && game->bullets[j]->y <= game->enemiesShort[i]->y + game->enemiesShort[i]->h)
 			{
+				if (game->enemiesShort[i]->valid)
+				{
+					game->player.score += 10;
+				}
 				if (game->enemiesShort[i]->lives > 0)
 				{
 					game->enemiesShort[i]->lives--;
 				}
 				if (game->enemiesShort[i]->lives == 0)
-				{
+				{					
 					game->enemiesShort[i]->valid = 0;
 				}
 				return 1;

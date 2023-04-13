@@ -93,6 +93,7 @@ void loadGame(GameState* game)
 
 	//Load info player
 
+	game->player.score = 0;
 	game->player.x = 250;
 	game->player.y = 10;
 	game->player.w = 33;
@@ -161,7 +162,7 @@ void save_process(GameState* game)
 {
 	FILE* fp = NULL;
 	fopen_s(&fp, "save_process.txt", "w");
-	fprintf_s(fp, "%f\n%f\n%d\n", game->player.x, game->player.y, game->player.lives);
+	fprintf_s(fp, "%d %f %f %d", game->player.score, game->player.x, game->player.y, game->player.lives);
 	fclose(fp);
 }
 
@@ -176,7 +177,7 @@ short take_process(GameState* game)
 		exit(1);
 	}
 
-	num_values_read = fscanf_s(fp, "%f%f%d", &game->player.x, &game->player.y, &game->player.lives);
+	num_values_read = fscanf_s(fp, "%d %f %f %d", &game->player.score, &game->player.x, &game->player.y, &game->player.lives);
 	fclose(fp);
 	if (num_values_read == 0) {
 		return 0;
@@ -186,7 +187,7 @@ short take_process(GameState* game)
 	}	
 }
 
-short readXY(GameState* game)
+short readXYS(GameState* game)
 {
 	FILE* fp = NULL;
 	fopen_s(&fp, "save_process.txt", "r");
@@ -196,7 +197,7 @@ short readXY(GameState* game)
 		exit(1);
 	}
 	int num_values_read;
-	num_values_read = fscanf_s(fp, "%f%f", &game->player.x, &game->player.y);
+	num_values_read = fscanf_s(fp, "%d %f %f", &game->player.score, &game->player.x, &game->player.y);
 	fclose(fp);
 	if (num_values_read == 0) {
 		return 0;
@@ -208,7 +209,7 @@ short readXY(GameState* game)
 
 void loadAgain(GameState* game)
 {
-	readXY(game);
+	readXYS(game);
 	game->player.w = 33;
 	game->player.h = 27;
 	game->player.dx = 0;
@@ -228,7 +229,6 @@ void loadAgain(GameState* game)
 	game->time = 0;
 
 	game->status = GAME_NEW;
-
 
 	loadEnemies(game);
 	loadEnemiesShort(game);

@@ -294,8 +294,15 @@ void loadCoin(GameState* game)
 			{
 				game->coin[cnt]->w = 24;
 				game->coin[cnt]->h = 24;
-				game->coin[cnt]->x = j * game->coin[cnt]->w *3/2;
-				game->coin[cnt]->y = i * game->coin[cnt]->h * 3/2;
+				game->coin[cnt]->xAni = 0;
+				game->coin[cnt]->yAni = 0;
+				game->coin[cnt]->x = j * 120;
+				game->coin[cnt]->y = i * 60 + 30;
+				if (game->coin[cnt]->x <= game->player.x)
+				{
+					free(game->coin[cnt]);
+					game->coin[cnt] = NULL;
+				}
 				cnt++;
 			}
 		}

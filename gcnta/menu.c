@@ -222,7 +222,8 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game
                     {
                         if (selected_item == 0)
                         {
-                            backgroundMusic();
+                            backgroundMusic();   
+                            game->player.score = 0;
                             game->player.x = 250;
                             game->player.y = 10;
                             game->player.lives = 3;
@@ -232,11 +233,17 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game
                         }
                         if (selected_item == 1)
                         {
+                            
+                            game->player.score = 0;
+                            game->player.x = 250;
+                            game->player.y = 10;
+                            game->player.lives = 3;
+                            save_process(game);
                             quit = 1;
                             //SDL_DestroyWindow(windown);
                             SDL_Quit();
                         }
-                        break;
+                        break;     
                     }
                 }
                 break;
@@ -251,11 +258,23 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game
                         selected_item = i;
                         if (selected_item == 0)
                         {
-                            backgroundMusic();
+                            backgroundMusic(); 
+                         
+                            game->player.score = 0;
+                            game->player.x = 250;
+                            game->player.y = 10;
+                            game->player.lives = 3;
+                            save_process(game);
+                            loadAgain(game); 
                             quit = 1;
                         }
                         if (selected_item == 1)
                         {
+                            game->player.score = 0;
+                            game->player.x = 250;
+                            game->player.y = 10;
+                            game->player.lives = 3;
+                            save_process(game);
                             quit = 1;
                             //SDL_DestroyWindow(windown);
                             SDL_Quit();
@@ -336,6 +355,7 @@ void menuPause(SDL_Renderer* renderer, TTF_Font* font)
                     }
                     if (selected_item == 2)
                     {
+                        
                         SDL_Quit();
                     }
 
