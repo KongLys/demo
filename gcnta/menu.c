@@ -223,6 +223,11 @@ short menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game
                         if (selected_item == 0)
                         {
                             backgroundMusic();
+                            game->player.x = 250;
+                            game->player.y = 10;
+                            game->player.lives = 3;
+                            save_process(game);
+                            loadAgain(game);
                             quit = 1;
                         }
                         if (selected_item == 1)

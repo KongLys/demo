@@ -162,7 +162,7 @@ void save_process(GameState* game)
 	FILE* fp = NULL;
 	fopen_s(&fp, "save_process.txt", "w");
 	fprintf_s(fp, "%f\n%f\n%d\n", game->player.x, game->player.y, game->player.lives);
-	fclose(fp);// là á, t chưa có gọi cái hàm save_process này ở đâu, nhma khi chết nó vẫn lấy tọa đọ của xy để nó đọc lại
+	fclose(fp);
 }
 
 short take_process(GameState* game)
@@ -186,7 +186,7 @@ short take_process(GameState* game)
 	}	
 }
 
-void readXY(GameState* game)
+short readXY(GameState* game)
 {
 	FILE* fp = NULL;
 	fopen_s(&fp, "save_process.txt", "r");
@@ -204,7 +204,6 @@ void readXY(GameState* game)
 	else {
 		return num_values_read;
 	}
-	
 }
 
 void loadAgain(GameState* game)
@@ -230,10 +229,12 @@ void loadAgain(GameState* game)
 
 	game->status = GAME_NEW;
 
+
 	loadEnemies(game);
 	loadEnemiesShort(game);
 	loadBoss(game);
 	loadCoin(game);
 	loadCheckPoint(game);
+	
 }
  

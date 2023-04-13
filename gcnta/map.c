@@ -175,6 +175,7 @@ void loadEnemies(GameState* game)
 			fscanf_s(fp, "%d", &val);
 			if (val == 2)
 			{
+
 				game->enemies[cnt]->w = 64;
 				game->enemies[cnt]->h = 64;
 				game->enemies[cnt]->x = j * game->enemies[cnt]->w;
@@ -183,8 +184,14 @@ void loadEnemies(GameState* game)
 				game->enemies[cnt]->dx = 2;
 				game->enemies[cnt]->dy = 2;
 				game->enemies[cnt]->lives = 2;
+				if (game->enemies[cnt]->x <= game->player.x)
+				{
+					free(game->enemies[cnt]);
+					game->enemies[cnt] = NULL;
+				}	
 				cnt++;
 			}
+			
 		}
 	}
 	fclose(fp);
@@ -220,9 +227,14 @@ void loadEnemiesShort(GameState* game)
 				game->enemiesShort[cnt]->dy = 2;
 				game->enemiesShort[cnt]->valid = 1;
 				game->enemiesShort[cnt]->flipChar = 1;
-				game->enemiesShort[cnt]->lives = 1;
+				game->enemiesShort[cnt]->lives = 1;	
+				if (game->enemiesShort[cnt]->x <= game->player.x)
+				{
+					free(game->enemiesShort[cnt]);
+					game->enemiesShort[cnt] = NULL;
+				}
 				cnt++;
-			}
+			}		
 		}
 	}
 	fclose(fp);
@@ -313,8 +325,8 @@ void loadCheckPoint(GameState* game)
 			{ 
 				game->checkpoint[cnt]->w = 20;
 				game->checkpoint[cnt]->h = 50;
-				game->checkpoint[cnt]->x = j * game->checkpoint[cnt]->w;
-				game->checkpoint[cnt]->y = i * game->checkpoint[cnt]->h;
+				game->checkpoint[cnt]->x = j * 120;
+				game->checkpoint[cnt]->y = i * 60 + 10;
 				game->checkpoint[cnt]->valid = 1;
 				cnt++;
 			}

@@ -28,6 +28,7 @@ typedef struct
 	float dx, dy;
 	short flipChar, onBrick, stopMove, shootBullet, dashCoolDown, dashPower;
 	short lives, hit, xAni, yAni, aiming, angle;
+	int score;
 } Player;
 typedef struct
 {

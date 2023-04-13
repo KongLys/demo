@@ -119,7 +119,7 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 		if (game->coin[i])
 		{
 			SDL_Rect rectCoin = { game->scrollX + game->coin[i]->x, game->coin[i]->y, game->coin[i]->w, game->coin[i]->h};
-			SDL_RenderCopy(renderer, game->coin, NULL, &rectCoin);
+			SDL_RenderCopy(renderer, game->IMGCoin, NULL, &rectCoin);
 		}
 	}
 
@@ -129,7 +129,7 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 		if (game->checkpoint[i])
 		{
 			SDL_Rect rectCheck = { game->scrollX + game->checkpoint[i]->x, game->checkpoint[i]->y, game->checkpoint[i]->w, game->checkpoint[i]->h };
-			SDL_RenderCopy(renderer, game->coin, NULL, &rectCheck);
+			SDL_RenderCopy(renderer, game->IMGcheckpoint, NULL, &rectCheck);
 		}
 	}
 

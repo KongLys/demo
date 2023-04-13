@@ -169,9 +169,6 @@ int processEvent(SDL_Window* windown, GameState* game)
 	return done;
 }
 
-
-
-
 void processGame(GameState* game)
 {
 	game->time++;
@@ -282,18 +279,7 @@ void processGame(GameState* game)
 			}
 		}
 
-		//follow
-		followScreen(game);
-
-		//Collision
-		collisionPlayerWithCoin(game);
-		collisionDetect(game);
-		collisionPlayerWithCheckPoint(game);
-	}
-
-	//When player touch checkpoint
-
-	//When player touch enemies
+		//When player touch enemies
 	if (collisionPlayerWithEnnemies(game) == 1 || collisionPlayerWithEnnemiesShort(game) == 1 || game->player.hit == 1)
 	{
 		game->player.hit = 0;
@@ -335,10 +321,64 @@ void processGame(GameState* game)
 	if (game->player.lives <= 0)
 	{
 		short done = 1;
-		game->player.lives = 3;
-		game->player.x = 250;
-		game->player.y = 550;
 		menuED(game->renderer1, game->font, done, game);
+	}
+
+		//follow
+		followScreen(game);
+
+		//Collision
+		collisionPlayerWithCoin(game);
+		collisionDetect(game);
+		if (collisionPlayerWithCheckPoint(game))
+		{
+			save_process(game);
+		}
+
+		//When player touch enemies
+		if (collisionPlayerWithEnnemies(game) == 1 || collisionPlayerWithEnnemiesShort(game) == 1 || game->player.hit == 1)
+		{
+			game->player.hit = 0;
+			dameSound();
+			//Free and reload
+			for (int i = 0; i < MAX_BULLETS; i++)
+			{
+				if (game->bullets[i])
+				{
+					removeBullet(game, i);
+				}
+			}
+
+			for (int i = 0; i < MAX_BULLETS_ENEMIES; i++)
+			{
+				if (game->bulletEnemies[i])
+				{
+					removeBulletEnemies(game, i);
+				}
+			}
+
+			for (int i = 0; i < game->numEnemies; i++)
+			{
+				if (game->enemies[i])
+				{
+					removeEnemies(game, i);
+				}
+			}
+			for (int i = 0; i < game->numEnemiesShort; i++)
+			{
+				if (game->enemiesShort[i])
+				{
+					removeEnemiesShort(game, i);
+				}
+			}
+			loadAgain(game);
+			initStatusLives(game);
+		}
+		if (game->player.lives <= 0)
+		{
+			short done = 1;
+			menuED(game->renderer1, game->font, done, game);
+		}
 	}
 }
 
