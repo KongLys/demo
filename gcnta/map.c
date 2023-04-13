@@ -73,7 +73,7 @@ int cntBoss(GameState* game)
 			}
 		}
 	}
-	game->boss = (EnemyShort**)malloc(cnt * sizeof(EnemyShort*));
+	game->boss = (Boss**)malloc(cnt * sizeof(Boss*));
 	fclose(fp);
 	return cnt;
 }
@@ -251,7 +251,7 @@ void loadBoss(GameState* game)
 	}
 	for (int i = 0; i < game->numBoss; i++)
 	{
-		game->boss[i] = (Enemy*)malloc(sizeof(Enemy));
+		game->boss[i] = (Boss*)malloc(sizeof(Boss));
 	}
 	for (int i = 0, cnt = 0, val = 0; i < MAX_Y; i++)
 	{
@@ -260,8 +260,8 @@ void loadBoss(GameState* game)
 			fscanf_s(fp, "%d", &val);
 			if (val == 6)
 			{
-				game->boss[cnt]->w = 64;
-				game->boss[cnt]->h = 64;
+				game->boss[cnt]->w = 360;
+				game->boss[cnt]->h = 380;
 				game->boss[cnt]->x = j * 120;
 				game->boss[cnt]->y = i * 60;
 				game->boss[cnt]->dx = 0;

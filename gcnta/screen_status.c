@@ -30,19 +30,6 @@ void initStatusLives(GameState* game)
 	}
 }
 
-void initStatusOver(GameState* game)
-{
-
-	char str[10] = "GAME OVER";
-
-	SDL_Color white = { 255, 255, 255, 255 };
-	SDL_Surface* tmp = TTF_RenderText_Blended(game->font, str, white);
-	game->label_h = 100;
-	game->label_w = 200;
-	game->label = SDL_CreateTextureFromSurface(game->renderer1, tmp);
-	SDL_FreeSurface(tmp);
-}
-
 void screenStart(SDL_Renderer* renderer, GameState* game)
 {
 	//chinh mau nen thanh den
@@ -143,7 +130,7 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 			SDL_Rect scrRectES = { 360 * game->boss[i]->xAni, 0, game->boss[i]->w, game->boss[i]->h };
 
 			//Draw enemies
-			SDL_RenderCopyEx(renderer, game->IMGenemiesShort, &scrRectES, &rectES, 0, NULL, game->enemiesShort[i]->flipChar);
+			SDL_RenderCopyEx(renderer, game->IMGBoss, &scrRectES, &rectES, 0, NULL, 0);
 		}
 	}
 
@@ -200,7 +187,7 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 		if (game->bulletBoss[i])
 		{
 			SDL_Rect rectBuB = { game->scrollX + game->bulletBoss[i]->x, game->bulletBoss[i]->y, 10, 10 };
-			SDL_RenderCopy(renderer, game->IMGBoss, NULL, &rectBuB);
+			SDL_RenderCopy(renderer, game->IMGbullet, NULL, &rectBuB);
 		}
 	}
 }
@@ -218,17 +205,6 @@ void followScreen(GameState* game)
 	}
 }
 
-void screnWin(SDL_Renderer* renderer, GameState* game)
-{
-	//chinh mau nen thanh den
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
-	//cho toan man hinh thanh xam
-	SDL_RenderClear(renderer);
-
-	drawStatusWin(game);
-}
-
 void drawStatusLives(GameState* game)
 {
 	//chinh mau cua nen
@@ -241,17 +217,6 @@ void drawStatusLives(GameState* game)
 
 	//ve text
 	SDL_Rect textRect = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - game->label_h, game->label_w, game->label_h };
-	SDL_RenderCopy(game->renderer1, game->label, NULL, &textRect);
-
-}
-
-void drawStatusWin(GameState* game)
-{
-	//chinh mau cua nen
-	SDL_SetRenderDrawColor(game->renderer1, 255, 255, 255, 255);
-
-	//ve text
-	SDL_Rect textRect = { SCREEN_WIDTH / 2 - game->label_w/2, SCREEN_HEIGHT / 2 - game->label_h, game->label_w, game->label_h };
 	SDL_RenderCopy(game->renderer1, game->label, NULL, &textRect);
 
 }

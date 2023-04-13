@@ -126,7 +126,7 @@ void aniBoss(GameState* game)
 		if (game->boss[i] && game->time % 8 == 0)
 		{
 			game->boss[i]->xAni++;
-			game->boss[i]->xAni %= 3;
+			game->boss[i]->xAni %= 2;
 		}
 	}
 }
@@ -138,7 +138,7 @@ void bossMove(GameState* game)
 		if (game->boss[i])
 		{
 			game->boss[i]->x += game->boss[i]->dx;
-			game->boss[i]->x += game->boss[i]->dx;
+			game->boss[i]->y += game->boss[i]->dy;
 			game->boss[i]->dy += GRAVITY;
 			if (game->time % 20 == 0)
 			{

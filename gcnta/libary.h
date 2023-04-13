@@ -150,4 +150,8 @@ typedef struct
 
 	//Fonts
 	TTF_Font* font;
+
+	//Condition to loopgame
+	short done;
+
 } GameState;

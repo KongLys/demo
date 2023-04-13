@@ -17,16 +17,14 @@ int main(int argc, char* argv[]) {
 	TTF_Font* font = TTF_OpenFont("victor-pixel.ttf", 48);
 	gameState.font = font;
 	gameState.renderer1 = renderer;
-
-	short done = 0;
-
-	 done = menuOP(renderer, font, done, &gameState);
+	gameState.done = 0;
+	menuOP(renderer, font, &gameState);
 
 	loadGame(&gameState);
 	
-	while (!done)
+	while (!gameState.done)
 	{
-		done = processEvent(windown, &gameState);
+		processEvent(windown, &gameState);
 
 		processGame(&gameState);
 

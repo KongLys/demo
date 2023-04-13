@@ -388,24 +388,26 @@ void processGame(GameState* game)
 					removeEnemiesShort(game, i);
 				}
 			}
+
 			loadAgain(game);
 			initStatusLives(game);
 		}
 		if (game->player.lives <= 0)
 		{
-			short done = 1;
-			menuED(game->renderer1, game->font, done, game);
+
+			menuED(game->renderer1, game->font, game);
 		}
-		for (int i = 0, cnt = 0; i < game->numBoss; i++)
+		short cnt = 0;
+		for (int i = 0; i < game->numBoss; i++)
 		{
 			if (game->boss[i])
 			{
 				cnt++;
 			}
-			if (cnt == 0)
-			{
-				game->status = GAME_WIN;
-			}
+		}
+		if (cnt == 0)
+		{
+			game->status = GAME_WIN;
 		}
 	}
 }
@@ -422,7 +424,7 @@ void doRenderer(SDL_Renderer* renderer, GameState* game)
 	}
 	else if (game->status == GAME_WIN)
 	{
-		screnWin(renderer, game);
+		menuWin(game->renderer1, game->font, game);
 	}
 	//Show renderer
 	SDL_RenderPresent(renderer);
