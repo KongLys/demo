@@ -227,6 +227,9 @@ void removeBulletEnemies(GameState* game, int i)
 //Boss
 void addBulletBoss(GameState* game, int j)
 {
+	if (game->player.x >= game->bricks[1]->w * 360) {
+		bossShot();
+	}
 	int foundB = -1;
 	for (int i = 0; i < MAX_BULLETS_BOSS; i++)
 	{

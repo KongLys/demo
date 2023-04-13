@@ -9,5 +9,7 @@ void dameSound();
 void backgroundMusic();
 void walkingSound();
 void endMusic();
-void OPMusic();
-
+void opMusic();
+void bossMusic();
+void winMusic();
+void bossShot();

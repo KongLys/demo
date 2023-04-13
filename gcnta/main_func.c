@@ -67,6 +67,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 			break;
 		}
 	}
+
 	//Hold key
 	if (state[SDL_SCANCODE_W] || state[SDL_SCANCODE_UP])
 	{
@@ -164,11 +165,16 @@ int processEvent(SDL_Window* windown, GameState* game)
 	return done;
 }
 
+int playedSound = 0;
 void processGame(GameState* game)
 {
 	game->time++;
 	if (game->time > 120)
 	{
+		if (game->player.x >= game->bricks[1]->w * 360 && !playedSound) {
+			bossMusic();
+			playedSound = 1;
+		}
 		shutdownStatusLives(game);
 		game->status = GAME_PLAY;
 	}
@@ -247,7 +253,7 @@ void processGame(GameState* game)
 		movementEnemiesShort(game);
 		aniEnemiesShort(game);
 		bossMove(game);
-		aniBoss(game);
+		aniBoss(game);	
 
 		//Process bullet of player
 		for (int i = 0; i < MAX_BULLETS; i++)
