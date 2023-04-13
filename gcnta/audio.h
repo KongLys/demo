@@ -13,3 +13,4 @@ void opMusic();
 void bossMusic();
 void winMusic();
 void bossShot();
+void flash();
