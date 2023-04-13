@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include "audio.h"
 
-Mix_Chunk* soundEffect[4];
-Mix_Music* soundBackground[3];
+Mix_Chunk* soundEffect[5];
+Mix_Music* soundBackground[5];
 int initAudio() 
 {
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
@@ -20,9 +20,13 @@ int initAudio()
     soundEffect[1] = Mix_LoadWAV("hit.wav");
     soundEffect[2] = Mix_LoadWAV("dame.wav");
     soundEffect[3] = Mix_LoadWAV("walking.wav");
+    soundEffect[4] = Mix_LoadWAV("bossshot.wav");
     soundBackground[0] = Mix_LoadMUS("background.mp3");
-    soundBackground[1] = Mix_LoadMUS("rat.mp3");
+    soundBackground[1] = Mix_LoadMUS("ED.mp3");
     soundBackground[2] = Mix_LoadMUS("OP.mp3");
+    soundBackground[3] = Mix_LoadMUS("Boss.mp3");
+    soundBackground[4] = Mix_LoadMUS("Win.mp3");
+
 
 
     if (soundEffect == NULL) {
@@ -68,6 +72,11 @@ void walkingSound()
     Mix_PlayChannel(-1, soundEffect[3], 0);
 }
 
+void bossShot()
+{
+    Mix_PlayChannel(3, soundEffect[4], 0);
+}
+
 void backgroundMusic()
 {
     // Phát âm thanh
@@ -80,8 +89,21 @@ void endMusic()
     Mix_PlayMusic(soundBackground[1], -1);
 }
 
-void OPMusic()
+void opMusic()
 {
     // Phát âm thanh
     Mix_PlayMusic(soundBackground[2], -1);
+}
+
+void bossMusic()
+{
+    // Phát âm thanh
+    Mix_PlayMusic(soundBackground[3], -1);
+}
+
+void winMusic()
+{
+    //Phát âm thanh
+    Mix_PlayMusic(soundBackground[4], -1);
+
 }

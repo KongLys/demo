@@ -31,7 +31,7 @@ void render_menu(SDL_Renderer* renderer, MenuItem* items, int item_count, int se
 
 void menuOP(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
 {
-    OPMusic();
+    opMusic();
     MenuItem items[] = {
         { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100, 0, 0 }, "CONTINUE", { 255, 255, 155, 255 } },
         { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0 }, "NEW GAME", { 255, 255, 155, 255 } },
@@ -128,8 +128,7 @@ void menuOP(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
                         if (selected_item == 1)
                         {
                             //player_name(renderer, font, &game);
-                            backgroundMusic();
-                            game->continueGame = 0;
+                             game->continueGame = 0;
                             game->done = 0;
                             quit = 1;
                         }
@@ -309,7 +308,7 @@ void menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game,
 
 void menuWin(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
 {
-    OPMusic();
+    winMusic();
     char* score = (char*)malloc(30 * sizeof(char));
     sprintf_s(score, 30, "Score: %d", game->player.score);
     MenuItem items[] = {

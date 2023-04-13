@@ -1,5 +1,6 @@
 #include "enemies.h"
 #include "bullet.h"
+#include "audio.h"
 void movementEnemies(GameState* game)
 {
 	for (int i = 0; i < game->numEnemies; i++)
@@ -121,6 +122,7 @@ void aniEnemiesShort(GameState* game)
 
 void aniBoss(GameState* game)
 {
+
 	for (int i = 0; i < game->numBoss; i++)
 	{
 		if (game->boss[i])
