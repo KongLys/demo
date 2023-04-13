@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "audio.h"
 
-Mix_Chunk* soundEffect[5];
+Mix_Chunk* soundEffect[6];
 Mix_Music* soundBackground[5];
 int initAudio() 
 {
@@ -21,6 +21,7 @@ int initAudio()
     soundEffect[2] = Mix_LoadWAV("dame.wav");
     soundEffect[3] = Mix_LoadWAV("walking.wav");
     soundEffect[4] = Mix_LoadWAV("bossshot.wav");
+    soundEffect[5] = Mix_LoadWAV("flash.wav");
     soundBackground[0] = Mix_LoadMUS("background.mp3");
     soundBackground[1] = Mix_LoadMUS("ED.mp3");
     soundBackground[2] = Mix_LoadMUS("OP.mp3");
@@ -75,6 +76,11 @@ void walkingSound()
 void bossShot()
 {
     Mix_PlayChannel(3, soundEffect[4], 0);
+}
+
+void flash()
+{
+    Mix_PlayChannel(4, soundEffect[5], 0);
 }
 
 void backgroundMusic()

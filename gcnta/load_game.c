@@ -105,7 +105,7 @@ void loadGame(GameState* game)
 	//Load info player
 
 	game->player.score = 0;
-	game->player.x = 120 * 380;
+	game->player.x = 120;
 	game->player.y = 10;
 	game->player.w = 33;
 	game->player.h = 27;
