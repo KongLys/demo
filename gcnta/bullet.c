@@ -17,12 +17,12 @@ void addBullet(GameState* game)
 	{
 		shotSound();
 		game->bullets[found] = (Bullet*)malloc(sizeof(Bullet));
-		game->bullets[found]->y = game->player.y + game->player.h / 2;
+		game->bullets[found]->y = game->player.y + 10;
 		if (game->player.flipChar == 0)
 		{
 			game->bullets[found]->dx = 20;
 			game->bullets[found]->dy = 20 * sin(game->player.angle * M_PI / 180);
-			game->bullets[found]->x = game->player.x + game->player.w;
+			game->bullets[found]->x = game->player.x + game->player.w - 15;
 			game->bullets[found]->rangeLeft = game->bullets[found]->x - 500;
 			game->bullets[found]->rangeRight = game->bullets[found]->x + 500;
 		}
@@ -30,7 +30,7 @@ void addBullet(GameState* game)
 		{
 			game->bullets[found]->dx = -20;
 			game->bullets[found]->dy = 20 * sin(game->player.angle * M_PI / 180);
-			game->bullets[found]->x = game->player.x;
+			game->bullets[found]->x = game->player.x + 15;
 			game->bullets[found]->rangeLeft = game->bullets[found]->x - 500;
 			game->bullets[found]->rangeRight = game->bullets[found]->x + 500;
 		}
@@ -113,6 +113,8 @@ short checkBulletsWithBoss(GameState* game, int j)
 				game->boss[i]->lives--;
 				if (game->boss[i]->lives == 0)
 				{
+					removeBoss(game, i);
+					game->numBoss--;
 					game->player.score += 999;
 				}
 				return 1;

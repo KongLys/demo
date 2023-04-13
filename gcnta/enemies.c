@@ -154,7 +154,7 @@ void bossMove(GameState* game)
 			game->boss[i]->y += game->boss[i]->dy;
 			game->boss[i]->dy += GRAVITY;
 			game->boss[i]->dx = 2 * cos(2 * M_PI * 0.002 * game->time);
-			if (game->time % 25 == 0 && fabs(game->boss[i]->x - game->player.x) < SCREEN_WIDTH / 2 )
+			if (game->time % 50 == 0 && fabs(game->boss[i]->x - game->player.x) < SCREEN_WIDTH / 2 )
 			{
 				addBulletBoss(game, i);
 			}

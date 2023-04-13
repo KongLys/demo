@@ -71,12 +71,12 @@ int processEvent(SDL_Window* windown, GameState* game)
 	//Hold key
 	if (state[SDL_SCANCODE_W] || state[SDL_SCANCODE_UP])
 	{
-		game->player.angle = -45;
+		game->player.angle = -50;
 		game->player.aiming = 1;
 	}
 	else if (state[SDL_SCANCODE_S] || state[SDL_SCANCODE_DOWN])
 	{
-		game->player.angle = 45;
+		game->player.angle = 50;
 		game->player.aiming = 2;
 	}
 	else
@@ -398,15 +398,7 @@ void processGame(GameState* game)
 
 			menuED(game->renderer1, game->font, game);
 		}
-		short cnt = 0;
-		for (int i = 0; i < game->numBoss; i++)
-		{
-			if (game->boss[i])
-			{
-				cnt++;
-			}
-		}
-		if (cnt == 0)
+		if (game->numBoss <= 0 )
 		{
 			game->status = GAME_WIN;
 		}
