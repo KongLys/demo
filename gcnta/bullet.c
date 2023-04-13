@@ -238,15 +238,60 @@ void addBulletBoss(GameState* game, int j)
 	}
 	if (foundB >= 0)
 	{
-		game->bulletBoss[foundB] = (Bullet*)malloc(sizeof(Bullet));
-		game->bulletBoss[foundB]->y = game->boss[j]->y + game->boss[j]->h / 2;
-		game->bulletBoss[foundB]->x = game->boss[j]->x;
-		game->bulletBoss[foundB]->dx = 10 * cos(atan2(game->player.y + game->player.h / 2 - game->boss[j]->y - game->boss[j]->h / 2, game->player.x + game->player.w / 2 - game->boss[j]->x));
-		game->bulletBoss[foundB]->dy = 10 * sin(atan2(game->player.y + game->player.h / 2 - game->boss[j]->y - game->boss[j]->h / 2, game->player.x + game->player.w / 2 - game->boss[j]->x));
-		game->bulletBoss[foundB]->rangeLeft = game->bulletBoss[foundB]->x - SCREEN_WIDTH;
-		game->bulletBoss[foundB]->rangeRight = game->bulletBoss[foundB]->x + SCREEN_WIDTH;
+		if (game->boss[j]->flipChar == 0)
+		{
+			if (game->time % 50 == 0)
+			{
+				short angle = 0;
+				for (int k = MAX_BULLETS_BOSS - 1; k > MAX_BULLETS_BOSS - 7; k--)
+				{
+					game->bulletBoss[k] = (Bullet*)malloc(sizeof(Bullet));
+					game->bulletBoss[k]->y = game->boss[j]->y + 50;
+					game->bulletBoss[k]->x = game->boss[j]->x + 125;
+					game->bulletBoss[k]->dx = 10 * cos(angle * 9 * M_PI / 180);
+					game->bulletBoss[k]->dy = 10 * sin(angle * 9 * M_PI / 180);
+					game->bulletBoss[k]->rangeLeft = game->bulletBoss[k]->x - SCREEN_WIDTH * 2;
+					game->bulletBoss[k]->rangeRight = game->bulletBoss[k]->x + SCREEN_WIDTH * 2;
+					angle += 4;
+				}
+			}
+			game->bulletBoss[foundB] = (Bullet*)malloc(sizeof(Bullet));
+			game->bulletBoss[foundB]->y = game->boss[j]->y + 50;
+			game->bulletBoss[foundB]->x = game->boss[j]->x + 125;
+			game->bulletBoss[foundB]->dx = 10 * cos(atan2(game->player.y + game->player.h / 2 - game->boss[j]->y - game->boss[j]->h / 2, game->player.x + game->player.w / 2 - game->boss[j]->x));
+			game->bulletBoss[foundB]->dy = 10 * sin(atan2(game->player.y + game->player.h / 2 - game->boss[j]->y - game->boss[j]->h / 2, game->player.x + game->player.w / 2 - game->boss[j]->x));;
+			game->bulletBoss[foundB]->rangeLeft = game->bulletBoss[foundB]->x - SCREEN_WIDTH * 2;
+			game->bulletBoss[foundB]->rangeRight = game->bulletBoss[foundB]->x + SCREEN_WIDTH * 2;
+		}
+		else
+		{
+			if (game->time % 50 == 0)
+			{
+				short angle = 0;
+				for (int k = foundB + 1; k < foundB + 6; k++)
+				{
+					game->bulletBoss[k] = (Bullet*)malloc(sizeof(Bullet));
+					game->bulletBoss[k]->y = game->boss[j]->y + 50;
+					game->bulletBoss[k]->x = game->boss[j]->x + game->boss[j]->w - 125;
+					game->bulletBoss[k]->dx = 10 * cos(angle * 9 * M_PI / 180);
+					game->bulletBoss[k]->dy = 10 * sin(angle * 9 * M_PI / 180);
+					game->bulletBoss[k]->rangeLeft = game->bulletBoss[k]->x - SCREEN_WIDTH;
+					game->bulletBoss[k]->rangeRight = game->bulletBoss[k]->x + SCREEN_WIDTH;
+					angle += 4;
+				}
+			}
+			game->bulletBoss[foundB] = (Bullet*)malloc(sizeof(Bullet));
+			game->bulletBoss[foundB]->y = game->boss[j]->y + 50;
+			game->bulletBoss[foundB]->x = game->boss[j]->x + game->boss[j]->w - 125;
+			game->bulletBoss[foundB]->dx = 10 * cos(atan2(game->player.y + game->player.h / 2 - game->boss[j]->y - game->boss[j]->h / 2, game->player.x + game->player.w / 2 - game->boss[j]->x));
+			game->bulletBoss[foundB]->dy = 10 * sin(atan2(game->player.y + game->player.h / 2 - game->boss[j]->y - game->boss[j]->h / 2, game->player.x + game->player.w / 2 - game->boss[j]->x));;
+			game->bulletBoss[foundB]->rangeLeft = game->bulletBoss[foundB]->x - SCREEN_WIDTH;
+			game->bulletBoss[foundB]->rangeRight = game->bulletBoss[foundB]->x + SCREEN_WIDTH;
+		}
+		
 	}
 }
+
 
 void ChangeOrbitBullet(GameState* game, int i)
 {

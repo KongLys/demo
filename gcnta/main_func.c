@@ -283,7 +283,7 @@ void processGame(GameState* game)
 			if (game->bulletBoss[i])
 			{
 				game->bulletBoss[i]->x += game->bulletBoss[i]->dx;
-				game->bulletBoss[i]->y += game->bulletBoss[i]->dy;
+				game->bulletBoss[i]->y += game->bulletBoss[i]->dy + 3 * sin(2 * M_PI * 0.01 * game->time);;
 				if (checkBulletBoss(game, i) == 1)
 				{
 					removeBulletBoss(game, i);
