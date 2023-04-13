@@ -112,9 +112,6 @@ void loadGame(GameState* game)
 	game->player.shootBullet = 0;
 	game->player.stopMove = 1;
 
-	game->player.currentCut = 0;
-	game->player.currentWait = 0;
-	game->player.currentWalk = 0;
 	if (game->continueGame)
 	{
 		take_process(game);
@@ -213,8 +210,8 @@ void readXY(GameState* game)
 void loadAgain(GameState* game)
 {
 	readXY(game);
-	game->player.w = 64;
-	game->player.h = 64;
+	game->player.w = 33;
+	game->player.h = 27;
 	game->player.dx = 0;
 	game->player.dy = 0;
 	game->player.dashCoolDown = 0;
