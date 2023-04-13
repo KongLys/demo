@@ -336,12 +336,6 @@ void processGame(GameState* game)
 			loadAgain(game);
 			initStatusLives(game);
 		}
-		if (game->player.lives <= 0)
-		{
-			short done = 1;
-			menuED(game->renderer1, game->font, done, game);
-		}
-
 		//follow
 		followScreen(game);
 
@@ -395,7 +389,6 @@ void processGame(GameState* game)
 		}
 		if (game->player.lives <= 0)
 		{
-
 			menuED(game->renderer1, game->font, game);
 		}
 		if (game->numBoss <= 0 )

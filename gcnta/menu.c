@@ -163,7 +163,7 @@ void menuOP(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
     }
 }
 
-void menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game, SDL_Window* windown)
+void menuED(SDL_Renderer* renderer, TTF_Font* font, GameState* game, SDL_Window* windown)
 {
     endMusic();
     char* score = (char*)malloc(30 * sizeof(char));
@@ -180,10 +180,10 @@ void menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game,
     short selected_item = -1;
     //Load BackGround
     SDL_Surface* backGrSur;
-    backGrSur = IMG_Load("ED_screen.png");
+    backGrSur = IMG_Load("losegame.png");
     if (backGrSur == NULL)
     {
-        printf("ED_screen.png! \n\n");
+        printf("losegame.png! \n\n");
         SDL_Quit();
         exit(1);
     }
@@ -323,10 +323,10 @@ void menuWin(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
 
     //Load BackGround
     SDL_Surface* backGrSur;
-    backGrSur = IMG_Load("Win_screen.png");
+    backGrSur = IMG_Load("wingame.png");
     if (backGrSur == NULL)
     {
-        printf("Win_screen.png! \n\n");
+        printf("wingame.png! \n\n");
         SDL_Quit();
         exit(1);
     }
