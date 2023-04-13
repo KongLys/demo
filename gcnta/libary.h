@@ -18,7 +18,7 @@
 
 #define GAME_NEW 0
 #define GAME_PLAY 1
-#define GAME_OVER 2
+#define GAME_WIN 2
 
 
 
@@ -51,7 +51,7 @@ typedef struct
 typedef struct
 {
 	float  x, y, w, h, dx, dy;
-	short lives;
+	short lives, xAni;
 } Boss;
 
 typedef struct
@@ -136,6 +136,7 @@ typedef struct
 	SDL_Texture* IMGenemies;
 	SDL_Texture* IMGenemiesShort;
 	SDL_Texture* IMGbullet;
+	SDL_Texture* IMGBoss;
 	SDL_Texture* label;
 	SDL_Surface* backGrSur;
 

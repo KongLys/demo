@@ -119,6 +119,18 @@ void aniEnemiesShort(GameState* game)
 
 }
 
+void aniBoss(GameState* game)
+{
+	for (int i = 0; i < game->numBoss; i++)
+	{
+		if (game->boss[i] && game->time % 8 == 0)
+		{
+			game->boss[i]->xAni++;
+			game->boss[i]->xAni %= 3;
+		}
+	}
+}
+
 void bossMove(GameState* game)
 {
 	for (int i = 0; i < game->numBoss; i++)

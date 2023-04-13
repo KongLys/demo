@@ -126,6 +126,27 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 			SDL_RenderCopyEx(renderer, game->IMGenemiesShort, &scrRectES, &rectES, 0, NULL, game->enemiesShort[i]->flipChar);
 		}
 	}
+
+	//Draw boss
+	for (int i = 0; i < game->numBoss; i++)
+	{
+		if (game->boss[i] != NULL)
+		{
+			SDL_SetRenderDrawColor(renderer, 220, 20, 60, 255); // Set color of heath point
+			if (fabs(game->player.x - game->boss[i]->x) < SCREEN_WIDTH / 2)
+			{
+				SDL_Rect hpRectBoss = { game->scrollX + game->boss[i]->x, game->boss[i]->y - 30, 1*game->boss[i]->lives, 5};
+				//Draw hp
+				SDL_RenderFillRects(renderer, &hpRectBoss, 1);
+			}
+			SDL_Rect rectES = { game->scrollX + game->boss[i]->x, game->boss[i]->y, game->boss[i]->w, game->boss[i]->h };
+			SDL_Rect scrRectES = { 360 * game->boss[i]->xAni, 0, game->boss[i]->w, game->boss[i]->h };
+
+			//Draw enemies
+			SDL_RenderCopyEx(renderer, game->IMGenemiesShort, &scrRectES, &rectES, 0, NULL, game->enemiesShort[i]->flipChar);
+		}
+	}
+
 	//Draw coin
 	for (int i = 0; i < game->numCoin; i++)
 	{
@@ -178,8 +199,8 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 	{
 		if (game->bulletBoss[i])
 		{
-			SDL_Rect rectBuB = { game->scrollX + game->bulletBoss[i]->x, game->bulletBoss[i]->y, 8, 8 };
-			SDL_RenderCopy(renderer, game->IMGbullet, NULL, &rectBuB);
+			SDL_Rect rectBuB = { game->scrollX + game->bulletBoss[i]->x, game->bulletBoss[i]->y, 10, 10 };
+			SDL_RenderCopy(renderer, game->IMGBoss, NULL, &rectBuB);
 		}
 	}
 }
@@ -197,7 +218,7 @@ void followScreen(GameState* game)
 	}
 }
 
-void scrennOver(SDL_Renderer* renderer, GameState* game)
+void screnWin(SDL_Renderer* renderer, GameState* game)
 {
 	//chinh mau nen thanh den
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -205,7 +226,7 @@ void scrennOver(SDL_Renderer* renderer, GameState* game)
 	//cho toan man hinh thanh xam
 	SDL_RenderClear(renderer);
 
-	drawStatusOver(game);
+	drawStatusWin(game);
 }
 
 void drawStatusLives(GameState* game)
@@ -224,7 +245,7 @@ void drawStatusLives(GameState* game)
 
 }
 
-void drawStatusOver(GameState* game)
+void drawStatusWin(GameState* game)
 {
 	//chinh mau cua nen
 	SDL_SetRenderDrawColor(game->renderer1, 255, 255, 255, 255);

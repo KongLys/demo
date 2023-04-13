@@ -252,6 +252,7 @@ void processGame(GameState* game)
 		movementEnemiesShort(game);
 		aniEnemiesShort(game);
 		bossMove(game);
+		aniBoss(game);
 
 		//Process bullet of player
 		for (int i = 0; i < MAX_BULLETS; i++)
@@ -395,6 +396,17 @@ void processGame(GameState* game)
 			short done = 1;
 			menuED(game->renderer1, game->font, done, game);
 		}
+		for (int i = 0, cnt = 0; i < game->numBoss; i++)
+		{
+			if (game->boss[i])
+			{
+				cnt++;
+			}
+			if (cnt == 0)
+			{
+				game->status = GAME_WIN;
+			}
+		}
 	}
 }
 
@@ -408,9 +420,9 @@ void doRenderer(SDL_Renderer* renderer, GameState* game)
 	{
 		screenContain(renderer, game);
 	}
-	else if (game->status == GAME_OVER)
+	else if (game->status == GAME_WIN)
 	{
-		scrennOver(renderer, game);
+		screnWin(renderer, game);
 	}
 	//Show renderer
 	SDL_RenderPresent(renderer);

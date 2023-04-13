@@ -68,6 +68,17 @@ void loadGame(GameState* game)
 	}
 	game->IMGenemiesShort = SDL_CreateTextureFromSurface(game->renderer1, surface);
 	SDL_FreeSurface(surface);
+	
+	//Load bullet
+	surface = IMG_Load("boss.png");
+	if (surface == NULL)
+	{
+		printf("boss.png! \n\n");
+		SDL_Quit();
+		exit(1);
+	}
+	game->IMGBoss = SDL_CreateTextureFromSurface(game->renderer1, surface);
+	SDL_FreeSurface(surface);
 
 	//Load bullet
 	surface = IMG_Load("ballr.png");
