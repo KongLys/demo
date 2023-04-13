@@ -55,7 +55,6 @@ typedef struct
 
 typedef struct
 {
-	float  x, y, w, h;
 	float  x, y, w, h, valid;
 }CheckPoint;
 
