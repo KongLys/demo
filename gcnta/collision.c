@@ -28,17 +28,44 @@ void collisionDetect(GameState* game)
 		}
 		if (py + ph > by + 6 && py < by + bh * 39 / 40)
 		{
-			if (px + pw > bx && px < bx && game->player.dx > 0)
+			if (px + pw > bx && px < bx)
 			{
-				game->player.x = bx - pw; //edge left
-				px = bx - pw;
-				game->player.dx = 0;
+				game->player.canDash = 0;
+				game->player.dashPower = 0;
+				if (game->player.dx > 0)
+				{
+					game->player.x = bx - pw; //edge left
+					px = bx - pw;
+					game->player.dx = 0;
+				}
 			}
-			else if (px < bx + bw && px + pw> bx + bw && game->player.dx < 0)
+			else if (px < bx + bw && px + pw> bx + bw )
 			{
+				if (game->player.dx < 0)
+				{
+					game->player.canDash = 0;
+					game->player.dashPower = 0;
+				}
 				game->player.x = bx + bw; //edge right
 				px = bx + bw;
 				game->player.dx = 0;
+			}
+			else if (px + pw >= bx && px + pw <= bx + bw) //Inside
+			{
+				game->player.canDash = 0;
+				game->player.dashPower = 0;
+				if (px + pw < bx + bw / 2)
+				{
+					game->player.x = bx - pw;
+					px = bx - pw;
+					game->player.dx = 0;
+				}
+				else
+				{
+					game->player.x = bx + bw;
+					px = bx + bw;
+					game->player.dx = 0;
+				}
 			}
 		}
 		//collision enemies with bricks
@@ -103,6 +130,35 @@ void collisionDetect(GameState* game)
 						esx = bx + bw;
 					}
 				}				
+			}
+		}
+		for (int j = 0; j < game->numBoss; j++)
+		{
+			if (game->boss[j])
+			{
+				float bossx = game->boss[j]->x, bossy = game->boss[j]->y, bossw = game->boss[j]->w, bossh = game->boss[j]->h;
+				if (bossx + bossw > bx - 10 && bossx < bx + bw + 10)
+				{
+					if (bossy + bossh > by && bossy < by && game->boss[j]->dy > 0) //On brick
+					{
+						game->boss[j]->y = by - bh;
+						bossy = by - bossh;
+						game->boss[j]->dy = 0;
+					}
+				}
+				if (bossy + bossh > by + 6 && bossy < by + bh * 39 / 40)
+				{
+					if (bossx + bossw > bx && bossx < bx && game->boss[j]->dx > 0)
+					{
+						game->boss[j]->x = bx - bossw; //edge left
+						bossx = bx - bossw;
+					}
+					else if (bossx < bx + bw && bossx + bossw> bx + bw && game->boss[j]->dx < 0)
+					{
+						game->boss[j]->x = bx + bw; //edge right
+						bossx = bx + bw;
+					}
+				}
 			}
 		}
 	}
@@ -171,6 +227,17 @@ short collisionPlayerWithEnnemiesShort(GameState* game)
 				return 1;
 			}
 		}
+	}
+	return 0;
+}
+
+
+short playerFall(GameState* game)
+{
+	if (game->player.y > 1000)
+	{
+		game->player.lives--;
+		return 1;
 	}
 	return 0;
 }

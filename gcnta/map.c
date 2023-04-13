@@ -264,6 +264,8 @@ void loadBoss(GameState* game)
 				game->boss[cnt]->h = 64;
 				game->boss[cnt]->x = j * 120;
 				game->boss[cnt]->y = i * 60;
+				game->boss[cnt]->dx = 0;
+				game->boss[cnt]->dy = 0;
 				game->boss[cnt]->lives = 100;
 				cnt++;
 			}

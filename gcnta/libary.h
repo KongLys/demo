@@ -7,14 +7,14 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-#define SCREEN_WIDTH 1920
-#define SCREEN_HEIGHT  1080
+#define SCREEN_WIDTH 1600
+#define SCREEN_HEIGHT  900
 #define MAX_BULLETS 2
 #define MAX_BULLETS_ENEMIES 75
 #define MAX_BULLETS_BOSS 100
 #define MAX_MENUITEMS 4
 
-#define GRAVITY 0.4
+#define GRAVITY 0.5
 
 #define GAME_NEW 0
 #define GAME_PLAY 1
@@ -26,7 +26,7 @@ typedef struct
 {
 	float  x, y, w, h;
 	float dx, dy;
-	short flipChar, onBrick, stopMove, shootBullet, dashCoolDown, dashPower;
+	short flipChar, onBrick, stopMove, shootBullet, dashCoolDown, dashPower, canDash;
 	short lives, hit, xAni, yAni, aiming, angle;
 	int score;
 } Player;
@@ -50,7 +50,7 @@ typedef struct
 
 typedef struct
 {
-	float  x, y, w, h;
+	float  x, y, w, h, dx, dy;
 	short lives;
 } Boss;
 

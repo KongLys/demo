@@ -102,6 +102,7 @@ void loadGame(GameState* game)
 	game->player.dy = 0;
 	game->player.dashCoolDown = 0;
 	game->player.dashPower = 0;
+	game->player.canDash = 1;
 	game->player.angle = 0;
 	game->player.lives = 3;
 	game->player.hit = 0;
@@ -216,6 +217,7 @@ void loadAgain(GameState* game)
 	game->player.dy = 0;
 	game->player.dashCoolDown = 0;
 	game->player.angle = 0;
+	game->player.canDash = 1;
 	game->player.hit = 0;
 	game->player.xAni = 0;
 	game->player.yAni = 0;

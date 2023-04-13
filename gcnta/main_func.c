@@ -48,7 +48,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 				break;
 			case SDLK_z:
 			case SDLK_l:
-				if (game->player.dashCoolDown == 0)
+				if (game->player.canDash)
 				{
 					if (game->player.flipChar == 0)
 					{
@@ -58,7 +58,7 @@ int processEvent(SDL_Window* windown, GameState* game)
 					{
 						game->player.dashPower = -5;
 					}
-
+					game->player.canDash = 0;
 					game->player.dashCoolDown = 35;
 				}
 				break;
@@ -90,9 +90,9 @@ int processEvent(SDL_Window* windown, GameState* game)
 	if (state[SDL_SCANCODE_X] || state[SDL_SCANCODE_K])
 	{
 		game->player.dy -= 0.3;
-		if (game->player.dy < -9)
+		if (game->player.dy < -10)
 		{
-			game->player.dy = -9;
+			game->player.dy = -5;
 		}
 		game->player.yAni = 5;
 	}
@@ -185,6 +185,10 @@ void processGame(GameState* game)
 		{
 			game->player.dashCoolDown--;
 		}
+		else
+		{
+			game->player.canDash = 1;
+		}
 
 		//Set animation
 		if (!game->player.shootBullet)
@@ -247,6 +251,7 @@ void processGame(GameState* game)
 		movementEnemies(game);
 		movementEnemiesShort(game);
 		aniEnemiesShort(game);
+		bossMove(game);
 
 		//Process bullet of player
 		for (int i = 0; i < MAX_BULLETS; i++)
@@ -276,7 +281,6 @@ void processGame(GameState* game)
 				}
 			}
 		}
-		bossShoot(game);
 		//Process bullet of boss
 		for (int i = 0; i < MAX_BULLETS_BOSS; i++)
 		{
@@ -292,49 +296,49 @@ void processGame(GameState* game)
 		}
 
 		//When player touch enemies
-	if (collisionPlayerWithEnnemies(game) == 1 || collisionPlayerWithEnnemiesShort(game) == 1 || game->player.hit == 1)
-	{
-		game->player.hit = 0;
-		dameSound();
-		//Free and reload
-		for (int i = 0; i < MAX_BULLETS; i++)
+		if (collisionPlayerWithEnnemies(game) == 1 || collisionPlayerWithEnnemiesShort(game) == 1 || game->player.hit == 1 || playerFall(game))
 		{
-			if (game->bullets[i])
+			game->player.hit = 0;
+			dameSound();
+			//Free and reload
+			for (int i = 0; i < MAX_BULLETS; i++)
 			{
-				removeBullet(game, i);
-			}
-		}
+				if (game->bullets[i])
+				{
+					removeBullet(game, i);
+				}
+			}	
 
-		for (int i = 0; i < MAX_BULLETS_ENEMIES; i++)
-		{
-			if (game->bulletEnemies[i])
-			{ 
-				removeBulletEnemies(game, i);
-			}
-		}
-
-		for (int i = 0; i < game->numEnemies; i++)
-		{
-			if (game->enemies[i])
+			for (int i = 0; i < MAX_BULLETS_ENEMIES; i++)
 			{
-				removeEnemies(game, i);
+				if (game->bulletEnemies[i])
+				{ 
+					removeBulletEnemies(game, i);
+				}
 			}
-		}
-		for (int i = 0; i < game->numEnemiesShort; i++)
-		{
-			if (game->enemiesShort[i])
+				
+			for (int i = 0; i < game->numEnemies; i++)
 			{
-				removeEnemiesShort(game, i);
+				if (game->enemies[i])
+				{
+					removeEnemies(game, i);
+				}
 			}
+			for (int i = 0; i < game->numEnemiesShort; i++)
+			{
+				if (game->enemiesShort[i])
+				{
+					removeEnemiesShort(game, i);
+				}
+			}
+			loadAgain(game);
+			initStatusLives(game);
 		}
-		loadAgain(game);
-		initStatusLives(game);
-	}
-	if (game->player.lives <= 0)
-	{
-		short done = 1;
-		menuED(game->renderer1, game->font, done, game);
-	}
+		if (game->player.lives <= 0)
+		{
+			short done = 1;
+			menuED(game->renderer1, game->font, done, game);
+		}
 
 		//follow
 		followScreen(game);

@@ -191,9 +191,9 @@ void followScreen(GameState* game)
 	{
 		game->scrollX = 0; //Cannot seen the left of the map
 	}
-	if (game->scrollX < -game->bricks[1]->w * game->numBrick + SCREEN_WIDTH / 2)
+	if (game->scrollX < -game->bricks[1]->w * 393 + SCREEN_WIDTH / 2)
 	{
-		game->scrollX = -game->bricks[1]->w * game->numBrick + SCREEN_WIDTH / 2; //Cannot seen the right of the map
+		game->scrollX = -game->bricks[1]->w * 393 + SCREEN_WIDTH / 2; //Cannot seen the right of the map
 	}
 }
 

@@ -119,12 +119,15 @@ void aniEnemiesShort(GameState* game)
 
 }
 
-void bossShoot(GameState* game)
+void bossMove(GameState* game)
 {
 	for (int i = 0; i < game->numBoss; i++)
 	{
-		if (game->boss[i] && game->time % 20 == 0)
+		if (game->boss[i])
 		{
+			game->boss[i]->x += game->boss[i]->dx;
+			game->boss[i]->x += game->boss[i]->dx;
+			game->boss[i]->dy += GRAVITY;
 			if (game->time % 20 == 0)
 			{
 				addBulletBoss(game, i);

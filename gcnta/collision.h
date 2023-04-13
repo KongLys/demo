@@ -7,3 +7,4 @@ short collisionPlayerWithEnnemiesShort(GameState* game);
 
 void collisionPlayerWithCoin(GameState* game);
 short collisionPlayerWithCheckPoint(GameState* game);
+short playerFall(GameState* game);

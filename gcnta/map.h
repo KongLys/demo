@@ -21,5 +21,6 @@ int cntCoin(GameState* game);
 void loadCheckPoint(GameState* game);
 void loadEnemies(GameState* game);
 void loadEnemiesShort(GameState* game);
+void loadBoss(GameState* game);
 void loadCoin(GameState* game);
 void loadMap(GameState* game);
