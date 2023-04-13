@@ -252,11 +252,12 @@ void loadCheckPoint(GameState* game)
 		{
 			fscanf_s(fp, "%d", &val);
 			if (val == 5)
-			{
-				game->checkpoint[cnt]->w = 64;
-				game->checkpoint[cnt]->h = 64;
+			{ 
+				game->checkpoint[cnt]->w = 20;
+				game->checkpoint[cnt]->h = 50;
 				game->checkpoint[cnt]->x = j * game->checkpoint[cnt]->w;
 				game->checkpoint[cnt]->y = i * game->checkpoint[cnt]->h;
+				game->checkpoint[cnt]->valid = 1;
 				cnt++;
 			}
 		}

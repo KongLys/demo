@@ -29,13 +29,13 @@ typedef struct
 	short currentWait, currentWalk, currentCut;
 	short lives, hit;
 } Player;
-
 typedef struct
 {
 	float  x, y, w, h;
 	float dx, dy;
 	short flipChar, onBrick, shootBullet;
 	short lives;
+
 } Enemy;
 
 typedef struct
@@ -49,7 +49,7 @@ typedef struct
 
 typedef struct
 {
-	float  x, y, w, h;
+	float  x, y, w, h, valid;
 }CheckPoint;
 
 typedef struct
@@ -128,6 +128,8 @@ typedef struct
 
 	int label_w, label_h;
 
+	//Continue
+	short continueGame;
 
 	//Status
 	short status;

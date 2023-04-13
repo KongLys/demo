@@ -123,6 +123,16 @@ void screenContain(SDL_Renderer* renderer, GameState* game)
 		}
 	}
 
+	//Draw CheckPoint
+	for (int i = 0; i < game->numCheckPoint; i++)
+	{
+		if (game->checkpoint[i])
+		{
+			SDL_Rect rectCheck = { game->scrollX + game->checkpoint[i]->x, game->checkpoint[i]->y, game->checkpoint[i]->w, game->checkpoint[i]->h };
+			SDL_RenderCopy(renderer, game->coin, NULL, &rectCheck);
+		}
+	}
+
 	//Draw player
 	SDL_Rect rect_p = { game->scrollX + game->player.x, game->player.y, game->player.w, game->player.h };
 	if (game->player.animFrame == 2)
