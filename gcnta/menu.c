@@ -167,15 +167,18 @@ void menuOP(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
 void menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game, SDL_Window* windown)
 {
     endMusic();
+    char* score = (char*)malloc(30 * sizeof(char));
+    sprintf_s(score, 30, "Score: %d", game->player.score);
     MenuItem items[] = {
-        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0 }, "PLAY AGAIN", { 255, 255, 255, 255 } },
         { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0 }, "PLAY AGAIN", { 255, 255, 255, 255 } },
         { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100, 0, 0 }, "LEAVE", { 255, 255, 255, 255 } }
     };
-    MenuItem over[] = { { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 -100, 0, 0 }, "GAMEOVER DUDEEE!", { 255, 0, 155, 255 } } };
+    MenuItem over[] = {
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 200, 0, 0 }, "GAMEOVER DUDEEE!", { 255, 0, 0, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100, 0, 0 }, score , { 255, 0, 0, 255 } }
+    };
     short item_count = sizeof(items) / sizeof(items[2]);
     short selected_item = -1;
-
     //Load BackGround
     SDL_Surface* backGrSur;
     backGrSur = IMG_Load("ED_screen.png");
@@ -192,7 +195,7 @@ void menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game,
     SDL_RenderPresent(renderer);
 
     render_menu(renderer, items, item_count, selected_item, font);
-    render_menu(renderer, over, 1, -2, font);
+    render_menu(renderer, over, 2, -2, font);
 
     SDL_Event event;
     short quit = 0;
@@ -301,17 +304,23 @@ void menuED(SDL_Renderer* renderer, TTF_Font* font, short done, GameState* game,
             }
         }
     }   
+    free(score);
 }
 
 void menuWin(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
 {
     OPMusic();
+    char* score = (char*)malloc(30 * sizeof(char));
+    sprintf_s(score, 30, "Score: %d", game->player.score);
     MenuItem items[] = {
-        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100, 0, 0 }, "YOU WIN", { 255, 255, 155, 255 } },
-        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0 }, "QUIT", { 255, 255, 155, 255 } }
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100, 0, 0 }, "YOU WIN", { 255, 0, 0, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100, 0, 0 }, "QUIT", { 255, 255, 155, 255 } }
     };
+    MenuItem winScore[] = { { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0 }, score , { 255, 0, 0, 255 } } };
     short item_count = sizeof(items) / sizeof(items[0]);
     short selected_item = -1;
+    
+
 
     //Load BackGround
     SDL_Surface* backGrSur;
@@ -329,6 +338,7 @@ void menuWin(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
     SDL_RenderPresent(renderer);
 
     render_menu(renderer, items, item_count, selected_item, font);
+    render_menu(renderer, winScore, 1, -2, font);
 
 
     SDL_Event event;
