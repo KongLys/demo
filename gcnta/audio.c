@@ -2,7 +2,7 @@
 #include "audio.h"
 
 Mix_Chunk* soundEffect[6];
-Mix_Music* soundBackground[5];
+Mix_Music* soundBackground[6];
 int initAudio() 
 {
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
@@ -40,7 +40,7 @@ int initAudio()
 
 void cleanUpAudio() 
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i <=5; i++)
     {
         Mix_FreeMusic(soundBackground[i]);
         Mix_FreeChunk(soundEffect[i]);

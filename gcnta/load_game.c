@@ -109,7 +109,7 @@ void loadGame(GameState* game)
 	game->player.y = 10;
 	game->player.w = 33;
 	game->player.h = 27;
-	game->player.dx = 0;
+	game->player.dx = 360;
 	game->player.dy = 0;
 	game->player.dashCoolDown = 0;
 	game->player.dashPower = 0;
