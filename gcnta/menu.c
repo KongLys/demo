@@ -54,7 +54,7 @@ void menuOP(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
     SDL_Rect backGr = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
     SDL_RenderCopy(renderer, backGrText, NULL, &backGr);
     TTF_Font* fontSus = TTF_OpenFont("victor-pixel.ttf", 90);
-    SDL_Color color = { 255, 255, 255 };
+    SDL_Color color = { 255, 0, 0};
     SDL_Surface* surface = TTF_RenderText_Solid(fontSus, "SUS ADVENTURE", color);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     
@@ -62,7 +62,6 @@ void menuOP(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
     SDL_RenderCopy(renderer, texture, NULL, &SusRect);
 
     SDL_RenderPresent(renderer);
-
     render_menu(renderer, items, item_count, selected_item, font);
 
 
@@ -441,10 +440,14 @@ void gamePLay(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
 {
     SDL_RenderClear(renderer);
     MenuItem items[] = {
-        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 150, 0, 0 }, "Z: Dash", { 255, 255, 255, 255 } },
-        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 50, 0, 0 }, "X: Jump", { 255, 255, 255, 255 } },
-        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50, 0, 0 }, "C: Fire",    { 255, 255, 255, 255 } },
-        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150, 0, 0 }, "BACK",    { 255, 255, 255, 255 } }
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 350, 0, 0 }, "Z, L: Dash", { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 250, 0, 0 }, "X, K: Jump", { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 150, 0, 0 }, "C, J: Fire",    { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 50, 0, 0 }, "W, UP BUTTON: Fire Up", { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50, 0, 0 }, "S, DOWN BUTTON: Fire Down", { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150, 0, 0 }, "A: Move left", { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 250, 0, 0 }, "D: Move right", { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 350, 0, 0 }, "BACK",{ 255, 255, 255, 255 } }
     };
     short item_count = sizeof(items) / sizeof(items[0]);
     short selected_item = -1;
@@ -477,7 +480,7 @@ void gamePLay(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
                     break;
                 case SDLK_RETURN:
                 {
-                    if (selected_item == 3)
+                    if (selected_item == 7)
                     {
                         game->done = 0;
                         quit = 1;
@@ -498,7 +501,7 @@ void gamePLay(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
                     if ((x >= items[i].rect.x - 100 && x <= items[i].rect.x + 100) && y >= items[i].rect.y - 32 && y <= items[i].rect.y + 32)
                     {
                         selected_item = i;
-                        if (selected_item == 3)
+                        if (selected_item == 7)
                         {
                             game->done = 0;
                             quit = 1;
