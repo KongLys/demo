@@ -230,6 +230,7 @@ short collisionPlayerWithCheckPoint(GameState* game)
 		{
 			if (game->player.x + game->player.w > game->checkpoint[i]->x && game->player.x < game->checkpoint[i]->x + game->checkpoint[i]->w && game->player.y + game->player.h > game->checkpoint[i]->y && game->player.y < game->checkpoint[i]->y + game->checkpoint[i]->h)
 			{
+				game->player.x += 10;
 				game->checkpoint[i]->valid = 0;
 				return 1;
 			}

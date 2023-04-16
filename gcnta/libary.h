@@ -36,7 +36,7 @@ typedef struct
 	float dx, dy;
 	short flipChar;
 	short lives;
-
+	short killed;
 } Enemy;
 
 typedef struct
@@ -46,6 +46,7 @@ typedef struct
 	short flipChar;
 	short lives, valid;
 	short xAni, yAni;
+	short killed;
 } EnemyShort;
 
 typedef struct

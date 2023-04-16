@@ -7,3 +7,4 @@ void menuED(SDL_Renderer* renderer, TTF_Font* font, GameState* game);
 void menuWin(SDL_Renderer* renderer, TTF_Font* font, GameState* game);
 //char* player_name(SDL_Renderer* renderer, TTF_Font* font);
 void menuPause(SDL_Renderer* renderer, TTF_Font* font);
+void gamePLay(SDL_Renderer* renderer, TTF_Font* font, GameState* game);

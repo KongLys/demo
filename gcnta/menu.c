@@ -20,7 +20,6 @@ void render_menu(SDL_Renderer* renderer, MenuItem* items, int item_count, int se
         SDL_Surface* text_surface = TTF_RenderText_Solid(font, items[i].label, text_color);
         SDL_Texture* text_texture = SDL_CreateTextureFromSurface(renderer, text_surface);
         SDL_Rect text_rect = { item_rect.x + (item_rect.w - text_surface->w) / 2, item_rect.y + (item_rect.h - text_surface->h) / 2, text_surface->w, text_surface->h };
-
         SDL_RenderCopy(renderer, text_texture, NULL, &text_rect);
         SDL_FreeSurface(text_surface);
         SDL_DestroyTexture(text_texture);
@@ -35,7 +34,8 @@ void menuOP(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
     MenuItem items[] = {
         { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100, 0, 0 }, "CONTINUE", { 255, 255, 155, 255 } },
         { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0, 0 }, "NEW GAME", { 255, 255, 155, 255 } },
-        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100, 0, 0 }, "LEAVE",    { 255, 255, 155, 255 } }
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100, 0, 0 }, "HOW TO PLAY", { 255, 255, 155, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 200, 0, 0 }, "LEAVE",    { 255, 255, 155, 255 } }
     };
     short item_count = sizeof(items) / sizeof(items[0]);
     short selected_item = -1;
@@ -53,6 +53,14 @@ void menuOP(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
     SDL_FreeSurface(backGrSur);
     SDL_Rect backGr = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
     SDL_RenderCopy(renderer, backGrText, NULL, &backGr);
+    TTF_Font* fontSus = TTF_OpenFont("victor-pixel.ttf", 90);
+    SDL_Color color = { 255, 255, 255 };
+    SDL_Surface* surface = TTF_RenderText_Solid(fontSus, "SUS ADVENTURE", color);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    
+    SDL_Rect SusRect = { SCREEN_WIDTH / 2 - 380 , SCREEN_HEIGHT / 2 - 250, surface->w, surface->h };
+    SDL_RenderCopy(renderer, texture, NULL, &SusRect);
+
     SDL_RenderPresent(renderer);
 
     render_menu(renderer, items, item_count, selected_item, font);
@@ -86,6 +94,7 @@ void menuOP(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
                 {
                     if (selected_item == 0)
                     {
+                        backgroundMusic();
                         game->continueGame = 1;
                         game->done = 0;
                         quit = 1;
@@ -101,10 +110,16 @@ void menuOP(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
                     if (selected_item == 2)
                     {
                         game->done = 1;
+                        gamePLay(renderer, font, game);
                         quit = 1;
                         
                     }
-
+                    if (selected_item == 3)
+                    {
+                        game->done = 1;
+                        
+                        quit = 1;
+                    }
                     break;
                 }
 
@@ -116,7 +131,7 @@ void menuOP(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
                 SDL_GetMouseState(&x, &y);
                 for (int i = 0; i < item_count; i++)
                 {
-                    if ((x >= items[i].rect.x - 100 && x <= items[i].rect.x + 100) && y >= items[i].rect.y - 32 && y <= items[i].rect.y + 32)
+                    if ((x >= items[i].rect.x - 200 && x <= items[i].rect.x + 200) && y >= items[i].rect.y - 32 && y <= items[i].rect.y + 32)
                     {
                         selected_item = i;
                         if (selected_item == 0) 
@@ -128,11 +143,17 @@ void menuOP(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
                         if (selected_item == 1)
                         {
                             //player_name(renderer, font, &game);
-                             game->continueGame = 0;
+                            game->continueGame = 0;
                             game->done = 0;
                             quit = 1;
                         }
                         if (selected_item == 2)
+                        {
+                            game->done = 1;
+                            gamePLay(renderer, font, game);
+                            quit = 1;
+                        }
+                        if (selected_item == 3)
                         {
                             game->done = 1;
                             quit = 1;
@@ -416,6 +437,99 @@ void menuWin(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
     }
 }
 
+void gamePLay(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
+{
+    SDL_RenderClear(renderer);
+    MenuItem items[] = {
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 150, 0, 0 }, "Z: Dash", { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 50, 0, 0 }, "X: Jump", { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50, 0, 0 }, "C: Fire",    { 255, 255, 255, 255 } },
+        { { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150, 0, 0 }, "BACK",    { 255, 255, 255, 255 } }
+    };
+    short item_count = sizeof(items) / sizeof(items[0]);
+    short selected_item = -1;
+
+    render_menu(renderer, items, item_count, selected_item, font);
+
+    SDL_Event event;
+    short quit = 0;
+    while (!quit)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+            case SDL_QUIT:
+                SDL_Quit();
+                break;
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym)
+                {
+                case SDLK_w:
+                case SDLK_UP:
+                    selected_item = (selected_item - 1 + item_count) % item_count;
+                    render_menu(renderer, items, item_count, selected_item, font);
+                    break;
+                case SDLK_s:
+                case SDLK_DOWN:
+                    selected_item = (selected_item + 1) % item_count;
+                    render_menu(renderer, items, item_count, selected_item, font);
+                    break;
+                case SDLK_RETURN:
+                {
+                    if (selected_item == 3)
+                    {
+                        game->done = 0;
+                        quit = 1;
+                        menuOP(renderer, font, game);
+                    }
+
+                    break;
+                }
+
+                }
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+            {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                for (int i = 0; i < item_count; i++)
+                {
+                    if ((x >= items[i].rect.x - 100 && x <= items[i].rect.x + 100) && y >= items[i].rect.y - 32 && y <= items[i].rect.y + 32)
+                    {
+                        selected_item = i;
+                        if (selected_item == 3)
+                        {
+                            game->done = 0;
+                            quit = 1;
+                            menuOP(renderer, font, game);
+                        }
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case SDL_MOUSEMOTION:
+            {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                for (int i = 0; i < item_count; i++)
+                {
+                    if ((x >= items[i].rect.x - 100 && x <= items[i].rect.x + 100) && y >= items[i].rect.y - 32 && y <= items[i].rect.y + 32)
+                    {
+                        selected_item = i;
+                        render_menu(renderer, items, item_count, selected_item, font);
+                    }
+                }
+                break;
+            }
+            break;
+            }
+        }
+    }
+}
+// How to play ?
 void menuPause(SDL_Renderer* renderer, TTF_Font* font)
 {
     MenuItem items[] = {
@@ -465,7 +579,7 @@ void menuPause(SDL_Renderer* renderer, TTF_Font* font)
                     }
                     if (selected_item == 2)
                     {
-                        
+                        quit = 1;
                         SDL_Quit();
                     }
 
@@ -520,7 +634,7 @@ void menuPause(SDL_Renderer* renderer, TTF_Font* font)
             }
         }
     }
-} 
+}
 /*
 char* player_name(SDL_Renderer* renderer, TTF_Font* font, GameState* game)
 {
