@@ -6,7 +6,7 @@ int main(int argc, char* argv[]) {
 	SDL_Window* windown = NULL;
 	SDL_Renderer* renderer = NULL;
 	SDL_Init(SDL_INIT_VIDEO);
-	windown = SDL_CreateWindow("Game gi do", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+	windown = SDL_CreateWindow("Sus adventure", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 	renderer = SDL_CreateRenderer(windown, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (initAudio() != 0) {
 		printf("Failed to initialize audio!");

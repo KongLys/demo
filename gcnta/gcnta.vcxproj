@@ -24,6 +24,7 @@
     <ProjectGuid>{5078aea1-539b-4fed-87bf-e34e8bf5f13c}</ProjectGuid>
     <RootNamespace>gcnta</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>SusAdventure</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
